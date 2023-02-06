@@ -6,11 +6,21 @@ To start with contribution, run:
 git clone https://github.com/Purinat33/itcs212_web-server.git
 ```
 
+followed by:
+```js
+npm install
+```
+
 or if you want to update the local git repo to match the current state of the project on GitHub, run:
 
 ```bash
 git pull origin master
 ```
+and
+```js
+npm install
+```
+If you want to make sure that your workspace is up to date.
 <hr>
 Note that this project is Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License licensed
 
