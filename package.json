@@ -1,0 +1,34 @@
+{
+  "name": "itcs212-server",
+  "version": "1.0.0",
+  "description": "This is a web server (back-end) of our ITCS212 project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Purinat33/itcs212_web-server.git"
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "mysql",
+    "sql",
+    "express",
+    "expressjs"
+  ],
+  "author": "Purinat33",
+  "license": "CC-BY-NC-SA-4.0",
+  "bugs": {
+    "url": "https://github.com/Purinat33/itcs212_web-server/issues"
+  },
+  "homepage": "https://github.com/Purinat33/itcs212_web-server#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
