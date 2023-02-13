@@ -6,7 +6,7 @@ const path = require('path')
 //Define port for connection
 //Mostly we use 80 and 403(?)
 //But for dev purpose we're going hard code of 3500 for now
-const port = 3500;
+const port = 3000;
 
 //Connect mysql DB
 // const db = sql.createConnection();
@@ -26,6 +26,6 @@ app.all('*', (req,res)=>{
     res.status(404).sendFile(path.resolve(__dirname, 'public' ,'404.html'));
 });
 
-app.listen(3500, ()=>{
+app.listen(port, ()=>{
 
 });
