@@ -9,5 +9,10 @@ const {
 
 
 //Routes
+routes.get('/', getGame); //Return catalogue
+routes.post('/', postGame);
+routes.put('/:id', putGame);
+routes.delete('/:id', deleteGame);
+
 
 module.exports = routes;

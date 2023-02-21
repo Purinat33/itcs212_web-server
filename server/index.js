@@ -1,9 +1,12 @@
-const express = require('express'); //To do stuff with backend like routing, querying
+//To do stuff with backend like routing, querying
+const express = require('express');
 const app = express(); 
 const sql = require('mysql2'); //To connect to my sql db
 const path = require('path')
+const morgan = require('morgan'); //For logging
 
-const {games} = require('./../routes/games');
+//Games route
+const games = require('./../routes/games');
 
 //Define port for connection
 //Mostly we use 80 and 403(?)
@@ -13,14 +16,20 @@ const port = 3000;
 //Connect mysql DB
 //const db = sql.createConnection();
 
-//JSON contents
+//JSON stuff
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
 //Assets folder to store images/data/assets
 app.use(express.static(path.join(__dirname, 'public')));
+
+//logging
+app.use(morgan('tiny'))
+
 //Routing
+//Game routings
 app.use('/api/games', games);
+//auth routing
 
 //Demo for home page (/)
 // app.get('/', (req,res)=>{
