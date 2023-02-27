@@ -2,14 +2,16 @@
 const express = require('express');
 const app = express(); 
 const sql = require('mysql2'); //To connect to my sql db
-const path = require('path')
+const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
 
 //Games route
 const games = require('./../routes/games');
+//AUTH route
+
 
 //Define port for connection
-//Mostly we use 80 and 403(?)
+//Mostly we use 80 and 403(?) for production
 //But for dev purpose we're going hard code of 3000 for now
 const port = 3000;
 
@@ -31,13 +33,6 @@ app.use(morgan('tiny'))
 app.use('/api/games', games);
 //auth routing
 
-//Demo for home page (/)
-// app.get('/', (req,res)=>{
-//     res.status(200).send(`
-//         <h1>Hello world</h1>
-//     `);
-// })
-
 //404 Error not found page
 app.all('*', (req,res)=>{
     res.status(404).sendFile(path.resolve(__dirname, 'public' ,'404.html'));
@@ -46,3 +41,5 @@ app.all('*', (req,res)=>{
 app.listen(port, ()=>{
     console.log(`Server is listening on port ${port}...`);
 });
+
+//END OF MAIN
