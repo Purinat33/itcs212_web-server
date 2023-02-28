@@ -1,7 +1,7 @@
 //To do stuff with backend like routing, querying
 const express = require('express');
 const app = express(); 
-const sql = require('mysql2'); //To connect to my sql db
+const {db} = require('./db'); //To connect to my sql db
 const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
@@ -9,7 +9,7 @@ require('dotenv').config(); //Used to call variables such as DEV, DB credential,
 //Games route
 const games = require('./../routes/games');
 //AUTH route
-
+const auth = require('./../routes/auth');
 
 //Define port for connection
 //If we are using DEV variable then we use port 3000
@@ -29,8 +29,9 @@ app.use(morgan('tiny'))
 
 //Routing
 //Game routings
-app.use('/api/games', games);
+app.use('/item/games', games);
 //auth routing
+app.use('/login', auth);
 
 //404 Error not found page
 app.all('*', (req,res)=>{

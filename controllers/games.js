@@ -1,3 +1,6 @@
+//GAME from DB
+const {db} = require('./../server/db');
+
 //GET
 const getGame = (req,res)=>{
     const {id} = req.params;
