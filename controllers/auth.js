@@ -5,12 +5,13 @@ const path = require('path');
 //The pool is in db
 
 const login = (req,res) =>{
-    const page = path.join(__dirname, 'auth/login.html');
-    res.status(200).send(page);
+    const page = path.join(__dirname, '..', 'server', 'public', 'auth', 'login.html');
+    res.status(200).sendFile(page);
 }
 
 const register = (req,res)=>{
-
+    const page = path.join(__dirname, '..', 'server', 'public', 'auth', 'register.html');
+    res.status(200).sendFile(page);
 }
 
 module.exports = {login, register}
