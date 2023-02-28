@@ -1,10 +1,21 @@
 //To do stuff with backend like routing, querying
 const express = require('express');
 const app = express(); 
-const {db} = require('./db'); //To connect to my sql db
+const sql = require('mysql2'); //To connect to my sql db
 const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
+
+//Establish connection with MySQL server
+//Pool allows createConnection in multiple pool
+const db = sql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USR,
+    password: process.env.DB_PWD,
+    database: process.env.DB_NAME
+})
+
+module.exports = {db}; //Exporting db pool to allow other files to join and query DB
 
 //Games route
 const games = require('./../routes/games');
@@ -29,9 +40,16 @@ app.use(morgan('tiny'))
 
 //Routing
 //Game routings
-app.use('/item/games', games);
+app.use('/item/games', games); //Relative to this file location (server/item/games)
 //auth routing
-app.use('/login', auth);
+app.use('/auth', auth);
+//Make the HTML served by the server instead of static HTML
+app.use((req, res, next) => {
+  if (req.path.endsWith('.html')) {
+    res.setHeader('Content-Type', 'text/html');
+  }
+  next();
+});
 
 //404 Error not found page
 app.all('*', (req,res)=>{
@@ -40,6 +58,20 @@ app.all('*', (req,res)=>{
 
 app.listen(port, ()=>{
     console.log(`Server is listening on port ${port}...`);
+
+    //DB on connect
+    db.on('connection', (connection)=>{
+        console.log('Connection established');
+    })
+
+    //Connect to the DB
+    db.getConnection((err, connection)=>{
+        if (err) {
+            console.error('Error getting connection from pool:', err);
+            return;
+        }
+        console.log('Connection retrieved from pool:', connection.threadId);
+    })
 });
 
 //END OF MAIN

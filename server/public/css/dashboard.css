@@ -1,0 +1,68 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');*/
+/*
+https: //www.youtube.com/watch?v=V8Es3dZVU8E&t=102s
+*/
+@font-face {
+    font-family: "Poppins";
+    src: url('../components/fonts/Poppins/Poppins-Black.ttf');
+}
+
+:root{
+    --main-color: #DD2F6E;
+    --color-dark: #1D2231;
+    --text-grey: 38390A2;
+}
+
+body{
+        font-family: 'Poppins';
+        background-color: beige;
+}
+
+#LeftMenu{
+    height: 100%;
+    position: fixed;
+    width: 0;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.mainNav{
+    margin-top: 70px;
+}
+
+.mainNav a{
+    margin-bottom: 15px;
+}
+
+.content {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+
+.content h2{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 70px;
+}
+
+#LeftMenu a{
+    padding: 8px 8px 8px 10px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #fff;
+    display: block;
+    transition: 0.4s;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.nothing{
+    color: #000;
+    text-decoration: none;
+}

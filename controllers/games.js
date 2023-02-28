@@ -1,5 +1,5 @@
 //GAME from DB
-const {db} = require('./../server/db');
+const {db} = require('./../server/index');
 
 //GET
 const getGame = (req,res)=>{
