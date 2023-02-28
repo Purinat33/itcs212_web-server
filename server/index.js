@@ -51,9 +51,16 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/', (req,res)=>{
+    //Specifically for index.html
+    //index.html will already be opened when we go localhost:PORT
+    //but we don't want the .html extension now do we?
+    res.status(200).sendFile(path.resolve(__dirname, 'public', 'index.html'));
+}); //We dont really need to use this (since express.static serve index.html by default anyway)
+
 //404 Error not found page
 app.all('*', (req,res)=>{
-    res.status(404).sendFile(path.resolve(__dirname, 'public' ,'404.html'));
+    res.status(404).sendFile(path.join(__dirname, 'public' ,'404.html'));
 });
 
 app.listen(port, ()=>{
