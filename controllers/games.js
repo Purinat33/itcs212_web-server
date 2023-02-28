@@ -1,6 +1,12 @@
 //GET
 const getGame = (req,res)=>{
-    res.send('Hello WORLD')
+    const {id} = req.params;
+    if(!id){
+        //No id supplied, we go with full catalogue
+    }
+    else{
+        //Return 1 specific item
+    }
 }
 
 //POST
@@ -11,6 +17,9 @@ const postGame = (req,res)=>{
 //PUT
 const putGame = (req,res)=>{
     const {id} = req.params;
+    if(!id){
+        return res.status(403).send('No ID supplied');
+    }
 }
 
 //DELETE
