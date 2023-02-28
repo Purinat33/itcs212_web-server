@@ -4,6 +4,7 @@ const app = express();
 const sql = require('mysql2'); //To connect to my sql db
 const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
+require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
 
 //Games route
 const games = require('./../routes/games');
@@ -11,12 +12,10 @@ const games = require('./../routes/games');
 
 
 //Define port for connection
-//Mostly we use 80 and 403(?) for production
-//But for dev purpose we're going hard code of 3000 for now
-const port = 3000;
-
-//Connect mysql DB
-//const db = sql.createConnection();
+//If we are using DEV variable then we use port 3000
+//else we use port 8080
+//The variable is declared inside .env file, which are not on VCS
+const port = process.env.DEV === 'true' ? 3000:8080; //All the value inside .env are strings
 
 //JSON stuff
 app.use(express.urlencoded({extended:false}));

@@ -1,6 +1,7 @@
 //GET
 const getGame = (req,res)=>{
     const {id} = req.params;
+    console.log(id);
     if(!id){
         //No id supplied, we go with full catalogue
     }
