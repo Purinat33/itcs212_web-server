@@ -2,14 +2,15 @@ const express = require('express');
 const routes = express.Router();
 const {
     login,
-    register
+    register,
+    authenticate
 } = require('./../controllers/auth')
 
 routes.get('/login', login);
 //Getting the register page
 routes.get('/register', register);
 
-//Put, for registration
-//
+//login POST (logging in)
+routes.post('/login', authenticate, login);
 
 module.exports = routes;
