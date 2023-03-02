@@ -1,20 +1,17 @@
 //User from DB
 const {db} = require('./../server/index');
 const path = require('path');
-const fs = require('fs')
-const { dirname } = require('path');
-const crypto = require('crypto'); //For encrypting + decrypting password to/from the DB
+const crypto = require('crypto'); //For encrypting + decrypting password to/from the DB 
+const bcrypt = require('bcrypt'); //For encrypting + decrypting in a more secure way than crypto
 //Connect to db and query all the users
 //The pool is in index.js
 
 //Middleware to be used with the 
-const authenticate = (req,res,next) =>{
-    
-    const username = req.body.username;
-    const password = req.body.password;
+const authenticate = (req, res, next) => {
+  const { username, password } = req.body;
 
-    // get user with the matching username from the database
-    db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+  // get user with the matching username from the database
+  db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Server error');
@@ -27,22 +24,23 @@ const authenticate = (req,res,next) =>{
 
     const user = results[0];
 
-    // hash the password provided by the user
-    const hash = crypto.createHash('sha256');
-    hash.update(password);
-    const hashedPassword = hash.digest('hex');
-
     // compare the hashed password with the one stored in the database
-    if (hashedPassword !== user.password) {
-      console.log('Invalid login');  
-      return res.status(401).send('Invalid username or password');
+    try {
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        console.log('Invalid login');
+        return res.status(401).send('Invalid username or password');
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send('Server error');
     }
 
     // authentication succeeded, store user in session
     console.log('Login success');
     next();
   });
-}
+};
 
 const login = (req,res) =>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'auth', 'login.html'));
