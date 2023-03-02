@@ -1,7 +1,6 @@
 //User from DB
 const {db} = require('./../server/index');
 const path = require('path');
-const crypto = require('crypto'); //For encrypting + decrypting password to/from the DB 
 const bcrypt = require('bcrypt'); //For encrypting + decrypting in a more secure way than crypto
 //Connect to db and query all the users
 //The pool is in index.js
