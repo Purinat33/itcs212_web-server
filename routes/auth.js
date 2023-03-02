@@ -3,7 +3,8 @@ const routes = express.Router();
 const {
     login,
     register,
-    authenticate
+    authenticate,
+    createUser
 } = require('./../controllers/auth')
 
 routes.get('/login', login);
@@ -12,5 +13,7 @@ routes.get('/register', register);
 
 //login POST (logging in)
 routes.post('/login', authenticate, login);
+//Register post (creating user)
+routes.post('/register', createUser,register);
 
 module.exports = routes;

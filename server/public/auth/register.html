@@ -7,26 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
 
-    <script src="../public/scripts/jquery.min.js"></script>    
+    <script src="../scripts/jquery.min.js"></script>    
     <link rel="stylesheet" href="css/login.css">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="../public/icon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../public/icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../public/icon/favicon-16x16.png">
-    <link rel="manifest" href="../public/icon/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="../icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../icon/favicon-16x16.png">
+    <link rel="manifest" href="../icon/site.webmanifest">
 </head>
 <body>
-    <form class="box" action="../index.html">
+    <form class="box" action="/auth/register" method="post">
         <div class="form">
             <h2>Sign Up</h2>
-            <form>
                 <div class="inputBox">
                     <input type="text" name="username" id="username" required="required">
                     <span>Username</span>
                     <i></i>
                 </div>
                 <div class="inputBox">
-                    <input type="password" name="pass" id="pass" required="required">
+                    <input type="password" name="password" id="password" required="required">
                 
                     <span>Password</span>
                     <i></i>

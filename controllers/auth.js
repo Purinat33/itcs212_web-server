@@ -41,6 +41,46 @@ const authenticate = (req, res, next) => {
   });
 };
 
+// registration handler
+const createUser = (req, res, next) => {
+  const saltRounds = 10;
+  const username = req.body.username;
+  const password = req.body.password;
+
+  // check if username already exists
+  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Server error');
+    }
+
+    if (results.length > 0 || username === 'admin' || username === 'ADMIN') {
+      console.log('Username already exists or is invalid');
+      return res.status(409).send('Username already exists or is invalid');
+    }
+
+    // hash the password with bcrypt
+    bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Server error');
+      }
+
+      // insert new user into the database
+      db.query('INSERT INTO users (username, password, isAdmin) VALUES (?, ?, false)', [username, hashedPassword], (err, result) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('Server error');
+        }
+
+        console.log('Registration success');
+        res.status(201).end('Registration success');
+      });
+    });
+  });
+  next();
+};
+
 const login = (req,res) =>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'auth', 'login.html'));
 }
@@ -49,4 +89,4 @@ const register = (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'auth', 'register.html'));
 }
 
-module.exports = {authenticate, login, register}
+module.exports = {authenticate, login, register, createUser};
