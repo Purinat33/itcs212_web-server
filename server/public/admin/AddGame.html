@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!---<title> Responsive Registration Form | CodingLab </title>--->
+    <link rel="stylesheet" href="AddGame.css">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>OnlyGames | AddItems</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../icon/favicon-16x16.png">
+    <link rel="manifest" href="../../icon/site.webmanifest">
+    <script>
+    </script>
+    
+    </head>
+<body>
+  <div class="container">
+    <div class="title">Add Items</div>
+    <div class="content">
+      <form action="#">
+        <div class="user-details">
+          <div class="input-box">
+            <span class="details">Name</span>
+            <input type="text" placeholder="Enter Name" required>
+          </div>
+          <div class="input-box">
+            <span class="details">Description</span>
+            <textarea name="desc" id="desc" cols=75" rows="5" required placeholder="Enter Description"></textarea>
+          </div>
+          <div class="input-box">
+            <span class="details">Genre</span>
+            <!-- <input type="text" placeholder="Enter Genre" required> -->
+            <div class="choices">
+              <div class="row">
+                <div class="column">
+                  <span>
+                    <table>
+                  
+                      <!-- 1 Genre -->
+                      <tr>
+                        <td>
+                          <input type="checkbox" name="singleplayer" id="singleplayer">
+                        </td>
+                        <td>
+                          <label for="singleplayer">Singleplayer</label>
+                        </td>
+                      </tr>
+                      <!-- 1 Genre -->
+                      <tr>
+                        <td>
+                          <input type="checkbox" name="multiplayer" id="multiplayer">
+                        </td>
+                        <td>
+                          <label for="multiplayer">Multiplayer</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="checkbox" name="openworld" id="openworld">
+                        </td>
+                        <td>
+                          <label for="openworld">Open World</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="checkbox" name="sandbox" id="sandbox">
+                        </td>
+                        <td>
+                          <label for="sandbox">Sandbox</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input type="checkbox" name="simulator" id="simulator">
+                        </td>
+                        <td>
+                          <label for="simulator">Simulator</label>
+                        </td>
+                      </tr>
+                    </table>
+                </div>
+                <div class="column">
+                  <table>
+                    <tr>
+                      <td>
+                        <input type="checkbox" name="teambase" id="teambase">
+                      </td>
+                      <td>
+                        <label for="teambase">Team-Based</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" name="fps" id="fps">
+                      </td>
+                      <td>
+                        <label for="fps">FPS</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" name="horror" id="horror">
+                      </td>
+                      <td>
+                        <label for="horror">Horror</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" name="puzzle" id="puzzle">
+                      </td>
+                      <td>
+                        <label for="puzzle">Puzzle</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input type="checkbox" name="other" id="other">
+                      </td>
+                      <td>
+                        <label for="other">Other</label>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>  
+            </span>
+            </div>
+          </div>
+          <div class="input-box">
+            <span class="details">Price</span>
+            <input type="number" placeholder="Enter Price" min="0" step="0.25" required>
+          </div>
+          <div class="upload">
+            <img src="img _PJ/logo.jfif" width = 100 height = 100 alt="" class="holder">
+            <div class="round">
+              <input type="file" name="photograph" id="photo" required="true" />
+              <i class = "fa fa-camera" style = "color: #fff;"></i>
+            </div>
+          </div>
+        </div>
+        <div class="gender-details">
+          <div class="category">
+        </div>
+        <div class="button">
+          <input type="submit" value="Submit">
+        </div>
+        <span class="back"><a href="Admin.html" target="_self">Return to dashboard</a></span>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

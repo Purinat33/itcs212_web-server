@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Admin.css">
+    <title>Dashboard</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../icon/favicon-16x16.png">
+    <link rel="manifest" href="../../icon/site.webmanifest">
+
+</head>
+
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1>Admin</h1>
+            <br>
+            <br>
+        </div>
+        <ul>
+            <li><button class="navbtn"><a href="../../index.html" target="_self" class="navlink">Home</a></button></li>
+            <li><button class="navbtn"><a href="../catalogue.html" class="navlink">Browse</a></button></li>
+            <li><button class="navbtn"><a href="../about.html" class="navlink">Support</a></button></li>
+            <li><button class="navbtn"><a href="../search.html" class="navlink">Search</a></button></li>
+            <br><br>
+            <li><button class="navbtn" ><a href="../../index.html" class="navlink">Logout</a></button></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="content">
+            <div class="cards">
+            </div>
+            <div class="title">
+                <h2><a href="AddGame.html" class="btn" id="addGame">Add Game</a></h2>
+            
+                <!-- TODO: -->
+                <!-- Search function (Just the name is enough) -->
+                <div class="search">
+                    <input type="text" placeholder="Search.." id="search-item" onkeyup="searchA()">
+            
+                </div>
+            </div>
+            <div class="content-2">
+                
+                <div class="recent-payments">
+                    
+                    <table class="gamecard">
+                        <tr>
+                            <th>Name</th>
+                            <th>Publisher</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                        
+                        <tr>
+                            <td class="pname">Overwatch 2</td>
+                            <td>Blizzard Entertainment</td>
+                            <td>0.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td class="pname">The Devil in Me</td>
+                            <td>Bandai Namco Entertainment</td>
+                            <td>1190.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td class="pname">Cyberpunk 2077</td>
+                            <td>CD Projekt</td>
+                            <td>2322.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td class="pname">The Sim 4</td>
+                            <td>Electronic Arts</td>
+                            <td>0.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>Canday Crush Saga</td>
+                            <td>King</td>
+                            <td>0.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>Canday Crush Saga</td>
+                            <td>King</td>
+                            <td>0.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>Canday Crush Saga</td>
+                            <td>King</td>
+                            <td>0.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>Canday Crush Saga</td>
+                            <td>King</td>
+                            <td>0.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>Canday Crush Saga</td>
+                            <td>King</td>
+                            <td>0.00</td>
+                            <td><a href="#" class="btn">Remove</a></td>
+                        </tr>
+                        
+                    </table>
+                </div>
+                
+                </div>
+                <div class="title">
+                    <h2><a href="./AddUser.html" class="btn">Add User</a></h2>
+                    <div class="search">
+                        <input type="text" placeholder="Search..">
+                
+                    </div>
+                </div>
+                <div class="content-2">
+                    <div class="recent-payments">
+                        
+                        <table>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>admin</td>
+                                <td>Admin</td>
+                                <td><a class="btnnull">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>default</td>
+                                <td>User</td>
+                                <td><a class="btnnull">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>User</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                    
+                </div>
+        </div>
+        
+    </div>
+    
+<script>
+    const searchA = () => {
+        const searchbox = document.getElementById("search-item").value.toUpperCase();
+        const storeitems = document.getElementsByClassName("gamecard");
+        const product = document.querySelectorAll(".gamecard");
+        const pname = storeitems.getElementsByTagName("td");
+
+
+        for (var i = 0; i < pname.length; i++) {
+            let match = product[i].getElementsByClassName('pname')[0];
+
+            if (match) {
+                let textValue = match.textContent || match.innerHTML;
+                if (textValue.toUpperCase().indexOf(searchbox) > -1) {
+                    product[i].style.display = "";
+                } else {
+                    product[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+
+</html>

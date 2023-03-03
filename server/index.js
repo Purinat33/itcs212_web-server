@@ -5,7 +5,8 @@ const sql = require('mysql2'); //To connect to my sql db
 const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
-const bcrypt = require('bcrypt'); //For hashing/salting
+const bcrypt = require('bcrypt'); //For hashing/salting that offers more protection than normal SHA256
+//PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
 
 //Establish connection with MySQL server
 //Pool allows createConnection in multiple pool
@@ -14,12 +15,7 @@ const db = sql.createPool({
     user: process.env.DB_USR,
     password: process.env.DB_PWD,
     database: process.env.DB_NAME
-})
-
-    //DB on connect
-db.on('connection', (connection)=>{
-    console.log('Connection established');
-})
+});
 
 //Connect to the DB
 db.getConnection((err, connection)=>{
@@ -29,6 +25,13 @@ if (err) {
 }
 console.log('Connection retrieved from pool:', connection.threadId);
 })
+
+//DB on connect
+if(db){
+  db.on('connection', (connection)=>{
+    console.log(`Connection established on connection`);
+  })
+}
 
 module.exports = {db}; //Exporting db pool to allow other files to join and query DB
 
@@ -42,13 +45,18 @@ bcrypt.hash(adminPassword, 10, (err, hashedPassword) => {
     return;
   }
 
-  db.query('DELETE FROM users WHERE username = ?', ['admin'], (err, result) => {
+  // check if admin user already exists
+  db.query('SELECT * FROM users WHERE username = ?', ['admin'], (err, result) => {
     if (err) {
-      console.error('Error deleting admin user:', err);
+      console.error('Error checking admin user:', err);
       return;
     }
-    console.log('Deleted existing admin user');
-    
+    if (result.length > 0) {
+      console.log('Admin user already exists');
+      return;
+    }
+
+    // add new admin user
     const user = {
       username: 'admin',
       password: hashedPassword,
@@ -64,6 +72,8 @@ bcrypt.hash(adminPassword, 10, (err, hashedPassword) => {
     });
   });
 });
+
+//END OF PREPROCESSING
 
 
 //Games route

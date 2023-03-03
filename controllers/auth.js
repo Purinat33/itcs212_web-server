@@ -37,6 +37,7 @@ const authenticate = (req, res, next) => {
 
     // authentication succeeded, store user in session
     console.log('Login success');
+    //Redirecting based on the role
     next();
   });
 };
@@ -74,10 +75,15 @@ const createUser = (req, res, next) => {
         }
 
         console.log('Registration success');
-        res.status(201).end('Registration success');
+        next();
       });
     });
   });
+};
+
+// redirect middleware function
+const redirectHome = (req, res, next) => {
+  res.redirect('/');
   next();
 };
 
@@ -89,4 +95,4 @@ const register = (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'auth', 'register.html'));
 }
 
-module.exports = {authenticate, login, register, createUser};
+module.exports = {authenticate, login, register, createUser, redirectHome};
