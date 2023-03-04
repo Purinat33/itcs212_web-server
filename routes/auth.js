@@ -4,8 +4,7 @@ const {
     login,
     register,
     authenticate,
-    createUser,
-    redirectHome
+    createUser
 } = require('./../controllers/auth')
 
 routes.get('/login', login);
@@ -13,11 +12,8 @@ routes.get('/login', login);
 routes.get('/register', register);
 
 //login POST (logging in)
-routes.post('/login', authenticate, login, (req,res)=>{
-    console.log(res);
-    res.redirect('/');
-});
+routes.post('/login', authenticate)
 //Register post (creating user)
-routes.post('/register', createUser,redirectHome);
+routes.post('/register', createUser);
 
 module.exports = routes;

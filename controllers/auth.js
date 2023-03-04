@@ -38,7 +38,13 @@ const authenticate = (req, res, next) => {
     // authentication succeeded, store user in session
     console.log('Login success');
     //Redirecting based on the role
-    next();
+    if(user.isAdmin){
+      res.redirect('/admin/Admin.html');
+    }
+    else{
+      res.redirect('/')
+    }
+
   });
 };
 
@@ -75,16 +81,10 @@ const createUser = (req, res, next) => {
         }
 
         console.log('Registration success');
-        next();
+        res.redirect('/');
       });
     });
   });
-};
-
-// redirect middleware function
-const redirectHome = (req, res, next) => {
-  res.redirect('/');
-  next();
 };
 
 const login = (req,res) =>{
@@ -95,4 +95,4 @@ const register = (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'auth', 'register.html'));
 }
 
-module.exports = {authenticate, login, register, createUser, redirectHome};
+module.exports = {authenticate, login, register, createUser};
