@@ -142,7 +142,7 @@ class Header extends HTMLElement{
                 OnlyGames
             </div>
             <div class="menu">
-                <a href="../index.html">Home</a>
+                <a href="/">Home</a>
                 <a href="catalogue.html">Browse</a>
                 <a href="about.html">Support</a>
                 <a href="search.html">Search</a>
