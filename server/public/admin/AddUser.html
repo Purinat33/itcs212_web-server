@@ -2,7 +2,7 @@
 <html>
 <head>   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="AddUser.css">
+    <link rel="stylesheet" href="adduser.css">
     <title>Add User</title>
     <link rel="apple-touch-icon" sizes="180x180" href="../../icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../../icon/favicon-32x32.png">
@@ -12,21 +12,21 @@
 <body>
     <div class="container" id="container">
         <div class="form-container log-in-container">
-            <form action="#">
+            <form action="/admin/adduser" method="post">
                 <h1>Add User</h1>
                 <!-- Radio Button -->
                 <div class="radio-group">
-                    <input type="radio" id="radio-admin" name="role" value="Admin">
+                    <input type="radio" id="radio-admin" name="role" value="Admin" required>
                     <label for="radio-admin">Admin</label> &nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" id="radio-user" name="role" value="User">
+                    <input type="radio" id="radio-user" name="role" value="User" required>
                     <label for="radio-user">User</label>
                 </div>
                 <!-- End Radio Button -->
-                <input type="text" placeholder="Username" required/>
-                <input type="password" placeholder="Password" required/>
+                <input type="text" placeholder="username" name="username" required/>
+                <input type="password" placeholder="password" name="password" required/>
                 <button type="submit" name="Add" value="Add">Add</button>
                 <br>
-                <span class="back"><a href="Admin.html" target="_self">Return to dashboard</a></span>
+                <span class="back"><a href="/admin/dashboard" target="_self">Return to dashboard</a></span>
             </form>
         </div>
     </div>

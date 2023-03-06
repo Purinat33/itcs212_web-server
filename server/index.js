@@ -80,6 +80,8 @@ bcrypt.hash(adminPassword, 10, (err, hashedPassword) => {
 const games = require('./../routes/games');
 //AUTH route
 const auth = require('./../routes/auth');
+//Admin route
+const admin = require('./../routes/admin');
 
 //Define port for connection
 //If we are using DEV variable then we use port 3000
@@ -102,6 +104,9 @@ app.use(morgan('tiny'))
 app.use('/item/games', games); //Relative to this file location (server/item/games)
 //auth routing
 app.use('/auth', auth);
+//admin routing
+app.use('/admin', admin);
+
 //Make the HTML served by the server instead of static HTML
 app.use((req, res, next) => {
   if (req.path.endsWith('.html')) {
@@ -109,6 +114,7 @@ app.use((req, res, next) => {
   }
   next();
 });
+
 
 app.get('/', (req,res)=>{
     //Specifically for index.html
