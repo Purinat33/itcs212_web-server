@@ -7,7 +7,8 @@ const bcrypt = require('bcrypt'); //For encrypting + decrypting in a more secure
 
 //Middleware to be used with the 
 const authenticate = (req, res, next) => {
-  const { username, password } = req.body;
+  const username = req.body.username.trim();
+  const password = req.body.password;
 
   // get user with the matching username from the database
   db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
@@ -39,7 +40,7 @@ const authenticate = (req, res, next) => {
     console.log('Login success');
     //Redirecting based on the role
     if(user.isAdmin){
-      res.redirect('/admin/Admin.html');
+      res.redirect('/admin/dashboard');
     }
     else{
       res.redirect('/')
@@ -51,7 +52,7 @@ const authenticate = (req, res, next) => {
 // registration handler
 const createUser = (req, res, next) => {
   const saltRounds = 10;
-  const username = req.body.username;
+  const username = req.body.username.trim();
   const password = req.body.password;
 
   // check if username already exists
@@ -61,7 +62,7 @@ const createUser = (req, res, next) => {
       return res.status(500).send('Server error');
     }
 
-    if (results.length > 0 || username === 'admin' || username === 'ADMIN') {
+    if (results.length > 0 || username.toLowerCase() === 'admin') {
       console.log('Username already exists or is invalid');
       return res.status(409).send('Username already exists or is invalid');
     }

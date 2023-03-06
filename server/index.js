@@ -6,6 +6,7 @@ const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
 const bcrypt = require('bcrypt'); //For hashing/salting that offers more protection than normal SHA256
+const ejs = require('ejs')
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
 
 //Establish connection with MySQL server
@@ -98,6 +99,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //logging
 app.use(morgan('tiny'))
+
+//Set the view folder to where EJS will run at runtime
+app.set('views', path.join(__dirname,'..', 'view'))
+app.set('view engine', 'ejs');
 
 //Routing
 //Game routings

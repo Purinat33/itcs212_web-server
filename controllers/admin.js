@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const createUser = (req,res,next)=>{
     //Post to user DB
     const saltRounds = 10;
-    const username = req.body.username;
+    const username = req.body.username.trim();
     const password = req.body.password;
     var isAdmin  = (req.body.role === 'Admin');
 
@@ -19,7 +19,7 @@ const createUser = (req,res,next)=>{
       return res.status(500).send('Server error');
     }
 
-    if (results.length > 0 || username === 'admin' || username === 'ADMIN') {
+    if (results.length > 0 || username.toLowerCase() === 'admin') {
       console.log('Username already exists or is invalid');
       return res.status(409).send('Username already exists or is invalid');
     }
