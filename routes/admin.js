@@ -1,10 +1,9 @@
 const express = require('express');
 const route = express.Router();
 const path = require('path')
-//The EJS file for the USER
 const {db} = require('./../server/index');
 const {
-    createUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct
+    createUser, editUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct
 } = require('./../controllers/admin');
 
 //TODO: Add cookie/JWT checker middleware to each routes
@@ -31,8 +30,12 @@ route.get('/adduser', (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'adduser.html'));
 })
 
-route.post('/adduser', createUser); //Adding user
-route.delete('/dashboard/:ID', deleteUser); //The name says it all (the :ID is to specify which one to delete);
+//For edit user detail page
+route.get('/dashboard/edit/:users', editUser);
 
+
+route.post('/adduser', createUser); //Adding user
+route.delete('/dashboard/delete/:users', deleteUser); //The name says it all (the :users is to specify which one to delete);
+route.post('/dashboard/edit/:users', editUser); //Same thing but we do the POST request instead
 
 module.exports = route;

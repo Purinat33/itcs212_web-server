@@ -52,67 +52,23 @@
                 <div class="recent-payments">
 
                     <table class="gamecard">
-                        <tr>
-                            <th>Name</th>
-                            <th>Publisher</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
-
-                        <tr>
-                            <td class="pname">Overwatch 2</td>
-                            <td>Blizzard Entertainment</td>
-                            <td>0.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td class="pname">The Devil in Me</td>
-                            <td>Bandai Namco Entertainment</td>
-                            <td>1190.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td class="pname">Cyberpunk 2077</td>
-                            <td>CD Projekt</td>
-                            <td>2322.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td class="pname">The Sim 4</td>
-                            <td>Electronic Arts</td>
-                            <td>0.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>Canday Crush Saga</td>
-                            <td>King</td>
-                            <td>0.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>Canday Crush Saga</td>
-                            <td>King</td>
-                            <td>0.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>Canday Crush Saga</td>
-                            <td>King</td>
-                            <td>0.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>Canday Crush Saga</td>
-                            <td>King</td>
-                            <td>0.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
-                        <tr>
-                            <td>Canday Crush Saga</td>
-                            <td>King</td>
-                            <td>0.00</td>
-                            <td><a href="#" class="btn">Remove</a></td>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Publisher</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="pname">Overwatch 2</td>
+                                <td>Blizzard Entertainment</td>
+                                <td>0.00</td>
+                                <td><a href="#" class="btn">Remove</a></td>
+                            </tr>
+                        </tbody>
+                        
 
                     </table>
                 </div>
@@ -136,16 +92,16 @@
                         </thead>
                         <tbody>
                             <!--Looping through each user in the database and displaying them-->
-                            <% users.forEach(function(user) { %>
+                            <% users.forEach(function(users) { %>
                                 <tr>
                                     <td>
-                                        <%= user.username %>
+                                        <%= users.username %>
                                     </td>
                                     <td>
-                                        <%= user.isAdmin ? 'Admin' : 'User' %>
+                                        <%= users.isAdmin ? 'Admin' : 'User' %>
                                     </td>
-                                    <td><a href="<%= (user.username === 'admin') ? '#' : '/dashboard/edit/' + user._id %>" class="<%= (user.username === 'admin') ? 'btnnull' : 'btn' %>">Edit</a></td>
-                                    <td><a href="<%= (user.username === 'admin') ? '#' : '/dashboard/edit/' + user._id %>" class="<%= (user.username ==='admin' ) ? 'btnnull' : 'btn' %>">Delete</a></td>
+                                    <td><a href="/admin/dashboard/edit/<%= users.id %>" class="btn">Edit</a></td>
+                                    <td><a href="<%= (users.username === 'admin') ? '#' : '/admin/dashboard/delete/' + users.id %>" class="<%= (users.username ==='admin' ) ? 'btnnull' : 'btn' %>">Delete</a></td>
                                 </tr>
                                 <% }); %>
                         </tbody>

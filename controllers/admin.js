@@ -1,8 +1,6 @@
 //For all things admin from add user, delete user, add product, modify product
 const {db} = require('./../server/index');
-const path = require('path');
 const bcrypt = require('bcrypt');
-
 
 //User section
 const createUser = (req,res,next)=>{
@@ -45,6 +43,36 @@ const createUser = (req,res,next)=>{
   });
 }
 
+const editUser = async (req,res,next) =>{
+  try {
+    if(req.method === 'GET'){
+      const [rows] = await db.promise().query('SELECT * FROM users WHERE id = ?', [req.params.users]);
+      if(rows && rows.length){
+          const user = rows[0];
+          res.render('edit', {user}); // Pass the user object directly to the EJS template
+      }else{
+          // User not found, render an error page or redirect
+          res.status(404).send('User not found');
+      }
+    } else if (req.method === 'POST') {
+      const newPassword = req.body.password;
+      const userId = req.params.users;
+      const saltRounds = 10;
+      const salt = await bcrypt.genSalt(saltRounds);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+      await db.promise().query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, userId]);
+      res.redirect('/admin/dashboard'); // Redirect to the dashboard after the password has been updated
+    }
+    
+  } catch (error) {
+    // Handle errors here
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+};
+
+
+
 const deleteUser = (req,res,next) =>{
     //Remove from user DB
 }
@@ -66,4 +94,4 @@ const deleteProduct = (req,res,next)=>{
 
 }
 
-module.exports = {createUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct}
+module.exports = {createUser, editUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct}
