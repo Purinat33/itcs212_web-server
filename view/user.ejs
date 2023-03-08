@@ -100,7 +100,7 @@
                                     <td>
                                         <%= users.isAdmin ? 'Admin' : 'User' %>
                                     </td>
-                                    <td><a href="/admin/dashboard/edit/<%= users.id %>" class="btn">Edit</a></td>
+                                    <td><a href="<%= (users.username === 'admin') ? '#' : '/admin/dashboard/edit/' + users.id %>" class="<%= (users.username ==='admin' ) ? 'btnnull' : 'btn' %>" class="btn">Edit</a></td>
                                     <td><a href="<%= (users.username === 'admin') ? '#' : '/admin/dashboard/delete/' + users.id %>" class="<%= (users.username ==='admin' ) ? 'btnnull' : 'btn' %>">Delete</a></td>
                                 </tr>
                                 <% }); %>
