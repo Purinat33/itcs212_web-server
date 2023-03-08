@@ -81,6 +81,7 @@ const editUser = async (req, res, next) => {
 
 const deleteUser = (req,res,next) =>{
     //Remove from user DB
+    //Same style of routing as edit
 }
 
 //Product sessions
