@@ -2,6 +2,17 @@
 const {db} = require('./../server/index');
 const bcrypt = require('bcrypt');
 
+const dashboard = (req,res,next) =>{
+  //res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'admin.html'));
+    const query = 'SELECT * FROM users';
+    db.query(query, function(error, results) {
+    if (error) throw error;
+    const users = results;
+    // Render admin dashboard page with user data
+    res.render('user.ejs', { users: users });
+  });
+}
+
 //User section
 const createUser = (req,res,next)=>{
     //Post to user DB
@@ -78,11 +89,23 @@ const editUser = async (req, res, next) => {
   }
 };
 
+//In Node.js, if a DELETE query is executed successfully without any error, the result parameter of the callback function in connection.query() method will contain a affectedRows property that indicates the number of rows deleted. If affectedRows is greater than zero, it means the DELETE query was executed successfully and the specified rows were deleted from the database.
+const deleteUser = async (req, res, next) => {
+  // Extract the user ID from the request parameters
+  const userId = req.params.id;
 
-const deleteUser = (req,res,next) =>{
-    //Remove from user DB
-    //Same style of routing as edit
-}
+  // Use the user ID to delete the corresponding user from the database
+    await db.promise().query('DELETE FROM users WHERE id = ?', userId, function(error, results, fields) {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Internal server error');
+    } else {
+      // Redirect to the user list page after the user is successfully deleted
+      res.redirect('/admin/dashboard');
+    }
+  });
+};
+
 
 //Product sessions
 const createProduct = (req,res,next) =>{
@@ -101,4 +124,4 @@ const deleteProduct = (req,res,next)=>{
 
 }
 
-module.exports = {createUser, editUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct}
+module.exports = {dashboard, createUser, editUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct}

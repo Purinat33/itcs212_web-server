@@ -335,3 +335,14 @@ td {
     }
 }
 
+#deletePopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid indianred;
+}
+
+.blur {
+    filter: blur(6px);
+}
