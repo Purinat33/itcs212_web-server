@@ -1,5 +1,6 @@
 //To do stuff with backend like routing, querying
 const express = require('express');
+const methodOverride = require('method-override'); //Use to put DELETE PUT etc. in form action (default is only get/put)
 const app = express(); 
 const sql = require('mysql2'); //To connect to my sql db
 const path = require('path'); //For file pathing
@@ -7,6 +8,7 @@ const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
 const bcrypt = require('bcrypt'); //For hashing/salting that offers more protection than normal SHA256
 const ejs = require('ejs')
+const bodyParser = require('body-parser');
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
 
 //Establish connection with MySQL server
@@ -89,6 +91,12 @@ const admin = require('./../routes/admin');
 //else we use port 8080
 //The variable is declared inside .env file, which are not on VCS
 const port = process.env.DEV === 'true' ? 3000:8080; //All the value inside .env are strings
+
+
+//Allowing express to parse req.body
+app.use(bodyParser.urlencoded({ extended: false }));
+//Method ovveride for DELETE
+app.use(methodOverride(req => req.body._method));
 
 //JSON stuff
 app.use(express.urlencoded({extended:false}));

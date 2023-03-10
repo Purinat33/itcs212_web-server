@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-const path = require('path')
+const path = require('path');
 const {
     dashboard, createUser, editUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct
 } = require('./../controllers/admin');
@@ -26,7 +26,7 @@ route.post('/dashboard/edit/:users', editUser); //Same thing but we do the POST 
 route.post('/adduser', createUser); //Adding user
 
 //Delete is even more broken than POST so we are breaking the CRUD bone
-route.post('/dashboard/delete/:id', deleteUser); //The name says it all (the :users is to specify which one to delete);
+route.delete('/dashboard/delete/:id', deleteUser); //The name says it all (the :users is to specify which one to delete);
 
 
 module.exports = route;

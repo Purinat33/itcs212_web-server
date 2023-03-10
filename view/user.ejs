@@ -107,35 +107,35 @@
                                 </tr>
                             
                                 <!-- Popup HTML -->
-                                <div id="deletePopup" style="display: none; background: white;">
-                                    <h3>Delete User</h3>
-                                    <form id="deleteUserForm" method="POST">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="id" id="deleteUserId">
-                                        <p>Are you sure you want to delete this user?</p>
-                                        <button type="submit" onclick="hideDeletePopup()" class="btn">Confirm</button>
-                                        <button type="button" onclick="hideDeletePopup()" class="btn">Cancel</button>
-                                    </form>
-                                </div>
+                            <div id="deletePopup" style="display: none; background: white;">
+                                <h3>Delete User</h3>
+                                <form id="deleteUserForm" method="POST" action="/admin/dashboard/delete/<%= users.id %>">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="id" id="deleteUserId">
+                                    <p>Are you sure you want to delete this user?</p>
+                                    <button type="submit" onclick="hideDeletePopup()" class="btn">Confirm</button>
+                                    <button type="button" onclick="hideDeletePopup()" class="btn">Cancel</button>
+                                </form>
+                            </div>
                             
-                                <!-- Script to handle popup -->
-                                <script>
-                                    function showDeletePopup(id) {
-                                        // Set the user ID in the hidden input field
-                                        document.getElementById("deleteUserId").value = id;
-                                        // Set the action attribute of the form
-                                        document.getElementById("deleteUserForm").action = "/admin/dashboard/delete/" + id;
-                                        // Show the popup
-                                        document.getElementById("deletePopup").style.display = "block";
+                            <!-- Script to handle popup -->
+                            <script>
+                                function showDeletePopup(id) {
+                                    // Set the user ID in the hidden input field
+                                    document.getElementById("deleteUserId").value = id;
+                                    // Set the action attribute of the form
+                                    document.getElementById("deleteUserForm").action = "/admin/dashboard/delete/" + id;
+                                    // Show the popup
+                                    document.getElementById("deletePopup").style.display = "block";
+                                    document.body.classList.add('blur');
+                                }
 
-                                        document.body.classList.add('blur');
-                                    }
+                                function hideDeletePopup() {
+                                    document.getElementById("deletePopup").style.display = "none";
+                                    document.body.classList.remove('blur');
+                                }
+                            </script>
 
-                                    function hideDeletePopup() {
-                                        document.getElementById("deletePopup").style.display = "none";
-                                        document.body.classList.remove('blur');
-                                    }
-                                </script>
                                 <% }); %>
 
                         </tbody>

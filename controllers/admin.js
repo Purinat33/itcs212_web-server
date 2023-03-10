@@ -91,19 +91,15 @@ const editUser = async (req, res, next) => {
 
 //In Node.js, if a DELETE query is executed successfully without any error, the result parameter of the callback function in connection.query() method will contain a affectedRows property that indicates the number of rows deleted. If affectedRows is greater than zero, it means the DELETE query was executed successfully and the specified rows were deleted from the database.
 const deleteUser = async (req, res, next) => {
-  // Extract the user ID from the request parameters
   const userId = req.params.id;
 
   // Use the user ID to delete the corresponding user from the database
-    await db.promise().query('DELETE FROM users WHERE id = ?', userId, function(error, results, fields) {
-    if (error) {
-      console.log(error);
-      res.status(500).send('Internal server error');
-    } else {
-      // Redirect to the user list page after the user is successfully deleted
-      res.redirect('/admin/dashboard');
-    }
-  });
+  try {
+    await db.promise().query('DELETE FROM users WHERE id = ?', [userId]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Internal server error');
+  }
 };
 
 
