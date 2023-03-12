@@ -16,6 +16,7 @@
     <div class="container" id="container">
         <div class="form-container log-in-container">
             <form action="/admin/dashboard/edit/<%= user.id %>" method="post">
+                <input type="hidden" name="_method" value="PUT"> 
                 <h2>Edit for <%= user.username %>
                 </h2>
                 <!-- Radio Button -->
@@ -31,3 +32,8 @@
                 <button type="submit" name="Submit" value="Submit">Submit</button>
                 <br>
                 <span class="back"><a href="/admin/dashboard" target="_self">Return to dashboard</a></span>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

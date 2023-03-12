@@ -21,11 +21,9 @@ route.get('/adduser', (req,res)=>{
 })
 
 //For edit user detail page
-route.get('/dashboard/edit/:users', editUser);
-route.post('/dashboard/edit/:users', editUser); //Same thing but we do the POST request instead
+route.get('/dashboard/edit/:users', editUser); //Getting the user detail page
+route.put('/dashboard/edit/:users', editUser); //Same thing but we do the PUT request instead
 route.post('/adduser', createUser); //Adding user
-
-//Delete is even more broken than POST so we are breaking the CRUD bone
 route.delete('/dashboard/delete/:id', deleteUser); //The name says it all (the :users is to specify which one to delete);
 
 

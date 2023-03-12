@@ -67,7 +67,7 @@ const editUser = async (req, res, next) => {
         // User not found, render an error page or redirect
         res.status(404).send("User not found");
       }
-    } else if (req.method === "POST") {
+    } else if (req.method === "PUT") {
       const newPassword = req.body.password;
       const userId = req.params.users;
       const saltRounds = 10;
