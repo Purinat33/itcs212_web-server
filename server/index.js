@@ -22,18 +22,19 @@ const db = sql.createPool({
 
 //Connect to the DB
 db.getConnection((err, connection)=>{
-if (err) {
+  if (err) {
     console.error('Error getting connection from pool:', err);
     return;
-}
-console.log('Connection retrieved from pool:', connection.threadId);
-})
+  }
+  console.log('Connection retrieved from pool:', connection.threadId);
+  connection.release();
+});
 
 //DB on connect
 if(db){
   db.on('connection', (connection)=>{
-    console.log(`Connection established on connection`);
-  })
+    console.log(`Connection established on connection ${connection}`);
+  });
 }
 
 module.exports = {db}; //Exporting db pool to allow other files to join and query DB

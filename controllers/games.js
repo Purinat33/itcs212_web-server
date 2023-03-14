@@ -1,6 +1,6 @@
 //GAME from DB
 const {db} = require('../server/index');
-const multer = require(`multer`); //Used to insert files
+const path = require('path')
 
 //GET 
 const getGame = (req,res)=>{
@@ -14,31 +14,26 @@ const getGame = (req,res)=>{
     }
 }
 
-//POST
-const postGame = (req,res)=>{
-    const {name, description, publisher, price} = req.body;
-    //Body
-    const singleplayer = req.body.singleplayer === 'on' ? true : false;
-    const multiplayer = req.body.multiplayer === 'on' ? true : false;
-    const open_world = req.body.open_world === 'on' ? true : false;
-    const sandbox = req.body.sandbox === 'on' ? true : false;
-    const simulator = req.body.simulator === 'on' ? true : false;
-    const teambased = req.body.team_based === 'on' ? true : false;
-    const fps = req.body.fps === 'on' ? true : false;
-    const horror = req.body.horror === 'on' ? true : false;
-    const puzzle = req.body.puzzle === 'on' ? true : false;
-    const other = req.body.other === 'on' ? true : false;
-
-    //TODO: prefix the 5 uploaded image with ID_* where ID is in the mysql database column id.
-    //We will upload it to public/upload
-    
-}
-
 //PUT
-const putGame = (req,res)=>{
-    const {id} = req.params;
-    if(!id){
-        return res.status(403).send('No ID supplied');
+const putGame = async (req,res)=>{
+    //Serve edit page
+    try {
+        if(req.methodc==='GET'){
+            const [rows] = await db
+            .promise()
+            .query("SELECT * FROM product WHERE id = ?", [req.params.id]);
+            if (rows && rows.length) {
+                const product = rows[0];
+                res.render("editGame", { product }); // Pass the user object directly to the EJS template
+            } else {
+            // Product not found, render an error page or redirect
+            res.status(404).send("Product not found");
+            }
+        }else if(req.method === 'PUT'){
+            
+        }
+    }catch(err){
+        console.log(err);
     }
 }
 
@@ -49,7 +44,7 @@ const deleteGame = (req,res)=>{
 
 module.exports = {
     getGame,
-    postGame,
+    // postGame,
     putGame,
     deleteGame
 }

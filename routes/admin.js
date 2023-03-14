@@ -1,16 +1,20 @@
 const express = require('express');
 const route = express.Router();
 const path = require('path');
+const fs = require('fs');
 const {
     dashboard, createUser, editUser, deleteUser
 } = require('./../controllers/admin');
 
 const {
     getGame,
-    postGame,
+    // postGame,
     putGame,
     deleteGame
 } = require('./../controllers/games')
+const multer = require(`multer`); //Used to insert files (especially images)
+
+const {db} = require('./../server/index');
 
 //TODO: Add cookie/JWT checker middleware to each routes
 
@@ -39,10 +43,56 @@ route.get('/addgame', (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'addgame.html'));
 })
 
-//Adding game
-route.post('/addgame', postGame);
 
-//
+//Adding game
+//Adding game
+const upload = multer({ dest: 'server/public/upload' });
+
+route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
+  const { name, description, singleplayer, multiplayer, open_world, sandbox, simulator, team_based, fps, horror, puzzle, other, publisher, price } = req.body;
+  const img = {};
+
+  try {
+    const [result] = await db.promise().query('INSERT INTO product SET ?', {
+      name,
+      description,
+      singleplayer: !!singleplayer,
+      multiplayer: !!multiplayer,
+      open_world: !!open_world,
+      sandbox: !!sandbox,
+      simulator: !!simulator,
+      team_based: !!team_based,
+      fps: !!fps,
+      horror: !!horror,
+      puzzle: !!puzzle,
+      other: !!other,
+      publisher,
+      price,
+      img: JSON.stringify(img),
+    });
+
+    if (req.files) {
+      const files = req.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const ext = path.extname(file.originalname);
+        const newName = `${result.insertId}_${i}${ext}`;
+        img[`image${i + 1}`] = newName + ext;
+        fs.renameSync(file.path, `server/public/upload/${newName}${ext}`);
+      }
+    }
+
+    res.redirect('/admin/dashboard');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal server error');
+  }
+});
+
+
+
+//Edit game
+route.get('/dashboard/game/edit/:id', putGame);
 
 
 //For edit product page
