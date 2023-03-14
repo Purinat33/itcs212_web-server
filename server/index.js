@@ -80,7 +80,7 @@ bcrypt.hash(adminPassword, 10, (err, hashedPassword) => {
 
 
 //Games route
-const games = require('./../routes/games');
+const user_route = require('./../routes/users');
 //AUTH route
 const auth = require('./../routes/auth');
 //Admin route
@@ -106,7 +106,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //logging
-app.use(morgan('tiny'))
+app.use(morgan('dev'))
 
 //Set the view folder to where EJS will run at runtime
 app.set('views', path.join(__dirname,'..', 'view'))
@@ -114,7 +114,7 @@ app.set('view engine', 'ejs');
 
 //Routing
 //Game routings
-app.use('/item/games', games); //Relative to this file location (server/item/games)
+app.use('/store', user_route); //Relative to this file location (server/item/user_route)
 //auth routing
 app.use('/auth', auth);
 //admin routing

@@ -61,12 +61,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="pname">Overwatch 2</td>
-                                <td>Blizzard Entertainment</td>
-                                <td>0.00</td>
-                                <td><a href="#" class="btn">Remove</a></td>
-                            </tr>
+                                <% product.forEach(function(product) { %>
+                                    <tr>
+                                        <td>
+                                            <%= product.name %>
+                                        </td>
+                                        <td>
+                                            <%= product.publisher %>
+                                        </td>
+                                        <td>
+                                            <%= product.price %>
+                                        </td>
+                                        <td><a href="<%= '/admin/dashboard/game/edit/' + product.id %>"
+                                                class="btn">Edit</a></td>
+                                        <td><a href="javascript:void(0)" onclick="showDeletePopup('<%= product.id %>')"
+                                                class="btn">Delete</a></td>
+                                    </tr>
+                                 <% }); %>
+
                         </tbody>
                         
 

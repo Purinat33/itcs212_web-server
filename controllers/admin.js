@@ -2,16 +2,33 @@
 const {db} = require('./../server/index');
 const bcrypt = require('bcrypt');
 
-const dashboard = (req,res,next) =>{
-  //res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'admin.html'));
-    const query = 'SELECT * FROM users';
-    db.query(query, function(error, results) {
+//Importing games functionality from games controller
+const {
+    getGame,
+    postGame,
+    putGame,
+    deleteGame
+} = require('./games');
+
+const dashboard = async (req,res,next) => {
+  const game = 'SELECT * FROM product';
+  let product;
+  db.query(game, (error, results) => {
     if (error) throw error;
-    const users = results;
-    // Render admin dashboard page with user data
-    res.render('user.ejs', { users: users });
+    product = results;
+
+    const query = 'SELECT * FROM users';
+    let users;
+    db.query(query, (error, results) => {
+      if (error) throw error;
+      users = results;
+      
+      // Render admin dashboard page with user data and product data
+      res.render('user.ejs', { users: users, product: product });
+    });
   });
 }
+
 
 //User section
 const createUser = (req,res,next)=>{
@@ -102,22 +119,4 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-
-//Product sessions
-const createProduct = (req,res,next) =>{
-
-}
-
-const readProduct = (req,res,next)=>{
-
-}
-
-const updateProduct = (req,res,next)=>{
-
-}
-
-const deleteProduct = (req,res,next)=>{
-
-}
-
-module.exports = {dashboard, createUser, editUser, deleteUser, createProduct, readProduct, updateProduct, deleteProduct}
+module.exports = {dashboard, createUser, editUser, deleteUser}
