@@ -14,6 +14,51 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
     <link rel="manifest" href="/icon/site.webmanifest">
+    <script>
+        function searchProducts() {
+                // Declare variables
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("search-item");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("product-table");
+                tr = table.getElementsByTagName("tr");
+
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+
+            function searchUsers() {
+                // Declare variables
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("search-item2");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("user-table");
+                tr = table.getElementsByTagName("tr");
+
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+    </script>
 
 </head>
 
@@ -43,7 +88,7 @@
                 <!-- TODO: -->
                 <!-- Search function (Just the name is enough) -->
                 <div class="search">
-                    <input type="text" placeholder="Search.." id="search-item" onkeyup="searchA()">
+                    <input type="text" placeholder="Search.." id="search-item" onkeyup="searchProducts()">
 
                 </div>
             </div>
@@ -51,7 +96,7 @@
 
                 <div class="recent-payments">
 
-                    <table class="gamecard">
+                    <table class="gamecard" id="product-table">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -89,12 +134,12 @@
             <div class="title">
                 <h2><a href="/admin/adduser" class="btn">Add User</a></h2>
                 <div class="search">
-                    <input type="text" placeholder="Search..">
+                    <input type="text" placeholder="Search.." id="search-item2" onkeyup="searchUsers()">
 
                 </div>
             </div>
             <div class="content-2">
-                <div class="recent-payments">
+                <div class="recent-payments" id="user-table">
 
                     <table>
                         <thead>
@@ -161,29 +206,6 @@
         </div>
 
     </div>
-
-    <script>
-        const searchA = () => {
-            const searchbox = document.getElementById("search-item").value.toUpperCase();
-            const storeitems = document.getElementsByClassName("gamecard");
-            const product = document.querySelectorAll(".gamecard");
-            const pname = storeitems.getElementsByTagName("td");
-
-
-            for (var i = 0; i < pname.length; i++) {
-                let match = product[i].getElementsByClassName('pname')[0];
-
-                if (match) {
-                    let textValue = match.textContent || match.innerHTML;
-                    if (textValue.toUpperCase().indexOf(searchbox) > -1) {
-                        product[i].style.display = "";
-                    } else {
-                        product[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
 
 </body>
 
