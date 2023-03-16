@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<!-- Created By CodingLab - www.codinglabweb.com -->
 <html lang="en" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
-    <!---<title> Responsive Registration Form | CodingLab </title>--->
     <link rel="stylesheet" href="/admin/addgame.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OnlyGames | AddItems</title>
@@ -12,22 +10,18 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
     <link rel="manifest" href="/icon/site.webmanifest">
-    <script>
-
-    </script>
 
 </head>
 
 <body>
     <div class="container">
-        <div class="title">Edit Items</div>
+        <div class="title">Edit Details</div>
         <div class="content">
             <form action="/admin/dashboard/game/edit/<%= product.id %>" method="POST">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="user-details">
                     <div class="input-box">
                         <span class="details">Edit details for <%= product.name %></span>
-                        <!-- <input type="text" name="name" placeholder="Enter Name" required> -->
                     </div>
                     <div class="input-box">
                         <span class="details">Description</span>

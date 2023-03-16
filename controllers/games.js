@@ -18,7 +18,7 @@ const getGame = (req,res)=>{
 const putGame = async (req,res)=>{
     //Serve edit page
     try {
-        if(req.methodc==='GET'){
+        if(req.method==='GET'){
             const [rows] = await db
             .promise()
             .query("SELECT * FROM product WHERE id = ?", [req.params.id]);
@@ -27,7 +27,7 @@ const putGame = async (req,res)=>{
                 res.render("editGame", { product }); // Pass the user object directly to the EJS template
             } else {
             // Product not found, render an error page or redirect
-            res.status(404).send("Product not found");
+            res.status(404).render('error', {message: "Product not found"});
             }
         }else if(req.method === 'PUT'){
             
@@ -38,8 +38,14 @@ const putGame = async (req,res)=>{
 }
 
 //DELETE
-const deleteGame = (req,res)=>{
-    const {id} = req.params;
+const deleteGame = async (req,res)=>{
+    const productID = req.params.id;
+    try {
+        await db.promise().query('DELETE FROM product WHERE id = ?', [productID]);
+        res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        res.status(401).render('error', {message: "Product does not exist"});
+    }
 }
 
 module.exports = {

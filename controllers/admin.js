@@ -82,7 +82,7 @@ const editUser = async (req, res, next) => {
         res.render("edit", { user }); // Pass the user object directly to the EJS template
       } else {
         // User not found, render an error page or redirect
-        res.status(404).send("User not found");
+        res.status(404).render('error', {message: "User not found"});
       }
     } else if (req.method === "PUT") {
       const newPassword = req.body.password;
@@ -113,6 +113,7 @@ const deleteUser = async (req, res, next) => {
   // Use the user ID to delete the corresponding user from the database
   try {
     await db.promise().query('DELETE FROM users WHERE id = ?', [userId]);
+    res.status(204).json({message: "Successfully delete user from the database"});
   } catch (error) {
     console.log(error);
     res.status(500).send('Internal server error');

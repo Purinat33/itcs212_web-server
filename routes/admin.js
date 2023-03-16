@@ -76,14 +76,18 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
     const files = req.files ? req.files.slice(0, 5) : [];
 
     // Check if we received less than 5 files
-    if (files.length < 5) {
-      console.log(`Received ${files.length} files, filling with placeholder images`);
-      const placeholdersNeeded = 5 - files.length;
-      for (let i = 0; i < placeholdersNeeded; i++) {
-        const newName = `${result.insertId}_${i}_placeholder.jpg`;
-        img[`image${i + 1}`] = newName;
-        fs.copyFileSync(`server/public/upload/placeholder.jpg`, `server/public/upload/${newName}`);
-      }
+    // if (files.length < 5) {
+    //   console.log(`Received ${files.length} files, filling with placeholder images`);
+    //   const placeholdersNeeded = 5 - files.length;
+    //   for (let i = 0; i < placeholdersNeeded; i++) {
+    //     const newName = `${result.insertId}_${i}_placeholder.jpg`;
+    //     img[`image${i + 1}`] = newName;
+    //     fs.copyFileSync(`server/public/upload/placeholder.jpg`, `server/public/upload/${newName}`);
+    //   }
+    // }
+
+    if(files.length < 5){
+      return res.status(400).render('error', {message: "Please upload 5 images"});
     }
 
     // Copy and rename the uploaded files
@@ -115,7 +119,8 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
 
 //Edit game
 route.get('/dashboard/game/edit/:id', putGame);
-
+route.post('/dashboard/game/edit/:id', putGame);
+route.delete('/dashboard/game/delete/:id', deleteGame);
 
 //For edit product page
 //Admin have the power to CRUD products while users got R
