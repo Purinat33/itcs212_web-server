@@ -45,7 +45,7 @@ route.get('/addgame', (req,res)=>{
 
 
 //Adding game
-const upload = multer({ dest: 'server/public/upload' });
+const upload = multer({ dest: 'server/public/upload', limits:{files:5} });
 
 route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
   const { name, description, singleplayer, multiplayer, open_world, sandbox, simulator, team_based, fps, horror, puzzle, other, publisher, price } = req.body;
@@ -87,7 +87,7 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
     res.redirect('/admin/dashboard');
   } catch (err) {
     console.error(err);
-    res.status(500).send('Internal server error');
+    res.status(500).render('error', {message: err});
   }
 });
 

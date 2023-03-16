@@ -129,6 +129,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((err, req, res, next) => {
+  console.error(err);
+  const errorMessage = err.message || 'Internal Server Error';
+  res.status(err.status || 500);
+  res.render('error', { message : errorMessage });
+});
+
+
 
 app.get('/', (req,res)=>{
     //Specifically for index.html

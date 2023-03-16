@@ -19,7 +19,7 @@ const authenticate = (req, res, next) => {
 
     if (results.length === 0) {
       console.log('Invalid login or password');
-      return res.status(401).send('Invalid username or password');
+      return res.status(401).render('error',{message: 'Invalid username or password'});
     }
 
     const user = results[0];
@@ -29,7 +29,7 @@ const authenticate = (req, res, next) => {
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         console.log('Invalid login');
-        return res.status(401).send('Invalid username or password');
+        return res.status(401).render('error', {message: 'Invalid username or password'});
       }
     } catch (err) {
       console.error(err);
@@ -64,7 +64,7 @@ const createUser = (req, res, next) => {
 
     if (results.length > 0 || username.toLowerCase() === 'admin') {
       console.log('Username already exists or is invalid');
-      return res.status(409).send('Username already exists or is invalid');
+      return res.status(409).render('error', {message: 'Username already exists or is invalid'});
     }
 
     // hash the password with bcrypt
