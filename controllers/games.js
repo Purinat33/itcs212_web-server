@@ -1,6 +1,7 @@
 //GAME from DB
 const {db} = require('../server/index');
 const path = require('path')
+const fs = require('fs');
 
 //GET 
 const getGame = (req,res)=>{
@@ -50,16 +51,34 @@ const putGame = async (req,res)=>{
     }
 }
 
-//DELETE
-const deleteGame = async (req,res)=>{
-    const productID = req.params.id;
-    try {
-        await db.promise().query('DELETE FROM product WHERE id = ?', [productID]);
-        res.status(200).json({ message: 'Product deleted successfully' });
-    } catch (error) {
-        res.status(401).render('error', {message: "Product does not exist"});
-    }
-}
+const deleteGame = async (req, res) => {
+  const productID = req.params.id;
+
+  try {
+    // Delete product from database
+    await db.promise().query('DELETE FROM product WHERE id = ?', [productID]);
+
+    // Delete files with the same prefix as productID from the upload folder
+    const directoryPath = path.join(__dirname, '..', 'server', 'public', 'upload');
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) throw err;
+
+      files.forEach((file) => {
+        if (file.startsWith(productID + '_')) {
+          fs.unlink(path.join(directoryPath, file), (err) => {
+            if (err) throw err;
+            console.log(`Deleted ${file}`);
+          });
+        }
+      });
+    });
+
+    res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    res.status(401).render('error', { message: 'Product does not exist' });
+  }
+};
+
 
 module.exports = {
     getGame,
