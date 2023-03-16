@@ -142,52 +142,58 @@
             </div>
 
             <script>
-             function displaySelectedImages() {
+              function displaySelectedImages() {
                 const fileInput = document.getElementById('photograph');
                 const imagePreview = document.getElementById('image-preview');
 
                 // Clear the image preview container
                 imagePreview.innerHTML = '';
 
-                // Check if the number of selected files is exactly 5
-                if (fileInput.files.length !== 5) {
-                  alert('Please select exactly 5 images.');
-                  return;
+                // Create a Promise for each file, and store them in an array
+                const filePromises = [];
+                for (let i = 0; i < fileInput.files.length; i++) {
+                  const file = fileInput.files[i];
+                  const filePromise = new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                      resolve(e.target.result);
+                    };
+                    reader.onerror = function (e) {
+                      reject(e);
+                    };
+                    reader.readAsDataURL(file);
+                  });
+                  filePromises.push(filePromise);
                 }
 
-                // Loop through the selected files and display them in the preview container
-                // Loop through the selected files and display them in the preview container
-               for (let i = 0; i < fileInput.files.length; i++) {
-                 const reader = new FileReader();
-                 const file = fileInput.files[i];
-
-                 reader.onload = function (e) {
-                   const imgHTML = `<img class="image-preview" id="image-preview-${i}" src="${e.target.result}">`;
-                   imagePreview.insertAdjacentHTML('beforeend', imgHTML);
-                 }
-
-                 reader.readAsDataURL(file);
-               }
-
+                // Wait for all the Promises to resolve before updating the image preview container
+                Promise.all(filePromises)
+                  .then((results) => {
+                    for (let i = 0; i < results.length; i++) {
+                      const imgHTML = `<img class="image-preview" src="${results[i]}">`;
+                      imagePreview.insertAdjacentHTML('beforeend', imgHTML);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
               }
-
-              // Add an event listener to the file input
-              const fileInput = document.getElementById('photograph');
-              fileInput.addEventListener('change', displaySelectedImages);
-
             </script>
 
-          <div class="image-containers" style="display:flex; flex-direction: column;">
-            <!--Upload 1-->
-            <div class="upload">
-              <div class="round">
-                <input type="file" name="photograph" id="photograph" required="true" accept="image/*" multiple maxlength="5" />
-                <i class="fa fa-camera" style="color: #fff;"></i>
+            
+            <div class="image-containers" style="display:flex; flex-direction: column;">
+              <!--Upload 1-->
+              <div class="upload">
+                <div class="round">
+                  <input type="file" name="photograph" id="photograph" required="true" accept="image/*" multiple onchange="displaySelectedImages()"/>
+                  <i class="fa fa-camera" style="color: #fff;"></i>
+                </div>
+                <div id="image-preview"></div> <!--We will insert images here-->
               </div>
-              <div id="image-preview"></div> <!--We will insert images here-->
+              <!--Upload-->
             </div>
-            <!--Upload-->
-          </div>
+
+
 
 
         </div>

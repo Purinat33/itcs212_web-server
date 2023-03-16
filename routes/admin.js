@@ -41,10 +41,8 @@ route.delete('/dashboard/delete/:id', deleteUser); //The name says it all (the :
 //For add product
 route.get('/addgame', (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'addgame.html'));
-})
+});
 
-
-//Adding game
 const upload = multer({ dest: 'server/public/upload', limits:{files:5} });
 
 route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
@@ -70,15 +68,31 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
       img: JSON.stringify(img),
     });
 
-    if (req.files) {
-      const files = req.files;
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const ext = path.extname(file.originalname);
-        const newName = `${result.insertId}_${i}${ext}`;
-        img[`image${i + 1}`] = newName + ext;
-        fs.renameSync(file.path, `server/public/upload/${newName}${ext}`);
+    // Check if we received more than 5 files
+    if (req.files && req.files.length > 5) {
+      console.log(`Received ${req.files.length} files, ignoring files from index 5 onwards`);
+    }
+
+    const files = req.files ? req.files.slice(0, 5) : [];
+
+    // Check if we received less than 5 files
+    if (files.length < 5) {
+      console.log(`Received ${files.length} files, filling with placeholder images`);
+      const placeholdersNeeded = 5 - files.length;
+      for (let i = 0; i < placeholdersNeeded; i++) {
+        const newName = `${result.insertId}_${i}_placeholder.jpg`;
+        img[`image${i + 1}`] = newName;
+        fs.copyFileSync(`server/public/upload/placeholder.jpg`, `server/public/upload/${newName}`);
       }
+    }
+
+    // Copy and rename the uploaded files
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const ext = path.extname(file.originalname);
+      const newName = `${result.insertId}_${i}${ext}`;
+      img[`image${i + 1}`] = newName;
+      fs.renameSync(file.path, `server/public/upload/${newName}`);
     }
 
     // Update the img column in the database with the newly created img object
@@ -87,7 +101,14 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
     res.redirect('/admin/dashboard');
   } catch (err) {
     console.error(err);
-    res.status(500).render('error', {message: err});
+    if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+      // handle unexpected file error
+      return res.status(400).render('error', { message: 'Only up to 5 files can be uploaded with the field name "photograph"' });
+    } else if (err.code === 'LIMIT_FILE_COUNT') {
+      return res.status(500).render('error', { message: 'You can only upload up to 5 files at once.' });
+    }
+    console.log('Error caught!');
+    return res.status(500).render('error', { message: 'An unexpected error occurred'});
   }
 });
 
