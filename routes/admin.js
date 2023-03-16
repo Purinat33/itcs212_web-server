@@ -45,7 +45,6 @@ route.get('/addgame', (req,res)=>{
 
 
 //Adding game
-//Adding game
 const upload = multer({ dest: 'server/public/upload' });
 
 route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
@@ -82,13 +81,15 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
       }
     }
 
+    // Update the img column in the database with the newly created img object
+    await db.promise().query('UPDATE product SET img = ? WHERE id = ?', [JSON.stringify(img), result.insertId]);
+
     res.redirect('/admin/dashboard');
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal server error');
   }
 });
-
 
 
 //Edit game
