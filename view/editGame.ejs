@@ -15,13 +15,14 @@
 
 <body>
     <div class="container">
-        <div class="title">Edit Details</div>
+        <div class="title">Edit Details for <%= product.name %></div>
         <div class="content">
             <form action="/admin/dashboard/game/edit/<%= product.id %>" method="POST">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="user-details">
                     <div class="input-box">
-                        <span class="details">Edit details for <%= product.name %></span>
+                        <span class="details">Name</span>
+                        <input type="text" placeholder="Enter Name" name="name" required>
                     </div>
                     <div class="input-box">
                         <span class="details">Description</span>

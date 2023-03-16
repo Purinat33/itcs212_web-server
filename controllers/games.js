@@ -30,10 +30,23 @@ const putGame = async (req,res)=>{
             res.status(404).render('error', {message: "Product not found"});
             }
         }else if(req.method === 'PUT'){
-            
+            const id = req.params.id;
+            const {name, description, singleplayer, multiplayer, open_world, sandbox, simulator, team_based, fps, horror, puzzle, other, publisher, price } = req.body;
+
+            try {
+            await db.promise().query(
+                `UPDATE product SET name=?, description=?, singleplayer=?, multiplayer=?, open_world=?, sandbox=?, simulator=?, team_based=?, fps=?, horror=?, puzzle=?, other=?, publisher=?, price=? WHERE id=?`,
+                [name, description, !!singleplayer, !!multiplayer, !!open_world, !!sandbox, !!simulator, !!team_based, !!fps, !!horror, !!puzzle, !!other, publisher, price, id]
+            );
+            res.status(200).redirect('/admin/dashboard');
+            } catch (error) {
+                console.log(error);
+                return res.status(500).render('error', { message: error });
+            } 
         }
     }catch(err){
-        console.log(err);
+        console.log(err);           
+        return res.status(500).render('error', {message: err});
     }
 }
 

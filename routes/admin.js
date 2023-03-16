@@ -119,7 +119,7 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
 
 //Edit game
 route.get('/dashboard/game/edit/:id', putGame);
-route.post('/dashboard/game/edit/:id', putGame);
+route.put('/dashboard/game/edit/:id', putGame);
 route.delete('/dashboard/game/delete/:id', deleteGame);
 
 //For edit product page
