@@ -46,6 +46,11 @@ route.get('/addgame', (req,res)=>{
 const upload = multer({ dest: 'server/public/upload', limits:{files:5} });
 
 route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
+  // Check if exactly 5 files have been uploaded
+  if (req.files && req.files.length !== 5) {
+    return res.status(400).render('error', { message: 'Please upload exactly 5 images' });
+  }
+
   const { name, description, singleplayer, multiplayer, open_world, sandbox, simulator, team_based, fps, horror, puzzle, other, publisher, price } = req.body;
   const img = {};
 
@@ -68,31 +73,9 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
       img: JSON.stringify(img),
     });
 
-    // Check if we received more than 5 files
-    if (req.files && req.files.length > 5) {
-      console.log(`Received ${req.files.length} files, ignoring files from index 5 onwards`);
-    }
-
-    const files = req.files ? req.files.slice(0, 5) : [];
-
-    // Check if we received less than 5 files
-    // if (files.length < 5) {
-    //   console.log(`Received ${files.length} files, filling with placeholder images`);
-    //   const placeholdersNeeded = 5 - files.length;
-    //   for (let i = 0; i < placeholdersNeeded; i++) {
-    //     const newName = `${result.insertId}_${i}_placeholder.jpg`;
-    //     img[`image${i + 1}`] = newName;
-    //     fs.copyFileSync(`server/public/upload/placeholder.jpg`, `server/public/upload/${newName}`);
-    //   }
-    // }
-
-    if(files.length < 5){
-      return res.status(400).render('error', {message: "Please upload 5 images"});
-    }
-
     // Copy and rename the uploaded files
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+    for (let i = 0; i < req.files.length; i++) {
+      const file = req.files[i];
       const ext = path.extname(file.originalname);
       const newName = `${result.insertId}_${i}${ext}`;
       img[`image${i + 1}`] = newName;
@@ -102,9 +85,58 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
     // Update the img column in the database with the newly created img object
     await db.promise().query('UPDATE product SET img = ? WHERE id = ?', [JSON.stringify(img), result.insertId]);
 
+    //Delete unwanted files
+
+    const folderPath = path.join(__dirname,'..','server', 'public', 'upload');
+
+    fs.readdir(folderPath, async (err, files) => {
+      if (err) throw err;
+
+      // Retrieve the IDs of all products in the database
+      const [rows] = await db.promise().query('SELECT id FROM product');
+      const productIds = rows.map((row) => row.id);
+
+      files.forEach((file) => {
+        const filePath = path.join(folderPath, file);
+
+        // Check if the file doesn't have an extension or doesn't start with "digits_"
+        if (
+          file !== 'placeholder.jpg' &&
+          (!path.extname(file) || !file.match(/^\d+_.*$/))
+        ) {
+          fs.unlink(filePath, (err) => {
+            if (err) throw err;
+
+            console.log(`Deleted file: ${filePath}`);
+          });
+        } else {
+          // Check if the file is associated with an existing product
+          const id = parseInt(file.split('_')[0]);
+          if (!productIds.includes(id)) {
+            fs.unlink(filePath, (err) => {
+              if (err) throw err;
+
+              console.log(`Deleted file: ${filePath}`);
+            });
+          }
+        }
+      });
+    });
+
     res.redirect('/admin/dashboard');
   } catch (err) {
     console.error(err);
+    try {
+      // Delete all files that were uploaded but not processed properly
+      const filesToDelete = req.files.map((file) => file.path);
+      if (filesToDelete.length > 0) {
+        for (let i = 0; i < filesToDelete.length; i++) {
+          fs.unlinkSync(filesToDelete[i]);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
     if (err.code === 'LIMIT_UNEXPECTED_FILE') {
       // handle unexpected file error
       return res.status(400).render('error', { message: 'Only up to 5 files can be uploaded with the field name "photograph"' });
@@ -115,6 +147,7 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
     return res.status(500).render('error', { message: 'An unexpected error occurred'});
   }
 });
+
 
 
 //Edit game
