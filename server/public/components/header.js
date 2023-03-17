@@ -143,9 +143,9 @@ class Header extends HTMLElement{
             </div>
             <div class="menu">
                 <a href="/">Home</a>
-                <a href="catalogue.html">Browse</a>
-                <a href="about.html">Support</a>
-                <a href="search.html">Search</a>
+                <a href="/store/browse">Browse</a>
+                <a href="/about">Support</a>
+                <a href="/store/search">Search</a>
             </div>
 
             <!--If user is logged in, whether through cookie or regustered-->

@@ -9,6 +9,7 @@ const getGame = (req,res)=>{
     console.log(id);
     if(!id){
         //No id supplied, we go with full catalogue
+        return res.status(200).render('catalogue', {product});
     }
     else{
         //Return 1 specific item

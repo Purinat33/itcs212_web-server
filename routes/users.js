@@ -7,7 +7,9 @@ const {
 
 //Routes
 //GET (Only user can view)
-routes.get('/', getGame); //Return catalogue
-routes.get('/:id', getGame); //Return 1 specific game
+routes.get('/browse', getGame); //Return catalogue
+routes.get('/browse/:id', getGame); //Return 1 specific game
+
+//About
 
 module.exports = routes;
