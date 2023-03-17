@@ -2,14 +2,6 @@
 const {db} = require('./../server/index');
 const bcrypt = require('bcrypt');
 
-//Importing games functionality from games controller
-const {
-    getGame,
-    postGame,
-    putGame,
-    deleteGame
-} = require('./games');
-
 const dashboard = async (req,res,next) => {
   const game = 'SELECT * FROM product';
   let product;
@@ -47,7 +39,7 @@ const createUser = (req,res,next)=>{
 
     if (results.length > 0 || username.toLowerCase() === 'admin') {
       console.log('Username already exists or is invalid');
-      return res.status(409).send('Username already exists or is invalid');
+      return res.status(409).render('error', {message: 'Username already exists or is invalid'});
     }
 
     // hash the password with bcrypt
