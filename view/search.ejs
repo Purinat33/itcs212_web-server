@@ -201,18 +201,31 @@
             <div class="product">
                 <img src="product-image.jpg" alt="Product Image">
                 <div class="p-detail">
-                    <h2><%= product[i].name %></h2>
+                    <div class="p-name">
+                        <h2>
+                            <%= product[i].name %>
+                        </h2>
+                    </div>
                     <h3><%= product[i].price %> Baht</h3>
                     <div class="dropdown-btn">
                         <button class="btn">Details</button>
                         <div class="dropdown">
                             <p>Genre:</p>
-                            <ul style="list-style:none; margin-left:20px;">
+                            <ul style="list-style:none; margin-left:20px;" class="p-genre">
                                 <% product[i].genres.forEach(genre=> { %>
-                                    <li><%= genre.replace(/_/g, ' ' ).replace(/\b\w/g, l=> l.toUpperCase()) %></li><br>
+                                    <div class="p-genre">
+                                                                            <li>
+                                                                                <h3>
+                                                                                    <%= genre.replace(/_/g, ' ' ).replace(/\b\w/g, l=> l.toUpperCase()) %>
+                                                                                </h3>
+                                                                            </li><br>
+
+                                    </div>
                                         <% }) %>
                             </ul>
-                            <p>Publisher: <%= product[i].publisher %></p>
+                            <div class="p-price">
+                                <h4>Publisher: <%= product[i].publisher %></h4>
+                            </div>
                         </div>
                     </div>
                 </div>
