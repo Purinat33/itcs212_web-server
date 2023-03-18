@@ -76,8 +76,10 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
     // Copy and rename the uploaded files
     for (let i = 0; i < req.files.length; i++) {
       const file = req.files[i];
-      const ext = path.extname(file.originalname);
-      const newName = `${result.insertId}_${i}${ext}`;
+      // const ext = path.extname(file.originalname).replace();
+      // const newName = `${result.insertId}_${i}${ext}`;
+      const ext = path.extname(file.originalname).toLowerCase();
+      const newName = `${result.insertId}_${i}${ext === '.jpeg' ? '.jpg' : ext}`;
       img[`image${i + 1}`] = newName;
       fs.renameSync(file.path, `server/public/upload/${newName}`);
     }
