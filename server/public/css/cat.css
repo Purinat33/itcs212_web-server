@@ -84,7 +84,7 @@ body{
 .item{
     border-radius: 15px;
     width:300px;
-    height:500px;
+    height:800px;
     background-image: linear-gradient(to top, #AEC0CE, #ECECF2);
     overflow: hidden;
     transition: 0.5s;

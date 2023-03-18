@@ -1,6 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const {
+    search,
     getGame
 } = require('../controllers/games');
 
@@ -10,6 +11,7 @@ const {
 routes.get('/browse', getGame); //Return catalogue
 routes.get('/browse/:id', getGame); //Return 1 specific game
 
-//About
+//Search
+routes.get('/search', search);
 
 module.exports = routes;

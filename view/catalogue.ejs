@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse</title>
+    <link rel="stylesheet" href="/css/cat.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/components/header.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+    <link rel="manifest" href="/icon/site.webmanifest">
+</head>
+
+<body>
+    <!-- <header> -->
+    <head-banner></head-banner>
+    <!-- </header> -->
+
+    <main>
+        <span class="cart">
+            <a href="addtocart.html"> <img src="/img/basket2.png" class="basket" alt=""
+                    style="margin-right: 10px;"></a>
+        </span>
+        <br><br>
+        <div id="formList">
+            <div id="list">
+                <% for (let i=0; i < product.length; i++) { %>
+                    <div class="item">
+                        <img src="/upload/<%= product[i].id %>_<%= Math.floor(Math.random() * 5) %>.jpg" class="avatar">
+                        <div class="content">
+                            <table width="100%" cellspacing="0">
+                                <tr>
+                                    <td>Name:</td>
+                                    <td>
+                                        <%= product[i].name %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Publisher:</td>
+                                    <td>
+                                        <%= product[i].publisher %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Genre:</td>
+                                    <td>
+                                        <% product[i].genres.forEach(genre=> { %>
+                                            <%= genre.replace(/_/g, ' ' ).replace(/\b\w/g, l=> l.toUpperCase()) %><br>
+                                                <% }) %>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Price:</td>
+                                    <td>
+                                        <%= product[i].price %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="nameGroup">
+                                        <a href="#"> More Details &#62;&#62;</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <% } %>
+
+                
+            </div>  
+        </div>
+
+        <div class="direction">
+            <button id="prev"> &lt; </button>
+            <button id="next"> &#62; </button>
+        </div>
+        <script>
+            document.getElementById('next').onclick = function () {
+                const widthItem = document.querySelector('.item').offsetWidth;
+                document.getElementById('formList').scrollLeft += widthItem;
+            }
+            document.getElementById('prev').onclick = function () {
+                const widthItem = document.querySelector('.item').offsetWidth;
+                document.getElementById('formList').scrollLeft -= widthItem;
+            }
+
+        </script>
+    </main>
+</body>
+
+</html>
