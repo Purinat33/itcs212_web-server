@@ -4,7 +4,40 @@ const path = require('path')
 const fs = require('fs');
 
 //Search Page
-const search = (req,res) =>{
+const search = async (req,res) =>{
+    const [rows] = await db.promise().query(`
+      SELECT id, name, price, description, publisher, img,
+        IF(singleplayer, 'Singleplayer', NULL) AS singleplayer,
+        IF(multiplayer, 'Multiplayer', NULL) AS multiplayer,
+        IF(open_world, 'Open World', NULL) AS open_world,
+        IF(sandbox, 'Sandbox', NULL) AS sandbox,
+        IF(simulator, 'Simulator', NULL) AS simulator,
+        IF(team_based, 'Team-based', NULL) AS team_based,
+        IF(fps, 'FPS', NULL) AS fps,
+        IF(horror, 'Horror', NULL) AS horror,
+        IF(puzzle, 'Puzzle', NULL) AS puzzle,
+        IF(other, 'Other', NULL) AS other
+      FROM product
+    `);
+
+    const products = rows.map(row => {
+        const { id, name, price, description, publisher, img, ...genres } = row;
+        const filteredGenres = Object.entries(genres)
+            .filter(([key, value]) => value !== null)
+            .map(([key]) => key);
+        return {
+            id,
+            name,
+            price,
+            description,
+            publisher,
+            img,
+            genres: filteredGenres
+        };
+    });
+
+
+    return res.status(200).render('search', { product: products });
     
 }
 
