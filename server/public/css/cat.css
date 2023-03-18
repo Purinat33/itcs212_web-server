@@ -90,16 +90,23 @@ body{
     transition: 0.5s;
     margin:10px;
     scroll-snap-align: start;
+    text-align: center;
 }
 .item .avatar{
     display: block;
-    margin:50px auto 10px;
+    /* margin:50px auto 10px; */
+    margin: 0 auto;
     width:100px;
     height:150px;
     object-fit: cover;
     border-radius: 20px;
     box-shadow: 0 10px 15px #7e878d;
 }
+
+.avatar-link {
+    display: inline-block;
+}
+
 .item .content{
     padding:30px;
     font-family: monospace;

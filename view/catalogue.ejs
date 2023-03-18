@@ -22,7 +22,7 @@
 
     <main>
         <span class="cart">
-            <a href="addtocart.html"> <img src="/img/basket2.png" class="basket" alt=""
+            <a href="/store/cart"> <img src="/img/basket2.png" class="basket" alt=""
                     style="margin-right: 10px;"></a>
         </span>
         <br><br>
@@ -30,7 +30,7 @@
             <div id="list">
                 <% for (let i=0; i < product.length; i++) { %>
                     <div class="item">
-                        <img src="/upload/<%= product[i].id %>_<%= Math.floor(Math.random() * 5) %>.jpg" class="avatar">
+                        <a href="#" class="avatar-link"><img src="/upload/<%= product[i].id %>_<%= Math.floor(Math.random() * 5) %>.jpg" class="avatar"></a>
                         <div class="content">
                             <table width="100%" cellspacing="0">
                                 <tr>
