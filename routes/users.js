@@ -14,4 +14,9 @@ routes.get('/browse/:id', getGame); //Return 1 specific game
 //Search
 routes.get('/search', search);
 
+//For user cart (We will use authentication middleware later)
+routes.get('/cart', (req,res)=>{
+    res.status(200).render('cart', {user: "John Doe"});
+})
+
 module.exports = routes;
