@@ -15,7 +15,7 @@ routes.get('/register', register);
 
 //login POST (logging in)
 routes.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
-  const token = jwt.sign({ id: req.user.id, isAdmin : req.user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  const token = jwt.sign({ id: req.user.id, isAdmin : req.user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '2h' });
   if(req.user.isAdmin){
     res.cookie('token', token, { httpOnly: true, secure: true, sameSite: false });
     console.log(req.cookies);
