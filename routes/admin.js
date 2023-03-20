@@ -16,36 +16,37 @@ const multer = require(`multer`); //Used to insert files (especially images)
 
 const {db} = require('./../server/index');
 
-//TODO: Add cookie/JWT checker middleware to each routes
 
+//TODO: Add cookie/JWT checker middleware to each routes
+const {checkJWT, checkAdmin} = require('./../controllers/token')
 
 
 
 //For generic admin page
-route.get('/dashboard', dashboard); 
+route.get('/dashboard', checkJWT, checkAdmin, dashboard); 
 
 //USER MANAGEMENT
 //For add user page
-route.get('/adduser', (req,res)=>{
+route.get('/adduser', checkJWT, checkAdmin, (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'adduser.html'));
 })
 
 //For edit user detail page
-route.get('/dashboard/edit/:users', editUser); //Getting the user detail page
-route.put('/dashboard/edit/:users', editUser); //Same thing but we do the PUT request instead
+route.get('/dashboard/edit/:users', checkJWT, checkAdmin, editUser); //Getting the user detail page
+route.put('/dashboard/edit/:users', checkJWT, checkAdmin, editUser); //Same thing but we do the PUT request instead
 
-route.post('/adduser', createUser); //Adding user
-route.delete('/dashboard/delete/:id', deleteUser); //The name says it all (the :users is to specify which one to delete);
+route.post('/adduser', checkJWT, checkAdmin, createUser); //Adding user
+route.delete('/dashboard/delete/:id', checkJWT, checkAdmin, deleteUser); //The name says it all (the :users is to specify which one to delete);
 
 //PRODUCT MANAGEMENT
 //For add product
-route.get('/addgame', (req,res)=>{
+route.get('/addgame', checkJWT, checkAdmin, (req,res)=>{
     res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'addgame.html'));
 });
 
 const upload = multer({ dest: 'server/public/upload', limits:{files:5} });
 
-route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
+route.post('/addgame', checkJWT, checkAdmin, upload.array('photograph', 5), async (req, res) => {
   // Check if exactly 5 files have been uploaded
   if (req.files && req.files.length !== 5) {
     return res.status(400).render('error', { message: 'Please upload exactly 5 images' });
@@ -153,9 +154,9 @@ route.post('/addgame', upload.array('photograph', 5), async (req, res) => {
 
 
 //Edit game
-route.get('/dashboard/game/edit/:id', putGame);
-route.put('/dashboard/game/edit/:id', putGame);
-route.delete('/dashboard/game/delete/:id', deleteGame);
+route.get('/dashboard/game/edit/:id', checkJWT, checkAdmin, putGame);
+route.put('/dashboard/game/edit/:id', checkJWT, checkAdmin, putGame);
+route.delete('/dashboard/game/delete/:id', checkJWT, checkAdmin, deleteGame);
 
 //For edit product page
 //Admin have the power to CRUD products while users got R

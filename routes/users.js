@@ -4,6 +4,7 @@ const {
     search,
     getGame
 } = require('../controllers/games');
+const {checkJWT} = require('./../controllers/token')
 
 
 //Routes
@@ -15,7 +16,7 @@ routes.get('/browse/:id', getGame); //Return 1 specific game
 routes.get('/search', search);
 
 //For user cart (We will use authentication middleware later)
-routes.get('/cart', (req,res)=>{
+routes.get('/cart', checkJWT, (req,res)=>{
     res.status(200).render('cart', {user: "John Doe"});
 })
 

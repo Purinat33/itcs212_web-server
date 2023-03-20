@@ -9,6 +9,7 @@ require('dotenv').config(); //Used to call variables such as DEV, DB credential,
 const bcrypt = require('bcrypt'); //For hashing/salting that offers more protection than normal SHA256
 const ejs = require('ejs')
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
 
 //Establish connection with MySQL server
@@ -99,6 +100,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Method ovveride for DELETE
 app.use(methodOverride(req => req.body._method));
 
+//Cookie
+app.use(cookieParser())
+
 //JSON stuff
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -147,6 +151,9 @@ app.get('/', (req,res)=>{
 app.get('/about', (req,res)=>{
     res.status(200).sendFile(path.resolve(__dirname, 'public', 'about.html'));
 })
+
+
+
 
 //404 Error not found page
 app.all('*', (req,res)=>{
