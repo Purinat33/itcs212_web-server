@@ -11,7 +11,9 @@ function checkJWT(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: decoded.id, isAdmin: decoded.isAdmin };
+    req.user = { id: decoded.id, isAdmin: decoded.isAdmin };    
+    console.log(req.cookies);
+
     next();
   } catch (error) {
     if (!req.responseSent) {
@@ -24,7 +26,6 @@ function checkJWT(req, res, next) {
 
 const checkAdmin = (req,res,next)=>{
     const user = req.user;
-    console.log(user);
     if(!user || !user.isAdmin){
         if (!req.responseSent) {
           req.responseSent = true;

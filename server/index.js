@@ -1,5 +1,6 @@
 //To do stuff with backend like routing, querying
 const express = require('express');
+const session = require('express-session')
 const methodOverride = require('method-override'); //Use to put DELETE PUT etc. in form action (default is only get/put)
 const app = express(); 
 const sql = require('mysql2'); //To connect to my sql db
@@ -39,6 +40,9 @@ if(db){
 }
 
 module.exports = {db}; //Exporting db pool to allow other files to join and query DB
+
+
+const passport = require('./../controllers/passport');
 
 //Add an admin everytime the server starts (if there is already an admin then we delete it)
 const adminPassword = process.env.ADMIN_PASSWORD;
@@ -103,6 +107,22 @@ app.use(methodOverride(req => req.body._method));
 //Cookie
 app.use(cookieParser())
 
+
+//Using session-express
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+
+//Passport
+app.use(passport.initialize())
+app.use(passport.session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+
 //JSON stuff
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -151,9 +171,6 @@ app.get('/', (req,res)=>{
 app.get('/about', (req,res)=>{
     res.status(200).sendFile(path.resolve(__dirname, 'public', 'about.html'));
 })
-
-
-
 
 //404 Error not found page
 app.all('*', (req,res)=>{
