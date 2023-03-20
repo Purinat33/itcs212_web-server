@@ -18,7 +18,7 @@ function checkJWT(req, res, next) {
   } catch (error) {
     if (!req.responseSent) {
       req.responseSent = true;
-      return res.status(500).render('error', {message: "Internal server error"});
+      return res.status(401).render('error', {message: "Invalid token"});
     }
   }
 }
