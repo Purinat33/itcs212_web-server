@@ -1,5 +1,5 @@
 //User from DB
-const {db} = require('./../server/index');
+const {db} = require('../index');
 const path = require('path');
 const bcrypt = require('bcrypt'); //For encrypting + decrypting in a more secure way than crypto
 //Connect to db and query all the users
@@ -94,12 +94,13 @@ const createUser = (req, res, next) => {
   });
 };
 
-const login = (req,res) =>{
-    res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'auth', 'login.html'));
+const login = (req, res) => {
+  res.status(200).render('login', { messages: req.flash('error') });
 }
 
+
 const register = (req,res)=>{
-    res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'auth', 'register.html'));
+    res.status(200).sendFile(path.join(__dirname, '..', '..','frontend', 'public', 'auth', 'register.html'));
 }
 
 module.exports = {authenticate, login, register, createUser};

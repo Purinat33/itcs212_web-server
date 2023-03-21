@@ -1,5 +1,5 @@
 //GAME from DB
-const {db} = require('../server/index');
+const {db} = require('../index');
 const path = require('path')
 const fs = require('fs');
 const multer = require('multer')

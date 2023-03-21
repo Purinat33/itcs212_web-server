@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Error</title>
+    <title>Success</title>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -52,9 +52,22 @@
 <body>
     <div class="container">
         <h1>Success!</h1>
-        <p><%= message %></p>
-        <button onclick="window.history.back()">Continue</button>
+        <p>
+            <%= message %>
+        </p>
+        <button id="continue-button">Continue</button>
     </div>
+
+    <script>
+        const token = '<%= token %>';
+        const isAdmin = JSON.parse(atob(token.split('.')[1])).isAdmin;
+
+        const continueButton = document.getElementById('continue-button');
+        continueButton.addEventListener('click', () => {
+            const redirectUrl = isAdmin ? '/admin/dashboard' : '/';
+            window.location.href = redirectUrl;
+        });
+    </script>
 </body>
 
 </html>

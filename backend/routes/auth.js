@@ -25,7 +25,7 @@ routes.get('/register', register);
 //login POST (logging in)
 routes.post('/login', passport.authenticate('local', {
   session: false,
-  failureRedirect: '/login',
+  failureRedirect: '/auth/login',
   failureFlash: true
 }), (req, res) => {
   const token = jwt.sign({ id: req.user.id, isAdmin: req.user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '2h' });

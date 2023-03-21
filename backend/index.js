@@ -9,6 +9,7 @@ const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
 const bcrypt = require('bcrypt'); //For hashing/salting that offers more protection than normal SHA256
 const ejs = require('ejs')
+const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
@@ -42,7 +43,7 @@ if(db){
 module.exports = {db}; //Exporting db pool to allow other files to join and query DB
 
 
-const passport = require('./../controllers/passport');
+const passport = require('./controllers/passport');
 
 //Add an admin everytime the server starts (if there is already an admin then we delete it)
 const adminPassword = process.env.ADMIN_PASSWORD;
@@ -86,11 +87,11 @@ bcrypt.hash(adminPassword, 10, (err, hashedPassword) => {
 
 
 //Games route
-const user_route = require('./../routes/users');
+const user_route = require('./routes/users');
 //AUTH route
-const auth = require('./../routes/auth');
+const auth = require('./routes/auth');
 //Admin route
-const admin = require('./../routes/admin');
+const admin = require('./routes/admin');
 
 //Define port for connection
 //If we are using DEV variable then we use port 3000
@@ -98,6 +99,8 @@ const admin = require('./../routes/admin');
 //The variable is declared inside .env file, which are not on VCS
 const port = process.env.DEV === 'true' ? 3000:8080; //All the value inside .env are strings
 
+//Required for req.flash()
+app.use(flash());
 
 //Allowing express to parse req.body
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -118,7 +121,7 @@ app.use(session({
 //Passport
 app.use(passport.initialize())
 app.use(passport.session({
-  secret: process.env.JWT_SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }))
@@ -128,13 +131,13 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
 //Assets folder to store images/data/assets
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
 
 //logging
 app.use(morgan('dev'))
 
 //Set the view folder to where EJS will run at runtime
-app.set('views', path.join(__dirname,'..', 'view'))
+app.set('views', path.join(__dirname,'..','frontend','view'))
 app.set('view engine', 'ejs');
 
 //Routing
@@ -164,17 +167,17 @@ app.get('/', (req,res)=>{
     //Specifically for index.html
     //index.html will already be opened when we go localhost:PORT
     //but we don't want the .html extension now do we?
-    res.status(200).sendFile(path.resolve(__dirname, 'public', 'index.html'));
+    res.status(200).sendFile(path.resolve(__dirname,'..', 'frontend', 'public', 'index.html'));
 }); //We dont really need to use this (since express.static serve index.html by default anyway)
 
 //About page. Because .html is not cool enough
 app.get('/about', (req,res)=>{
-    res.status(200).sendFile(path.resolve(__dirname, 'public', 'about.html'));
+    res.status(200).sendFile(path.resolve(__dirname,'..', 'frontend', 'public', 'about.html'));
 })
 
 //404 Error not found page
 app.all('*', (req,res)=>{
-    res.status(404).sendFile(path.join(__dirname, 'public' ,'404.html'));
+    res.status(404).sendFile(path.join(__dirname,'..', 'frontend', 'public' ,'404.html'));
 });
 
 app.listen(port, ()=>{

@@ -1,0 +1,14 @@
+{
+  "name": "itcs212_frontend",
+  "version": "1.0.0",
+  "description": "The frontend containing static, view, etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "frontend"
+  ],
+  "author": "Purinat33",
+  "license": "ISC"
+}

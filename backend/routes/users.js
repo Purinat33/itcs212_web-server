@@ -4,7 +4,7 @@ const {
     search,
     getGame,
     getCart
-} = require('../controllers/games');
+} = require('./../controllers/games');
 const {checkJWT} = require('./../controllers/token')
 
 

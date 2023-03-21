@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-const {db} = require('./../server/index'); // assuming we have a db.js file that exports the connection to the MySQL database
+const {db} = require('../index'); // assuming we have a db.js file that exports the connection to the MySQL database
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {

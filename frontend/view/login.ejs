@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+        <link rel="manifest" href="/icon/site.webmanifest">
+        <style>
+            .alert {
+                margin: 10px 0;
+                padding: 10px;
+                border-radius: 4px;
+                color: #721c24;
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+                font-size: 1em;
+                font-weight: 600;
+            }
+        </style>
+</head>
+<body>
+    <div class="box">
+        <form action="/auth/login" method="post">
+        <div class="form">
+            <h2>Sign In</h2>
+            <div class="inputBox">
+                <input type="text" name="username" id="username" required="required">
+                <span>Username</span>
+                <i></i>
+            </div> 
+            <div class="inputBox">
+                    <input type="password" name="password" id="password" required="required">
+                
+                <span>Password</span>
+                <i></i>
+            </div>
+            <div class="links">
+                <a href="register" target="_self">Signup</a>
+                <a href="/" target="_self">Home</a>
+            </div>
+            <input type="submit" value="Login">
+            <% if (messages.length > 0) { %>
+                <div class="alert alert-danger">
+                    <%= messages[0] %>
+                </div>
+                <% } %>
+        </div>
+        </form>
+    </div>
+</body>
+
+<!--https://stackoverflow.com/questions/32850513/scale-down-up-every-html-element-when-window-resize-->
+</html>

@@ -15,7 +15,7 @@ const {
 } = require('./../controllers/games')
 const multer = require(`multer`); //Used to insert files (especially images)
 
-const {db} = require('./../server/index');
+const {db} = require('../index');
 
 
 //TODO: Add cookie/JWT checker middleware to each routes
