@@ -36,9 +36,9 @@ Note that this project is Creative Commons Attribution-NonCommercial-ShareAlike 
 
 ### Back-End (This repository)
 <ul>
-  <li>Node.js</li>
-  <li>Database System (MySQL or MongoDB)</li>
-  <li>(Optional)Postman</li>
+  <li>Node.js (Express, Passport, JWT, Morgan, Session etc.)</li>
+  <li>Database System (MySQL)</li>
+  <li>Postman</li>
 </ul>
 
 # Contributors
