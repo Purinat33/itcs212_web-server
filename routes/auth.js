@@ -33,16 +33,7 @@ routes.post('/login', passport.authenticate('local', {
   res.status(200).render('success',{ message: 'Authentication successful', token: token });
 });
 
-
 //Register post (creating user)
 routes.post('/register', createUser);
-
-//Logout, wiping all cookie and redirecting back to /auth/login
-routes.get('/logout', (req,res)=>{
-  console.log('Logging out... ');
-  res.clearCookie('token');
-  return res.status(200);
-});
-
 
 module.exports = routes;

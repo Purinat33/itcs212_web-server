@@ -1,6 +1,8 @@
 //For all things admin from add user, delete user, add product, modify product
 const {db} = require('./../server/index');
 const bcrypt = require('bcrypt');
+const path = require('path')
+const fs = require('fs')
 
 const dashboard = async (req,res,next) => {
   const game = 'SELECT * FROM product';
@@ -112,4 +114,12 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = {dashboard, createUser, editUser, deleteUser}
+const getAddUser = (req,res,next)=>{
+  res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'adduser.html'));
+}
+
+const getAddGame = (req,res,next) =>{
+  res.status(200).sendFile(path.join(__dirname, '..', 'server', 'public', 'admin', 'addgame.html'));
+}
+
+module.exports = {dashboard, createUser, editUser, deleteUser, getAddUser, getAddGame}

@@ -6,48 +6,54 @@ const bcrypt = require('bcrypt'); //For encrypting + decrypting in a more secure
 //The pool is in index.js
 
 //Middleware to be used with the 
-const authenticate = (req, res, next) => {
-  const username = req.body.username.trim();
-  const password = req.body.password;
+// const authenticate = (req, res, next) => {
+//   const username = req.body.username.trim();
+//   const password = req.body.password;
 
-  // get user with the matching username from the database
-  db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Server error');
-    }
+//   // get user with the matching username from the database
+//   db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).send('Server error');
+//     }
 
-    if (results.length === 0) {
-      console.log('Invalid login or password');
-      return res.status(401).render('error',{message: 'Invalid username or password'});
-    }
+//     if (results.length === 0) {
+//       console.log('Invalid login or password');
+//       return res.status(401).render('error',{message: 'Invalid username or password'});
+//     }
 
-    const user = results[0];
+//     const user = results[0];
 
-    // compare the hashed password with the one stored in the database
-    try {
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        console.log('Invalid login');
-        return res.status(401).render('error', {message: 'Invalid username or password'});
-      }
-    } catch (err) {
-      console.error(err);
-      return res.status(500).send('Server error');
-    }
+//     // compare the hashed password with the one stored in the database
+//     try {
+//       const match = await bcrypt.compare(password, user.password);
+//       if (!match) {
+//         console.log('Invalid login');
+//         return res.status(401).render('error', {message: 'Invalid username or password'});
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       return res.status(500).send('Server error');
+//     }
 
-    // authentication succeeded, store user in session
-    console.log('Login success');
-    //Redirecting based on the role
-    if(user.isAdmin){
-      res.redirect('/admin/dashboard');
-    }
-    else{
-      res.redirect('/')
-    }
+//     // authentication succeeded, store user in session
+//     console.log('Login success');
+//     //Redirecting based on the role
+//     if(user.isAdmin){
+//       res.redirect('/admin/dashboard');
+//     }
+//     else{
+//       res.redirect('/')
+//     }
 
-  });
-};
+//   });
+// };
+
+
+
+const authenticate = (req,res,next)=>{
+  
+}
 
 // registration handler
 const createUser = (req, res, next) => {
