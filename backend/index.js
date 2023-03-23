@@ -12,7 +12,7 @@ const ejs = require('ejs')
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
-const {checkJWT} = require('./controllers/token')
+const {checkUser} = require('./controllers/token')
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
 
 //Establish connection with MySQL server
@@ -164,10 +164,9 @@ app.use((err, req, res, next) => {
   res.render('error', { message : errorMessage });
 });
 
-app.get('/', checkJWT, (req,res)=>{
+app.get('/', checkUser, (req,res)=>{
     //We are going to change some texts based on being login or not
-    const user = req.user;
-    res.status(200).render('index', {user});
+    res.status(200).render('index', {user: req.user});
 });
 
 //About page. Because .html is not cool enough

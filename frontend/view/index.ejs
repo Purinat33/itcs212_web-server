@@ -39,11 +39,26 @@
             </div>
         </nav>
         <section class="h-text">
-            <span>Enjoy</span>
-            <h1>Explore Gaming</h1>
-            <br>
-            <a href="/store/browse">Visit Now</a>
+            <% if (user && user.role==='admin' ) { %>
+                <span>
+                    Enjoy
+                </span>
+                <h1>Explore Gaming</h1>
+                <br>
+                <a href="/admin/dashboard">Dashboard</a>
+                <% } else if (user && user.role==='user' ) { %>
+                    <span>Enjoy</span>
+                    <h1>Explore Gaming</h1>
+                    <br>
+                    <a href="/store/browse">My Cart</a>
+                    <% } else { %>
+                        <span>Enjoy</span>
+                        <h1>Explore Gaming</h1>
+                        <br>
+                        <a href="/auth/register">Become a Member</a>
+                        <% } %>
         </section>
+
         <p><a href="https://wallpaperaccess.com/game-mashup" target="_blank" class="credit">Background Image Source</a>
         </p>
     </header>
