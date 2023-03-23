@@ -2,7 +2,6 @@ const express = require('express');
 const {
     login,
     register,
-    authenticate,
     createUser
 } = require('./../controllers/auth')
 const session = require('express-session')
