@@ -1,0 +1,134 @@
+<!--EJS is very similar to HTML in terms of template-->
+<!--Only that it can compile page content at runtime instead of hard-coding it in-->
+<!--Example would be fetching data from a database and displaying all of them-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/admin/admin.css">
+    <title>Dashboard</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+    <link rel="manifest" href="/icon/site.webmanifest">
+    <script>
+        function searchProducts() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search-item");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("product-table");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function searchUsers() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search-item2");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("user-table");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .deletePopup .deletePopupPRODUCT {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="side-menu">
+        <div class="brand-name">
+            <h1>My Cart</h1>
+            <br>
+            <br>
+        </div>
+        <ul>
+            <li><button class="navbtn"><a href="/" target="_self" class="navlink">Home</a></button></li>
+            <li><button class="navbtn"><a href="/store/browse" class="navlink">Browse</a></button></li>
+            <li><button class="navbtn"><a href="/about" class="navlink">Support</a></button></li>
+            <li><button class="navbtn"><a href="/store/search" class="navlink">Search</a></button></li>
+            <br><br>
+            <li><button class="navbtn"><a href="/" class="navlink">Logout</a></button></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="content">
+            <div class="cards">
+            </div>
+            <div class="title">
+                <h2><a href="/store/browse" class="btn" id="browse">Back to Shopping</a></h2>
+
+                <!-- TODO: -->
+                <!-- Search function (Just the name is enough) -->
+                <div class="search">
+                    <input type="text" placeholder="Search.." id="search-item" onkeyup="searchProducts()">
+
+                </div>
+            </div>
+            <div class="content-2">
+
+                <div class="recent-payments">
+
+                    <table class="gamecard" id="product-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Publisher</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%= item %></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -257,10 +257,6 @@ const postGame = async (req, res) => {
   }
 }
 
-const getCart = (req,res,next) =>{
-  res.status(200).render('cart', {user: "John Doe"});
-}
-
 
 module.exports = {
     search,
@@ -268,6 +264,5 @@ module.exports = {
     postGame,
     putGame,
     deleteGame,
-    upload,
-    getCart
+    upload
 }
