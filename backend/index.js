@@ -3,7 +3,6 @@ const express = require('express');
 const session = require('express-session')
 const methodOverride = require('method-override'); //Use to put DELETE PUT etc. in form action (default is only get/put)
 const app = express(); 
-const sql = require('mysql2'); //To connect to my sql db
 const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
@@ -15,32 +14,7 @@ const cookieParser = require('cookie-parser')
 const {checkUser} = require('./controllers/token')
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
 
-//Establish connection with MySQL server
-//Pool allows createConnection in multiple pool
-const db = sql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USR,
-    password: process.env.DB_PWD,
-    database: process.env.DB_NAME
-});
-
-//Connect to the DB
-db.getConnection((err, connection)=>{
-  if (err) {
-    console.error('Error getting connection from pool:', err);
-    return;
-  }
-  console.log('Connection retrieved from pool:', connection.threadId);
-  connection.release();
-});
-
-//DB on connect
-if(db){
-  db.on('connection', (connection)=>{
-    console.log(`Connection established on connection ${connection}`);
-  });
-}
-
+const {db} = require('./model/database');
 module.exports = {db}; //Exporting db pool to allow other files to join and query DB
 
 
