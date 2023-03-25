@@ -96,7 +96,7 @@ const putGame = async (req,res)=>{
             .query("SELECT * FROM product WHERE id = ?", [req.params.id]);
             if (rows && rows.length) {
                 const product = rows[0];
-                res.render("editGame", { product }); // Pass the user object directly to the EJS template
+                res.status(200).render("editGame", { product }); // Pass the user object directly to the EJS template
             } else {
             // Product not found, render an error page or redirect
             res.status(404).render('error', {message: "Product not found"});
@@ -110,7 +110,7 @@ const putGame = async (req,res)=>{
                 `UPDATE product SET name=?, description=?, singleplayer=?, multiplayer=?, open_world=?, sandbox=?, simulator=?, team_based=?, fps=?, horror=?, puzzle=?, other=?, publisher=?, price=? WHERE id=?`,
                 [name, description, !!singleplayer, !!multiplayer, !!open_world, !!sandbox, !!simulator, !!team_based, !!fps, !!horror, !!puzzle, !!other, publisher, price, id]
             );
-            res.status(200).redirect('/admin/dashboard');
+            res.status(200).render('success',{message: 'Product successfully updated', token: req.cookies.token});
             } catch (error) {
                 console.log(error);
                 return res.status(500).render('error', { message: error });
@@ -233,7 +233,7 @@ const postGame = async (req, res) => {
       });
     });
 
-    res.redirect('/admin/dashboard');
+    res.status(201).render('success', {message: 'Product created successfully', token: req.cookies.token})
   } catch (err) {
     console.error(err);
     try {
@@ -257,7 +257,6 @@ const postGame = async (req, res) => {
     return res.status(500).render('error', { message: 'An unexpected error occurred'});
   }
 }
-
 
 module.exports = {
     search,

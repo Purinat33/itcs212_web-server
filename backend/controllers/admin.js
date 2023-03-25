@@ -18,7 +18,7 @@ const dashboard = async (req,res,next) => {
       users = results;
       
       // Render admin dashboard page with user data and product data
-      res.render('user.ejs', { users: users, product: product });
+      res.status(200).render('user.ejs', { users: users, product: product });
     });
   });
 }
@@ -90,8 +90,7 @@ const editUser = async (req, res, next) => {
           "UPDATE users SET password = ?, isAdmin = ? WHERE id = ?",
           [hashedPassword, isAdmin, userId]
         );
-      res.redirect("/admin/dashboard"); // Redirect to the dashboard after the password has been updated
-      res.status(204).render('success', {message: "User's data successfully updated", token: req.cookies.token});
+      res.status(200).render('success', {message: "User's data successfully updated", token: req.cookies.token});
     }
   } catch (error) {
     // Handle errors here
@@ -106,8 +105,9 @@ const deleteUser = async (req, res, next) => {
 
   // Use the user ID to delete the corresponding user from the database
   try {
+    console.log(`Deleting ${userId}`);
     await db.promise().query('DELETE FROM users WHERE id = ?', [userId]);
-    res.status(204).render('success', {message: "Successfully delete user from the database", token:req.cookies.token});
+    res.status(200).render('success', {message: "Successfully delete user from the database", token: req.cookies.token});
   } catch (error) {
     console.log(error);
     res.status(500).send('Internal server error');
