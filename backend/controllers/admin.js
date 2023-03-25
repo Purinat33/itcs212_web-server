@@ -58,8 +58,7 @@ const createUser = (req,res,next)=>{
           return res.status(500).send('Server error');
         }
 
-        console.log('Registration success');
-        res.redirect('/admin/dashboard');
+        res.status(201).render('success', {message: "User created successfully", token: req.cookies.token});
       });
     });
   });
@@ -73,7 +72,7 @@ const editUser = async (req, res, next) => {
         .query("SELECT * FROM users WHERE id = ?", [req.params.users]);
       if (rows && rows.length) {
         const user = rows[0];
-        res.render("edit", { user }); // Pass the user object directly to the EJS template
+        res.status(200).render("edit", { user }); // Pass the user object directly to the EJS template
       } else {
         // User not found, render an error page or redirect
         res.status(404).render('error', {message: "User not found"});
@@ -92,6 +91,7 @@ const editUser = async (req, res, next) => {
           [hashedPassword, isAdmin, userId]
         );
       res.redirect("/admin/dashboard"); // Redirect to the dashboard after the password has been updated
+      res.status(204).render('success', {message: "User's data successfully updated", token: req.cookies.token});
     }
   } catch (error) {
     // Handle errors here
@@ -107,7 +107,7 @@ const deleteUser = async (req, res, next) => {
   // Use the user ID to delete the corresponding user from the database
   try {
     await db.promise().query('DELETE FROM users WHERE id = ?', [userId]);
-    res.status(204).json({message: "Successfully delete user from the database"});
+    res.status(204).render('success', {message: "Successfully delete user from the database", token:req.cookies.token});
   } catch (error) {
     console.log(error);
     res.status(500).send('Internal server error');
