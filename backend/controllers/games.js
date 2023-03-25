@@ -146,7 +146,7 @@ const deleteGame = async (req, res) => {
 
     res.status(200).render('success', { message: 'Product deleted successfully', token: req.cookies.token });
   } catch (error) {
-    res.status(401).render('error', { message: 'Product does not exist' });
+    res.status(404).render('error', { message: 'Product does not exist' });
   }
 };
 
