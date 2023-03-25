@@ -60,6 +60,20 @@
             }
     </script>
 
+    <style>
+        .delbtn{
+            transform: none;
+            cursor: pointer;
+            border: none;
+            font-size: large;
+        }
+
+        .delbtn:hover span{
+            text-decoration: underline;
+            color: white;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -121,7 +135,7 @@
                                                 class="btn">Edit</a></td>
                                         <td><form action="<%= '/admin/dashboard/game/delete/' + product.id %>" method="post" onsubmit="return confirm('Delete this product?')">
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <button type="submit" class="btn">Delete</button>
+                                                <button type="submit" class="btn delbtn"><span>Delete</span></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -162,11 +176,11 @@
                                     <td><a href="<%= (users.username === 'admin') ? 'javascript:void(0)' : '/admin/dashboard/edit/' + users.id %>"
                                             class="<%= (users.username ==='admin' ) ? 'btnnull' : 'btn' %>" class="btn">Edit</a></td>
                                     <% if (users.username==='admin' ) { %>
-                                        <td><a class="btnnull">Delete</a></td>
+                                        <td><button class="btnnull delbtn" disabled>Delete</button></td>
                                     <% } else { %>
                                         <td><form action="/admin/dashboard/delete/<%= users.id %>" method="post" onsubmit="return confirm(`Delete this user?`)">
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn">Delete</button>
+                                            <button type="submit" class="btn delbtn">Delete</button>
                                         </form></td>
                                     <% } %>
                                 </tr>
