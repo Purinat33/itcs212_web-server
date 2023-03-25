@@ -12,8 +12,7 @@ function checkJWT(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = { id: decoded.id, isAdmin: decoded.isAdmin };    
-    console.log(req.cookies);
-
+    
     next();
   } catch (error) {
     if (!req.responseSent) {

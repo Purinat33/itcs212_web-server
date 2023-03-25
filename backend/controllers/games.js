@@ -130,7 +130,7 @@ const deleteGame = async (req, res) => {
     await db.promise().query('DELETE FROM product WHERE id = ?', [productID]);
 
     // Delete files with the same prefix as productID from the upload folder
-    const directoryPath = path.join(__dirname, '..', 'server', 'public', 'upload');
+    const directoryPath = path.join(__dirname, '..','..' , 'frontend', 'public', 'upload');
     fs.readdir(directoryPath, (err, files) => {
       if (err) throw err;
 
@@ -150,7 +150,7 @@ const deleteGame = async (req, res) => {
   }
 };
 
-const upload = multer({ dest: 'server/public/upload', limits:{files:5} });
+const upload = multer({ dest: '../frontend/public/upload', limits:{files:5} });
 
 const postGame = async (req, res) => {
   // Check if exactly 5 files have been uploaded
@@ -188,7 +188,7 @@ const postGame = async (req, res) => {
       const ext = path.extname(file.originalname).toLowerCase();
       const newName = `${result.insertId}_${i}${ext === '.jpeg' ? '.jpg' : ext}`;
       img[`image${i + 1}`] = newName;
-      fs.renameSync(file.path, `server/public/upload/${newName}`);
+      fs.renameSync(file.path, `../frontend/public/upload/${newName}`);
     }
 
     // Update the img column in the database with the newly created img object
@@ -196,7 +196,7 @@ const postGame = async (req, res) => {
 
     //Delete unwanted files
 
-    const folderPath = path.join(__dirname,'..','server', 'public', 'upload');
+    const folderPath = path.join(__dirname,'..','..','frontend', 'public', 'upload');
 
     fs.readdir(folderPath, async (err, files) => {
       if (err) throw err;
