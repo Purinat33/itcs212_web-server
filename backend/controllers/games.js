@@ -144,7 +144,7 @@ const deleteGame = async (req, res) => {
       });
     });
 
-    res.status(200).render('success', { message: 'Product deleted successfully' });
+    res.status(200).render('success', { message: 'Product deleted successfully', token: req.cookies.token });
   } catch (error) {
     res.status(401).render('error', { message: 'Product does not exist' });
   }
@@ -197,6 +197,7 @@ const postGame = async (req, res) => {
     //Delete unwanted files
 
     const folderPath = path.join(__dirname,'..','..','frontend', 'public', 'upload');
+    console.log(folderPath);
 
     fs.readdir(folderPath, async (err, files) => {
       if (err) throw err;
