@@ -103,16 +103,28 @@ const editUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   const userId = req.params.id;
 
+  // Use the user ID to delete the corresponding cart records from the database
+  try {
+    console.log(`Deleting cart records for user ${userId}`);
+    await db.promise().query('DELETE FROM cart WHERE uid = ?', [userId]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).render('error', {message: 'Internal server error'});
+    return;
+  }
+
   // Use the user ID to delete the corresponding user from the database
   try {
-    console.log(`Deleting ${userId}`);
+    console.log(`Deleting user ${userId}`);
     await db.promise().query('DELETE FROM users WHERE id = ?', [userId]);
     res.status(200).render('success', {message: "Successfully delete user from the database", token: req.cookies.token});
   } catch (error) {
     console.log(error);
-    res.status(500).send('Internal server error');
+    res.status(500).render('error', {message: 'Internal server error'});
+    return;
   }
 };
+
 
 const getAddUser = (req,res,next)=>{
   res.status(200).sendFile(path.join(__dirname, '..', '..','frontend', 'public', 'admin', 'adduser.html'));
