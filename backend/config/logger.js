@@ -1,4 +1,5 @@
 // const winston = require('winston');
+// const moment = require('moment-timezone')
 
 // // define the logger
 // const logger = winston.createLogger({
@@ -6,7 +7,7 @@
 //   format: winston.format.json(),
 //   transports: [
 //     new winston.transports.Console(),
-//     new winston.transports.File({ filename: 'logs.log' })
+//     new winston.transports.File({ filename: 'log/logs.log' })
 //   ]
 // });
 
@@ -15,18 +16,28 @@
 //   const { ip, originalUrl, method } = req;
 //   const { userId, isAdmin } = req.session || {};
 //   const timestamp = moment().tz('America/Los_Angeles').format('YYYY-MM-DDTHH:mm:ssZ');
+//   const isUserAuthenticated = req.user && req.user.id;
 
 //   logger.info({
 //     ip,
 //     timestamp,
-//     userId: userId || 0,
-//     role: isAdmin ? 'ADMIN' : 'USER',
-//     action: originalUrl === '/login' ? 'logging in' : originalUrl === '/register' ? 'registering' : '',
-//     response: res.statusCode
+//     user: {
+//         id: userId || 0,
+//         role: isAdmin ? 'ADMIN' : 'USER',
+//     },
+//     action: {
+//         method,
+//         url: originalUrl,
+//     },
+//     response: {
+//         status: isUserAuthenticated ? 200 : 401,
+//         message: isUserAuthenticated ? 'OK' : 'Unauthorized',
+//     },
 //   });
 
 //   next();
 // };
+
 
 // // middleware to log ADMIN actions
 // const adminActionLogger = (req, res, next) => {
@@ -38,10 +49,18 @@
 //     logger.info({
 //       ip: req.ip,
 //       timestamp,
-//       userId: req.session.userId || 0,
-//       role: 'ADMIN',
-//       action: `${method} ${originalUrl}`,
-//       response: res.statusCode
+//       user: {
+//         id: req.session.userId || 0,
+//         role: 'ADMIN',
+//       },
+//       action: {
+//         method,
+//         url: originalUrl,
+//       },
+//       response: {
+//         status: res.statusCode,
+//         message: res.statusMessage,
+//       },
 //     });
 //   }
 
@@ -51,22 +70,31 @@
 // // middleware to log failed authorization to ADMIN actions
 // const authFailedLogger = (req, res, next) => {
 //   const { originalUrl } = req;
-//   const { isAdmin } = req.session || {};
+//   const { userId, isAdmin } = req.session || {};
 //   const timestamp = moment().tz('America/Los_Angeles').format('YYYY-MM-DDTHH:mm:ssZ');
 
-//   if (isAdmin && originalUrl.startsWith('/admin') && res.statusCode === 401) {
+//   if (isAdmin && originalUrl.startsWith('/admin') && res.statusCode === 401 && userId) {
 //     logger.warn({
 //       ip: req.ip,
 //       timestamp,
-//       userId: req.session.userId || 0,
-//       role: 'ADMIN',
-//       action: `failed authorization to ${originalUrl}`,
-//       response: res.statusCode
+//       user: {
+//         id: req.session.userId || 0,
+//         role: 'ADMIN',
+//       },
+//       action: {
+//         method: req.method,
+//         url: originalUrl,
+//       },
+//       response: {
+//         status: res.statusCode,
+//         message: res.statusMessage,
+//       },
 //     });
 //   }
 
 //   next();
 // };
+
 
 // module.exports = {
 //   requestLogger,
