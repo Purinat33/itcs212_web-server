@@ -10,7 +10,7 @@ class Banner extends HTMLElement{
 
         @font-face {
          font-family: 'Poppins';
-         src: url('../../../components/fonts/Poppins/Poppins-Light.ttf');
+         src: url('/components/fonts/Poppins/Poppins-Light.ttf');
         }
 
         * {
@@ -80,14 +80,14 @@ class Banner extends HTMLElement{
             OnlyGames
           </div>
           <div class="menu">
-              <a href="../../index.html">Home</a>
-              <a href="../catalogue.html">Browse</a>
-              <a href="../about.html">Support</a>
-              <a href="../search.html">Search</a>
+              <a href="/">Home</a>
+              <a href="/store/browse">Browse</a>
+              <a href="/about">Support</a>
+              <a href="/store/search">Search</a>
           </div>
 
           <div class="register">
-            <a href="../register.html">Register</a>
+            <a href="/auth/register">Register</a>
           </div>
         </nav>
       </div>

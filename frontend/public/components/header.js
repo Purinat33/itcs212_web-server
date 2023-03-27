@@ -17,7 +17,7 @@ class Header extends HTMLElement{
 
         @font-face{
             font-family: "Poppins";
-            src: url('../components/fonts/Poppins/Poppins-Regular.ttf')
+            src: url('/components/fonts/Poppins/Poppins-Regular.ttf')
         }
 
         *{

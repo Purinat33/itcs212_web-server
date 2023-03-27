@@ -81,7 +81,59 @@ const getGame = async (req, res) => {
 
     return res.status(200).render('catalogue', { product: products });
   } else {
-    // Return 1 specific item
+    const id = req.params.id;
+    // Fetch the product details from the database
+  const [rows] = await db.promise().query(`
+    SELECT id, name, price, description, publisher, img,
+      IF(singleplayer, 'Singleplayer', NULL) AS singleplayer,
+      IF(multiplayer, 'Multiplayer', NULL) AS multiplayer,
+      IF(open_world, 'Open World', NULL) AS open_world,
+      IF(sandbox, 'Sandbox', NULL) AS sandbox,
+      IF(simulator, 'Simulator', NULL) AS simulator,
+      IF(team_based, 'Team-based', NULL) AS team_based,
+      IF(fps, 'FPS', NULL) AS fps,
+      IF(horror, 'Horror', NULL) AS horror,
+      IF(puzzle, 'Puzzle', NULL) AS puzzle,
+      IF(other, 'Other', NULL) AS other
+    FROM product
+    WHERE id = ?
+  `, [id]);
+
+  // If the product with the given ID doesn't exist, return a 404 error
+  if (rows.length === 0) {
+    return res.status(404).render('error', { message: 'Product not found' });
+  }
+
+  // Extract the product details from the query result
+  const { name, price, description, publisher, img, ...genres } = rows[0];
+  const filteredGenres = Object.entries(genres)
+    .filter(([key, value]) => value !== null && key !== 'id')
+    .map(([key]) => key);
+
+    // Get the image filenames for the product
+  const imageFilenames = [];
+    for (let i = 1; i <= 4; i++) {
+      const filename = `${id}_${i}.jpg`;
+      const imagePath = path.join(__dirname, '../../frontend/public/upload', filename);
+      if (fs.existsSync(imagePath)) {
+        imageFilenames.push(filename);
+      }
+  }
+
+  const product = {
+    id,
+    name,
+    price,
+    description,
+    publisher,
+    img,
+    genres: filteredGenres,
+    images: imageFilenames
+
+  };
+
+  // Render the product page EJS template, passing the product data to it
+  res.status(200).render('product', { product });
   }
 };
 
