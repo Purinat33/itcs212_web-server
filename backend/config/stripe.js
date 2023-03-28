@@ -52,4 +52,22 @@ const getCancelled = (req,res,next) =>{
     res.status(400).render('cancel', {message: "Your process has been cancelled"});
 }
 
-module.exports = {createCheckoutSession, getSuccess, getCancelled};
+const wipeCart = async (req,res,next)=>{
+    await db.promise().query(`
+        DELETE FROM cart WHERE uid = ?
+    `, [req.params.uid])
+
+    res.status(200).redirect('/store/cart');
+}
+
+//Doing webhook
+/*
+A webhook is a mechanism that allows an application to receive real-time or near-real-time notifications from another application or service. It works like a callback or HTTP POST request that an application can use to receive event notifications from another application.
+In the context of Stripe, webhooks are used to automatically notify your application about events that happen in your Stripe account, such as a successful payment or a failed payment. When an event occurs, Stripe sends a POST request to the webhook URL you have specified, along with a JSON payload that contains information about the event. Your application can then use this information to update its records or take other actions. 
+*/
+// Using sendGrid API to send email
+//Change of plan, sendGrid bans me for some reasons I need to email support
+// Stripe already automatically send email
+//https://stripe.com/docs/receipts
+
+module.exports = {createCheckoutSession, getSuccess, getCancelled, wipeCart};
