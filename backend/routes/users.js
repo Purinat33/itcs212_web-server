@@ -6,6 +6,7 @@ const {
 } = require('./../controllers/games');
 const{
     getCart,
+    putCart,
     deleteCart,
     addToCart
 } = require('./../controllers/cart')
@@ -25,7 +26,10 @@ routes.get('/cart', checkJWT, getCart)
 //User adds to cart
 routes.post('/cart/:id', checkJWT, addToCart);
 
+//User edit quantity
+routes.put('/cart/update/:id', checkJWT, putCart);
+
 //User delete from cart
-routes.delete('/cart/:id', checkJWT, deleteCart);
+routes.delete('/cart/delete/:id', checkJWT, deleteCart);
 
 module.exports = routes;

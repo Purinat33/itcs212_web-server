@@ -67,6 +67,18 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
+        .delbtn{
+            transform: none;
+            cursor: pointer;
+            border: none;
+            font-size: large;
+        }
+
+        .delbtn:hover span{
+            text-decoration: underline;
+            color: white;
+        }
     </style>
 
 </head>
@@ -109,21 +121,50 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Publisher</th>
                                 <th>Price</th>
-                                <th></th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><%= item %></td>
-                            </tr>
-
+                            <% for (let i=0; i < cartItems.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= cartItems[i].name %>
+                                    </td>
+                                    <td>
+                                        <%= cartItems[i].price %>
+                                    </td>
+                                    <td>
+                                        <form action="/store/cart/update/<%= cartItems[i].id %>" method="post">
+                                            <input type="hidden" name="_method" value="PUT">
+                                            <input type="number" name="quantity" id="quantity" name="quantity" min="0" max="100">
+                                            <button type="submit" class="btn delbtn">Update</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <%= cartItems[i].price * cartItems[i].quantity %>
+                                    </td>
+                                    <td>
+                                        <form action="/store/cart/delete/<%= cartItems[i].id %>" method="post">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" value="Delete" class="btn delbtn">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                <tr style="border-top: 2px solid black; background-color: lightgray;">
+                                    <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td>
+                                        <%= totalSum %>
+                                    </td>
+                                    <td></td>
+                                </tr>
                         </tbody>
                     </table>
 
                 </div>
-
             </div>
         </div>
 

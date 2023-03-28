@@ -106,10 +106,10 @@
 
                 </div>
                 <!-- count / add to cart / compare -->
-                <form action="" method="post">
+                <form action="/store/cart/<%= product.id %>" method="post">
                     <div class="purchase-info">
-                        <input type="number" min="0" value="1">
-                        <button type="button" class="btn">
+                        <input type="number" min="1" value="1" id="amt" name="quantity">
+                        <button type="submit" class="btn" value="Add to Cart" name="addCart">
                             Add to Cart <i class="fas fa-shopping-cart"></i>
                         </button>
                     </div>
