@@ -2,6 +2,7 @@ require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 const {db} = require('./../index');
 
+//https://youtu.be/1r-F3FIONl8
 const createCheckoutSession = async (req, res) => {
   const uid = req.params.uid;
   const items = await db.promise().query(`
@@ -36,8 +37,8 @@ const createCheckoutSession = async (req, res) => {
     payment_method_types: ['card'],
     line_items: lineItems,
     mode: 'payment',
-    success_url: 'http://localhost:3000/pay/success',
-    cancel_url: 'http://localhost:3000/pay/cancel',
+    success_url: `${process.env.SERVER_URL}/pay/success`,
+    cancel_url: `${process.env.SERVER_URL}/pay/cancel`,
   });
 
   res.json({ id: session.id });
