@@ -68,6 +68,8 @@ const auth = require('./routes/auth');
 //Admin route
 const admin = require('./routes/admin');
 
+const checkOut = require('./routes/checkout')
+
 //Define port for connection
 //If we are using DEV variable then we use port 3000
 //else we use port 8080
@@ -122,6 +124,8 @@ app.use('/store', user_route); //Relative to this file location (server/item/use
 app.use('/auth', auth);
 //admin routing
 app.use('/admin', admin);
+//payment routing
+app.use('/pay', checkOut)
 
 //Make the HTML served by the server instead of static HTML
 app.use((req, res, next) => {

@@ -159,7 +159,27 @@
                                     <td>
                                         <%= totalSum %>
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <script src="https://js.stripe.com/v3/"></script>
+                                        <button id="checkout-button" type="submit" class="btn delbtn">Checkout!</button>
+                                        <script>
+                                            const stripe = Stripe('pk_test_51MLOaLDJ32LJLrCEQP1zdiifAINn5ndg31ir1OwOADNm61uDnZLChw0CRtZuuWgxeMhVKiNZlQugFAAl1Tp6OrvV00j2VH0FIF');
+                                            const checkoutButton = document.getElementById('checkout-button');
+                                            checkoutButton.addEventListener('click', async (event) => {
+                                                const response = await fetch('/pay/create-checkout-session/<%= user.id %>', {
+                                                    method: 'POST'
+                                                });
+                                                const session = await response.json();
+                                                const result = await stripe.redirectToCheckout({
+                                                    sessionId: session.id
+                                                });
+                                                if (result.error) {
+                                                    console.error(result.error.message);
+                                                }
+                                            });
+                                        </script>
+
+                                    </td>
                                 </tr>
                         </tbody>
                     </table>

@@ -27,8 +27,7 @@ const getCart = async (req, res, next) => {
     return acc + (item.price * item.quantity);
   }, 0);
 
-
-  res.status(200).render('cart', { cartItems: items[0] , totalSum});
+  res.status(200).render('cart', { cartItems: items[0] , totalSum, user: req.user});
 };
 
 const putCart = async (req,res,next)=>{
