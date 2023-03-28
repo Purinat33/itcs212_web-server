@@ -120,6 +120,7 @@ const deleteUser = async (req, res, next) => {
     try {
       console.log(`Deleting user ${userId}`);
       await db.promise().query('DELETE FROM users WHERE id = ?', [userId]);
+      await db.promise().query('COMMIT')
       res.status(200).render('success', {message: "Successfully delete user from the database", token: req.cookies.token});
     } catch (error) {
       console.log(error);

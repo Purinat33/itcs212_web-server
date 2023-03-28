@@ -176,29 +176,42 @@ const putGame = async (req,res)=>{
 
 const deleteGame = async (req, res) => {
   const productID = req.params.id;
+  try{
+    //Delete all product reference in the cart as well
+    await db.promise().query('START TRANSACTION');
+    try {
+      await db.promise().query('DELETE FROM cart where pid = ?', [productID]);
+      console.log(`Deleted from cart where pid = ${productID}`);
+    } catch (error) {
+      await db.promise().query('ROLLBACK');
+    }
+    try {
+      // Delete product from database
+      await db.promise().query('DELETE FROM product WHERE id = ?', [productID]);
 
-  try {
-    // Delete product from database
-    await db.promise().query('DELETE FROM product WHERE id = ?', [productID]);
+      // Delete files with the same prefix as productID from the upload folder
+      const directoryPath = path.join(__dirname, '..','..' , 'frontend', 'public', 'upload');
+      fs.readdir(directoryPath, (err, files) => {
+        if (err) throw err;
 
-    // Delete files with the same prefix as productID from the upload folder
-    const directoryPath = path.join(__dirname, '..','..' , 'frontend', 'public', 'upload');
-    fs.readdir(directoryPath, (err, files) => {
-      if (err) throw err;
-
-      files.forEach((file) => {
-        if (file.startsWith(productID + '_')) {
-          fs.unlink(path.join(directoryPath, file), (err) => {
-            if (err) throw err;
-            console.log(`Deleted ${file}`);
-          });
-        }
+        files.forEach((file) => {
+          if (file.startsWith(productID + '_')) {
+            fs.unlink(path.join(directoryPath, file), (err) => {
+              if (err) throw err;
+              console.log(`Deleted ${file}`);
+            });
+          }
+        });
       });
-    });
-
-    res.status(200).render('success', { message: 'Product deleted successfully', token: req.cookies.token });
-  } catch (error) {
-    res.status(404).render('error', { message: 'Product does not exist' });
+      await db.promise().query('COMMIT');
+      res.status(200).render('success', { message: 'Product deleted successfully', token: req.cookies.token });
+    } catch (error) {
+      await db.promise().query('ROLLBACK');
+      res.status(404).render('error', { message: 'Product does not exist' });
+    }
+  }catch(err){
+    await db.promise().query('ROLLBACK');
+    res.status(500).render('error', { message: 'Internal server error'});
   }
 };
 
