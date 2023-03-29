@@ -161,7 +161,11 @@
                                     </td>
                                     <td>
                                         <script src="https://js.stripe.com/v3/"></script>
+                                        
+                                        <% if (cartItems.length > 0) { %>
                                         <button id="checkout-button" type="submit" class="btn delbtn">Checkout!</button>
+                                        <% } %>
+                                        
                                         <script>
                                             const stripe = Stripe('pk_test_51MLOaLDJ32LJLrCEQP1zdiifAINn5ndg31ir1OwOADNm61uDnZLChw0CRtZuuWgxeMhVKiNZlQugFAAl1Tp6OrvV00j2VH0FIF');
                                             const checkoutButton = document.getElementById('checkout-button');
