@@ -53,11 +53,12 @@ const getCancelled = (req,res,next) =>{
 }
 
 const wipeCart = async (req,res,next)=>{
+
     await db.promise().query(`
         DELETE FROM cart WHERE uid = ?
-    `, [req.params.uid])
+    `, [req.user.id])
 
-    res.status(200).redirect('/store/cart');
+    next()
 }
 
 //Doing webhook
