@@ -87,7 +87,7 @@ class Banner extends HTMLElement{
           </div>
 
           <div class="register">
-            <a href="/auth/register">Register</a>
+            <a href="/auth/login">Login</a>
           </div>
         </nav>
       </div>
