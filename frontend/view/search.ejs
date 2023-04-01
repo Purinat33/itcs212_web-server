@@ -199,7 +199,7 @@
         <div class="product-list" id="product-list">
             <% for (let i=0; i < product.length; i++) { %>
             <div class="product">
-                <img src="/upload/<%= product[i].id %>_<%= Math.floor(Math.random() * 5) %>.jpg" alt="Product Image">
+                <a href="/store/browse/<%= product[i].id %>" target="_self"><img src="/upload/<%= product[i].id %>_<%= Math.floor(Math.random() * 5) %>.jpg" alt="Product Image"></a>
                 <div class="p-detail">
                     <div class="p-name">
                         <h2>
