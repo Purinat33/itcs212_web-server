@@ -45,7 +45,7 @@ const createCheckoutSession = async (req, res) => {
 };
 
 const getSuccess = (req,res,next)=>{
-    res.status(200).render('success', {message: "Your process has been successfully ordered", token: req.cookies.token});
+    res.status(200).render('successpay', {message: "Your process has been successfully ordered", token: req.cookies.token});
 }
 
 const getCancelled = (req,res,next) =>{

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Success</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+    <link rel="manifest" href="/icon/site.webmanifest">
+    <style>
+
+        @font-face {
+            font-family: 'Poppins';
+            src: url('/components/fonts/Poppins/Poppins-Black.ttf');
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: linear-gradient(to bottom, #ffffff, #f7f7f7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        button {
+            font-family: 'Poppins';
+            display: block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #0069d9;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .footer a:hover {
+            color: #0069d9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 30px auto;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 30px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+
+            .footer {
+                margin-top: 30px;
+                font-size: 12px;
+            }
+
+            
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Success!</h1>
+        <p>
+            <%= message %>
+        </p>
+        <a href="/apxvnapdngs/KEYS.zip" download><button id="continue-button">Continue</button></a>
+    </div>
+
+    <script>
+        const token = '<%= token %>';
+        const isAdmin = JSON.parse(atob(token.split('.')[1])).isAdmin;
+
+        const continueButton = document.getElementById('continue-button');
+        continueButton.addEventListener('click', () => {
+            const redirectUrl = isAdmin ? '/admin/dashboard' : '/store/cart';
+            window.location.href = redirectUrl;
+        });
+    </script>
+</body>
+
+</html>
