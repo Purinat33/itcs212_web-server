@@ -6,8 +6,8 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . . 
 COPY .dockerignore ./
+COPY . . 
 
 EXPOSE 3000
 
