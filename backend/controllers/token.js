@@ -5,8 +5,8 @@ function checkJWT(req, res, next) {
   if (!token) {
     if (!req.responseSent) {
       req.responseSent = true;
-      return res.status(401).render('error', {message: "User is not logged in"});
     }
+    return res.status(401).render('error', {message: "User is not logged in"});
   }
 
   try {
@@ -17,8 +17,8 @@ function checkJWT(req, res, next) {
   } catch (error) {
     if (!req.responseSent) {
       req.responseSent = true;
-      return res.status(401).render('error', {message: "Invalid token"});
     }
+    return res.status(401).render('error', {message: "Invalid token"});
   }
 }
 
@@ -28,8 +28,8 @@ const checkAdmin = (req,res,next)=>{
     if(!user || !user.isAdmin){
         if (!req.responseSent) {
           req.responseSent = true;
-          return res.status(401).render('error', {message: "Unauthorized Access"})
         }
+        return res.status(401).render('error', {message: "Unauthorized Access"})
     }
     next();
 }

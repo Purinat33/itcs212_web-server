@@ -27,8 +27,8 @@ routes.post('/login', passport.authenticate('local', {
   failureRedirect: '/auth/login',
   failureFlash: true
 }), (req, res) => {
-  const token = jwt.sign({ id: req.user.id, isAdmin: req.user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '2h' });
-  res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 7200000});
+  const token = jwt.sign({ id: req.user.id, isAdmin: req.user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '2h'});
+  res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'lax', maxAge: 7200000});
   res.status(200).render('success',{ message: 'Authentication successful', token: token });
 });
 
