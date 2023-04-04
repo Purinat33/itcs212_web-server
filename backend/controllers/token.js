@@ -50,9 +50,10 @@ function checkUser(req, res, next) {
     next();
   } catch (error) {
     req.user = { role: 'guest' }; // Set user role as guest
-    next();
+    return res.status(401).render('error', {message: "Invalid token"}); // Return 401 if token is invalid
   }
 }
+
 
 
 module.exports = { checkJWT, checkAdmin, checkUser};
