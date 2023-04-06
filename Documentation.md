@@ -70,6 +70,13 @@ The codes are very useful when testing our web application, most notable web app
 
 # ITCS212 Web Server's Detail
 
+## Database Overview:
+
+![DB](schema.png)
+
+<p>Our database consists of 3 tables: users, product, and cart. Each have their own unique ID.
+Though cart does possess a reference to users and product. This is due to the fact that a user can purchase or add a product into their cart. Therefore references must be maintained.</p>
+
 ## Flow Overview:
 
 ![Diagram](WebRouting.jpeg)
