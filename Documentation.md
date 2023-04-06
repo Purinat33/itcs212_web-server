@@ -5,6 +5,71 @@
 ## Description:
 <p>This web server is part of the ITCS212 Web Programming course syllabus, built in the MVC format</p>
 
+# General Detail:
+
+## Introduction:
+<p>
+A web service follows a client-server architecture where the client sends a request to the server and the server sends a response back to the client. The client can be a browser, mobile application, or any other application that wants to access the resources provided by the web service.</p><p>
+To make a request to a web service, the client sends an HTTP request with a specific HTTP method (GET, POST, PUT, DELETE, etc.) to a specific URL endpoint of the web service. The request may also contain additional information such as headers and a message body, depending on the specific requirements of the web service.
+</p><p>
+Once the server receives the request, it processes the request, retrieves or modifies the relevant data from a database or other resources, and generates an HTTP response message. The response typically includes a status code indicating whether the request was successful or not, headers with additional information about the response, and a message body containing the requested data.
+</p><p>
+The client then receives the response message and can use the data provided by the web service in the appropriate way, such as displaying it on a web page or using it to modify data in a mobile application. The client can also make subsequent requests to the web service as needed to access other resources or perform other actions.
+</p>
+
+## Typicial web service structure:
+
+![service](request-response.png)
+
+## HTTP protocol:
+<p>
+HTTP (Hypertext Transfer Protocol) is an application layer protocol used for transferring data over the web. It is the foundation of data communication on the world wide web and other networks that use the internet as a backbone. HTTP is a client-server protocol, which means that it relies on the communication between the client (a web browser or an application that accesses the web) and the server (the computer hosting the web service or website).
+</p><p>
+The HTTP protocol uses a request/response model, where the client sends a request to the server, and the server sends a response back to the client. The request contains information about the resource that the client wants to access, such as a web page, an image, or other data, while the response contains the requested data and information about the status of the request.
+</p><p>
+HTTP is a stateless protocol, which means that each request and response is independent of any previous requests and responses. However, web applications often require a way to maintain state between requests, which is achieved using cookies, sessions, and other mechanisms.
+</p><p>
+In summary, HTTP is the protocol that enables communication between a client and a server over the web, using a request/response model. It is a foundation of modern web development and essential to the functioning of web services and websites.
+</p>
+
+## HTTP methods:
+GET, POST, PUT, and DELETE are the most commonly used HTTP methods or verbs. They are used to perform various operations or actions on the resources available on a web server.
+<p>
+<strong>GET</strong>: This method is used to retrieve information or data from the server. When a client sends a GET request to a server, the server returns the requested resource if it exists. For example, when a user opens a website or clicks a link, the GET method is used to request the webpage from the server.
+</p><p>
+<strong>POST</strong>: This method is used to submit or send data to the server to create or update a resource. When a client sends a POST request to a server, the server accepts the request, processes the data, and sends back a response. For example, when a user submits a form on a webpage, the POST method is used to send the form data to the server.
+</p><p>
+<strong>PUT</strong>: This method is used to update an existing resource on the server. When a client sends a PUT request to a server, the server updates the resource if it exists, or creates a new one if it doesn't. For example, when a user edits an article on a website, the PUT method is used to update the article on the server.
+</p><p>
+<strong>DELETE</strong>: This method is used to delete a resource from the server. When a client sends a DELETE request to a server, the server deletes the resource if it exists. For example, when a user deletes a post on a social media platform, the DELETE method is used to delete the post from the server.
+</p>
+
+
+## HTTP Status Code:
+<p>
+HTTP status codes are a set of codes that indicate the status of a requested HTTP resource. They are three-digit numbers that are returned by the server as a response to a client's request. Some of the most common HTTP status codes are:</p>
+<ul>
+<li>200 OK: The request was successful.</li>
+<li>201 Created: The request was successful, and a new resource has been created.</li>
+<li>204 No Content: The server successfully processed the request, but there is no content to return.</li>
+<li>400 Bad Request: The request was malformed or invalid.</li>
+<li>401 Unauthorized: The client is not authorized to access the requested resource.</li>
+<li>403 Forbidden: The client does not have access to the requested resource.</li>
+<li>404 Not Found: The requested resource could not be found.</li>
+<li>500 Internal Server Error: An error occurred on the server while processing the request.
+</li>
+</ul>
+<p>These codes provide a quick way for developers to identify and handle different types of responses from the server.</p>
+
+The codes are very useful when testing our web application, most notable web application testing software is POSTMAN.
+
+## POSTMAN
+<p>Postman is a popular tool used by developers to test, document and share APIs. It allows users to send HTTP requests to an API and receive responses. With Postman, developers can send GET, POST, PUT, DELETE requests, set headers and authentication tokens, and examine responses in detail. Postman also provides features like request history, collection of requests, testing scripts, and automatic generation of code snippets for different programming languages. It is available as a desktop application and a web-based service. Postman is widely used by developers and teams to streamline their API development and testing workflows.</p>
+
+![POSTMAN](postman.webp)
+
+# ITCS212 Web Server's Detail
+
 ## Flow Overview:
 
 ![Diagram](WebRouting.jpeg)
@@ -43,6 +108,18 @@
     </ul>
 </li>
 </ul>
+
+## General running steps:
+<ol>
+    <li>The service connect to a MySQL database</li>
+    <li>The possible routes are: </li>
+        <ul>
+            <li>Admin routes (/admin): Containing an admin dashboard and the functionality to Add/Update/Delete products and users</li>
+            <li>Users routes (/store): Used for displaying products, along with a user's cart containing their current order</li>
+            <li>Authentication route (/auth): Pages used for authentication functionality such as login and registration</li>
+        </ul>
+    <li>Generate the landing page (/) based on the current `cookie` state. This cookie will be crucial to our session managements and protection against unauthorized access, as it will redirect any unauthorized user from accessing admin routes or user's specific route (user's cart). The server checks for the cookie and fetch and render the cart page based on the user's information.</li>
+</ol>
 
 ## MVC
 <p>[MVC (Model-View-Controller)](https://developer.mozilla.org/en-US/docs/Glossary/MVC) is a pattern in software design commonly used to implement user interfaces, data, and controlling logic. It emphasizes a separation between the software's business logic and display. This "separation of concerns" provides for a better division of labor and improved maintenance.</p>
@@ -115,6 +192,93 @@ const session = await stripe.checkout.sessions.create({
   res.json({ id: session.id });
 ```
 
+## Overview of important modules used:
+<ul>
+    <li><strong>express</strong>:
+        <p>Express.js is a web application framework for Node.js that provides a simple, yet powerful set of features for creating web applications and APIs. It provides a number of built-in middleware functions to help you quickly create robust applications, including handling HTTP requests and responses, routing, session management, error handling, and more. Express is lightweight and flexible, and allows you to easily configure your application to meet your specific needs. It also has a large and active community that contributes to its development and provides a wealth of third-party plugins and extensions.</p>
+    </li>
+    <li><strong>express-session</strong>:
+    <p>express-session is a middleware for Express.js that provides a way to manage user sessions in a web application. Sessions allow web applications to store information about the user across multiple requests.</p</li>
+    <li><strong>method-override</strong>:
+    <p>method-override is a middleware for Express.js that allows you to override the HTTP method of a request using a query parameter or HTTP header. It is useful in situations where a browser does not support certain HTTP methods like PUT, PATCH, and DELETE.</p>
+    <p>
+    By default, HTML forms only support GET and POST methods. This means that if you want to submit a form using a different method, like PUT or DELETE, you would normally have to use JavaScript to send an AJAX request. However, with method-override, you can use a query parameter or HTTP header to indicate the desired HTTP method, and the middleware will handle the rest. </p></li>
+    <li><strong>morgan</strong>:
+    <p>morgan is a middleware for logging HTTP requests in Node.js/Express applications. It provides detailed information about every request, such as the HTTP method, URL, status code, and response time.</p></li>
+    <li><strong>dotenv</strong>:
+    <p>dotenv is a Node.js package that allows developers to store configuration information, such as API keys, database credentials, and other sensitive information, in environment variables instead of hardcoding them into the code. It reads key-value pairs from a .env file and loads them into process.env, which can then be accessed throughout the application. 
+    </p>
+    </li>
+    <li><strong>bcrypt</strong>:
+    <p>bcrypt is a library for Node.js that provides password hashing functionality using the bcrypt algorithm. It is commonly used to securely store user passwords in databases. Bcrypt is a one-way hash function, which means that it cannot be reversed to get the original password.</p></li>
+    <li><strong>flash</strong>:
+    <p>connect-flash is a module used in Node.js and Express.js applications for displaying flash messages to the user. Flash messages are used to give feedback to the user about the status of an operation, such as whether an action was successful or not.</p></li>
+    <li><strong>body-parser</strong>:
+        <p>body-parser is a middleware module for handling HTTP POST request bodies. It is used to extract the body of an incoming request and make it available in `req.body` property</p>
+    </li>
+    <li><strong>cookie-parser</strong>:
+    <p>cookie-parser is a middleware for Express that parses cookies attached to the client request object. It allows your application to set, get and clear cookies with ease. Once you require and initialize the middleware, it automatically parses the cookies and attaches them to the request object as `request.cookies` property.</p></li>
+    <li><strong>jsonwebtoken</strong>:
+    <p>jsonwebtoken is a Node.js library used for generating and verifying JSON Web Tokens (JWTs). JWTs are a type of token used for authentication and authorization in web applications.</p>
+    <p>The library provides methods for signing and verifying JWTs, which can be used to securely transmit information between the client and server. When a user logs in to a web application, for example, a JWT can be generated that contains information about the user, such as their username or email address. This token can then be sent to the client and stored in a cookie or local storage.</p><p>
+    When the user makes subsequent requests to the server, the JWT is included in the request headers. The server can then use the jsonwebtoken library to verify the token, and extract the user information contained within. This allows the server to authenticate the user and authorize access to certain resources or functionality.</p>
+    <p>
+    The jsonwebtoken library supports various algorithms for signing and verifying JWTs, including HMAC and RSA. It also provides options for setting expiration times and custom claims within the token.</p></li>
+    <li><strong>passport</strong>:
+    <p>Passport is an authentication middleware for Node.js, which can be used to handle user authentication and authorization in an Express.js application. It is highly configurable, and can support a wide range of authentication strategies including local authentication (using a username and password), OAuth, OpenID, and more.</p><p>
+    Passport is built on top of the concept of "strategies", which are essentially authentication mechanisms. Each strategy represents a different way of authenticating users, such as via a password, a social media account, or a single sign-on service. Passport supports a wide range of strategies out of the box, and developers can also create their own custom strategies.</p></li>
+    <li><strong>mysql2</strong>:
+    <p>mysql2 is a Node.js module that provides fast and reliable access to MySQL databases. It is a library for interacting with MySQL databases using the Node.js programming language. The module uses the same API as the popular mysql module but provides faster performance and better support for newer versions of the MySQL server. It is a native driver for Node.js, which means that it is written in C++ and compiled into a binary module, making it faster and more efficient than modules written entirely in JavaScript. It supports both Promise-based and callback-based approaches for handling database queries and connections.  </p></li>
+</ul>
+
+## What is a cookie?
+<p>A cookie is a small text file that a website saves on a user's computer or mobile device when they visit the site. Cookies are used to remember information about the user, such as their login credentials, preferences, and browsing history. Cookies can also be used to track user behavior on the website, such as which pages they visit and how long they stay on each page.</p>
+<p>
+There are two types of cookies: session cookies and persistent cookies. Session cookies are temporary and are deleted when the user closes their browser, while persistent cookies remain on the user's device until they expire or are deleted by the user.</p><p>
+Cookies are often used to improve the user experience on a website, such as by remembering a user's language preference or their shopping cart contents. However, some users may be concerned about their privacy and the tracking of their online behavior through the use of cookies. Therefore, many websites provide options for users to control cookie settings or even opt out of cookie tracking altogether.</p>
+
+## JSON Web Token (JWT), Our preferred choice of cookie:
+<p>JSON Web Token (JWT) is an open standard for securely transmitting information between parties as a JSON object. It is commonly used for authentication and authorization purposes in web applications.</p><p>
+JWTs consist of three parts: the header, the payload, and the signature. The header contains information about the type of token and the signing algorithm used. The payload contains the claims or assertions that the token makes about the user or entity. The signature is created by hashing the header, the payload, and a secret key using the specified algorithm.</p><p>
+When a user logs into an application, the server generates a JWT and sends it back to the client. The client then stores the JWT and sends it back to the server with every subsequent request. The server verifies the signature of the token to ensure that it has not been tampered with, and uses the information in the payload to authenticate and authorize the user.</p><p>
+JWTs have become a popular alternative to traditional session-based authentication because they are stateless and can be used across multiple domains. They also provide a way to store additional information in the token, such as user roles and permissions, which can be used for authorization purposes.</p>
+
+For example:
+```js
+const jwt = require('jsonwebtoken');
+
+// Example user data
+const user = {
+  id: 123,
+  role: 'admin'
+};
+
+// Generate token
+const token = jwt.sign(user, 'secret-key-here', { expiresIn: '1h' });
+
+// Verify token
+jwt.verify(token, 'secret-key-here', (err, decoded) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  console.log(decoded); // { id: 123, role: 'admin', iat: 1651640906, exp: 1651644506 }
+});
+```
+
+## FAQ: Why use passport.js over normal equal checking of user's input?
+<ol>
+    <li>It supports multiple authentication strategies: Passport allows you to implement multiple authentication strategies in your application. For example, you could allow users to log in using a traditional email and password, or you could allow them to log in using a social media account such as Google or Facebook. This flexibility can be very useful for users who may prefer different authentication methods or for applications that need to support different user bases.</li>
+    <li>It handles authentication flow: With Passport, you don't need to worry about handling the entire authentication flow yourself. Passport provides a middleware layer that handles authentication and user sessions for you, allowing you to focus on your application's business logic.</li>
+    <li>It has a large and active community: Passport is one of the most widely used authentication frameworks in the Node.js ecosystem. This means that there are many resources available for learning how to use Passport, as well as many third-party plugins and strategies that can be easily integrated into your application.</li>
+    <li>It is extensible and customizable: Passport is highly extensible, allowing you to customize and configure it to meet the specific needs of your application. For example, you can create your own authentication strategies, or you can customize the behavior of existing strategies to better fit your application's needs.</li>
+</ol>
+
+<hr>
+
+# Directory and files overview:
+
 ### Our goal is deploying the frontend and the backend separately on a different server/port:
 
 ![Directory](dir.png)
@@ -164,6 +328,32 @@ When a Node.js application receives a request, the server processes the request 
 Overall, EJS is a powerful tool for generating dynamic web pages in Node.js applications. It allows developers to create reusable templates that can be customized with dynamic data, making it easier to build complex web applications.
 </p>
 
+Example of `cart.js` rendering a cart page based on a logged in user:
+```js
+const getCart = async (req, res, next) => {
+  const uid = req.user.id;
+  const items = await db.promise().query(`
+    SELECT
+      product.id,
+      product.name,
+      product.publisher,
+      product.price,
+      cart.quantity
+    FROM 
+      cart
+      INNER JOIN product ON cart.pid = product.id
+    WHERE
+      cart.uid = ?
+  `, [uid]);
+
+  const totalSum = items[0].reduce((acc, item) => {
+    return acc + (item.price * item.quantity);
+  }, 0);
+
+  res.status(200).render('cart', { cartItems: items[0] , totalSum, user: req.user});
+};
+```
+
 # <strong>Backend</strong>
 
 ![Directory](backend.png)
@@ -206,43 +396,195 @@ The backend contains many folder, mainly Model, Controller, Routes and Config wi
     <p>
     Finally, the file defines routes for serving HTML pages, handles errors, and starts the server listening on the specified port. The main route (/) renders an EJS template called index with a context object that includes a user property, and the /about route serves a static HTML page. If a requested route is not found, the server responds with a 404 error page.
     </p>
+    </li>
     <li>
-    ## List of middlewares in index.js
+    List of middlewares in index.js
     <p>
     In the given index.js file, app.use() is used to add middleware functions to the Express application app. Here's a brief explanation of each app.use() function in the file:</p>
     <p>
-    app.use(flash()): This adds the connect-flash middleware to the application, which allows for displaying flash messages on successful or failed operations.</p>
+    `app.use(flash())`: This adds the connect-flash middleware to the application, which allows for displaying flash messages on successful or failed operations.</p>
     <p>
-    app.use(bodyParser.urlencoded({ extended: false })): This adds the body-parser middleware to the application, which parses incoming request bodies in a middleware and makes it available under the req.body property.</p>
+    `app.use(bodyParser.urlencoded({ extended: false }))`: This adds the body-parser middleware to the application, which parses incoming request bodies in a middleware and makes it available under the req.body property.</p>
     <p>
-    app.use(methodOverride(req => req.body._method)): This adds the method-override middleware to the application, which allows for using HTTP verbs such as PUT or DELETE in places where the client doesn't support it (like in HTML forms).</p>
+    `app.use(methodOverride(req => req.body._method))`: This adds the method-override middleware to the application, which allows for using HTTP verbs such as PUT or DELETE in places where the client doesn't support it (like in HTML forms).</p>
     <p>
-    app.use(cookieParser()): This adds the cookie-parser middleware to the application, which parses cookies attached to the client request object.</p>
+    `app.use(cookieParser())`: This adds the cookie-parser middleware to the application, which parses cookies attached to the client request object.</p>
     <p>
-    app.use(session({ ... })): This adds the express-session middleware to the application, which enables server-side session management. The middleware creates a new session object for each client, and stores the session data on the server.</p>
+    `app.use(session({ ... }))`: This adds the express-session middleware to the application, which enables server-side session management. The middleware creates a new session object for each client, and stores the session data on the server.</p>
     <p>
-    app.use(passport.initialize()): This adds the passport middleware to the application, which is an authentication middleware that provides various strategies for authenticating a user.
+    `app.use(passport.initialize())`: This adds the passport middleware to the application, which is an authentication middleware that provides various strategies for authenticating a user.
     </p><p>
-    app.use(passport.session({ ... })): This adds the passport session middleware to the application, which allows passport to serialize and deserialize user instances to and from the session.
+    `app.use(passport.session({ ... }))`: This adds the passport session middleware to the application, which allows passport to serialize and deserialize user instances to and from the session.
     </p><p>
-    app.use(express.urlencoded({extended:false})): This adds the urlencoded middleware to the application, which parses incoming requests with urlencoded payloads.
+    `app.use(express.urlencoded({extended:false}))`: This adds the urlencoded middleware to the application, which parses incoming requests with urlencoded payloads.
     </p>
     <p>
-    app.use(express.json()): This adds the json middleware to the application, which parses incoming requests with json payloads.
+    `app.use(express.json())`: This adds the json middleware to the application, which parses incoming requests with json payloads.
     </p><p>
-    app.use(express.static(path.join(__dirname, '..', 'frontend', 'public'))): This serves static files, like images, CSS, JavaScript, etc., from the specified directory. This middleware serves files in the directory to the client, based on the URL path provided.
+    `app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')))`: This serves static files, like images, CSS, JavaScript, etc., from the specified directory. This middleware serves files in the directory to the client, based on the URL path provided.
     </p><p>
-    app.use(morgan('dev')): This adds the morgan middleware to the application, which logs incoming requests to the console in a developer-friendly format.
+    `app.use(morgan('dev'))`: This adds the morgan middleware to the application, which logs incoming requests to the console in a developer-friendly format.
     </p><p>
-    app.use((err, req, res, next) => { ... }): This adds an error handling middleware to the application, which catches and handles errors thrown by the application.
+    `app.use((err, req, res, next) => { ... })`: This adds an error handling middleware to the application, which catches and handles errors thrown by the application.
     </p><p>
-    app.use((req, res, next) => { ... }): This adds middleware to the application to set the content type of the response to text/html if the request URL ends with .html.
+    `app.use((req, res, next) => { ... })`: This adds middleware to the application to set the content type of the response to text/html if the request URL ends with .html.
     </p>
     <p>
-    In summary, the app.use() function is used to add middleware to the Express application, which can perform various operations such as parsing request bodies, handling errors, and serving static files, among others.
+    In summary, the `app.use()` function is used to add middleware to the Express application, which can perform various operations such as parsing request bodies, handling errors, and serving static files, among others.
     </p>
     </li>
     </ul>
     </li>
-
 </ul>
+
+## Routes and controller:
+<p>As stated, we want to separate the route and the controllers entirely from each other. Instead of having a route perform a specific action, we instead defined a function (commonly called a middleware function) in the controllers module and have a route calls it. This reduce same code redundancy, increase reusability, and can be easily built upon one another using many middleware functions chained together.</p>
+
+An example of a controller called by a single route:
+
+`cart.js` controller function.
+```js
+const addToCart = async (req,res,next) =>{
+    const {quantity} = req.body;
+    const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+    const userID = decoded.id;
+
+    try {
+        await db.promise().query('START TRANSACTION');
+        try {
+            await db.promise().query('INSERT INTO cart (uid, pid, quantity) VALUES (?, ?, ?)', [userID, req.params.id, quantity]);            
+            await db.promise().query('COMMIT');
+            res.status(200).render('success', {message: "Product added", token: req.cookies.token});
+        } catch (error) {
+            console.log(error);
+            await db.promise().query('ROLLBACK');
+            res.status(500).render('error', {message: "Internal server error"})
+        }
+    } catch (err) {
+        console.log(err);
+        await db.promise().query('ROLLBACK');
+        res.status(500).render('error', {message: "Internal server error"})
+    }
+}
+```
+
+`users.js` routes
+```js
+routes.post('/cart/:id', checkJWT, addToCart);
+```
+
+<p>Also note the presense of another middleware function `checkJWT` added before addToCart function. This is another middleware used to check authorization before continuing to execution of addToCart function</p>
+
+`token.js` controllers
+```js
+
+function checkJWT(req, res, next) {
+  const token = req.cookies.token;
+  if (!token) {
+    if (!req.responseSent) {
+      req.responseSent = true;
+    }
+    return res.status(401).render('error', {message: "User is not logged in"});
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { id: decoded.id, isAdmin: decoded.isAdmin };    
+    
+    next();
+  } catch (error) {
+    if (!req.responseSent) {
+      req.responseSent = true;
+    }
+    return res.status(401).render('error', {message: "Invalid token"});
+  }
+}
+```
+
+## Payment API with Stripe:
+<p>Stripe is a popular payment processing platform that allows businesses and individuals to accept payments over the internet. Stripe provides a range of tools and services for online payments, including payment processing, subscriptions, invoicing, and fraud prevention.</p><p>
+With Stripe, businesses can accept payments from customers all over the world in a variety of currencies, and the platform provides tools for managing payments and customers, as well as analytics and reporting features. Stripe also offers a range of integrations with popular e-commerce platforms, content management systems, and other tools, making it easy to add payment processing capabilities to your website or app.</p><p>
+One of the key benefits of using Stripe is its developer-friendly API, which makes it easy to integrate payment processing into your website or app. Stripe also offers comprehensive documentation and support, as well as a range of development tools and libraries for popular programming languages like Ruby, Python, and JavaScript.</p><p>
+Overall, Stripe is a popular choice for businesses and individuals who need to accept payments online, offering a range of tools and services for payment processing, subscriptions, and more, as well as a developer-friendly API and comprehensive documentation and support.</p>
+
+![Stripe](dashstripe.png)
+
+### What is a payment gateway:
+<p>A "payment gateway" is a technology that connects merchants (sellers) and customers (buyers) in the process of making online transactions, such as purchases or bill payments. It acts as a mediator between a merchant's website or application and the financial institution that processes the payment, ensuring the secure and efficient transfer of funds between parties.</p><p>
+When a customer makes a payment on a merchant's website, the payment gateway securely captures the customer's payment information, such as credit card details or bank account information, and sends it to the payment processor or acquiring bank for authentication and authorization. Once the payment is authorized, the payment gateway confirms the transaction and sends a response to the merchant's website, enabling the completion of the transaction.</p><p>
+Payment gateways also provide merchants with tools for managing transactions, such as generating reports, tracking payments, and managing refunds and chargebacks.</p>
+
+## How a 3rd party service (Stripe) connect, manage, and separate this web service from millions of other web services around the world:
+<p><strong>API</strong>: An API, or Application Programming Interface, is a set of protocols, routines, and tools for building software applications. It specifies how software components should interact with each other, enabling different software systems to communicate and share data.</p>
+In general, an API works in a following steps:
+<ol>
+<li>A client application sends a request to the API endpoint using a specific format (e.g., HTTP request).</li>
+<li>The API server receives the request and processes it, often by accessing a database or other resources to retrieve or manipulate data.</li>
+<li>The API server then formulates a response in the same format as the request (e.g., JSON, XML) and sends it back to the client.
+</li>
+<li>
+The client receives the response and processes it according to its own needs.
+</li>
+</ol>
+
+Most notable is known as REST API:
+<p><strong>REST</strong> (Representational State Transfer) API is a type of web service that uses HTTP methods to communicate with clients. It is a popular architectural style for building web APIs and is widely used by many popular web services.</p><p>
+REST APIs are built around resources, which are objects or pieces of data that can be accessed and manipulated through a set of HTTP methods. These methods include `GET`, `POST`, `PUT`, and `DELETE`.
+</p><p>
+When a client sends a request to a REST API, it includes a URL that identifies the resource it wants to access or manipulate, along with the HTTP method it wants to use. The API then sends a response back to the client, usually in the form of JSON or XML data.
+</p><p>
+One of the key features of REST APIs is that they are stateless, meaning that the server does not store any information about the client's previous requests. Instead, each request contains all the necessary information for the server to process it and send back a response.
+</p><p>
+Overall, REST APIs provide a flexible and efficient way for clients to access and manipulate resources on a server, making them an essential component of many web applications and services.</p>
+
+![REST](rest.png)
+
+## To use an API in general:
+<ol>
+    <li>Register for an API key: Most APIs require you to register and obtain an API key or authentication token to access their services.</li>
+    <li>Read the documentation: APIs usually provide documentation that outlines the endpoints, request/response formats, parameters, and other details that you need to know to use their services.</li>
+    <li>Choose an API endpoint: APIs typically provide multiple endpoints that correspond to different functions or data sets. You need to select the endpoint that best meets your needs.</li>
+    <li>Make a request: You need to construct an HTTP request with the required parameters and headers, and send it to the API endpoint.</li>
+    <li>Handle the response: The API will respond with data that may need to be parsed, processed, and formatted according to your application's needs.</li>
+    <li>Implement error handling: API requests may fail due to a variety of reasons, such as network errors, authentication failures, or incorrect parameters. You need to handle these errors gracefully and provide appropriate feedback to the user.</li>
+    <li>Test and iterate: Once you have implemented the API integration, you need to test it thoroughly and iterate as necessary to address any issues or optimize performance.</li>
+</ol>
+
+## API keys:
+<p>
+API keys are unique identifiers that are used to authenticate and authorize access to an API. They are typically a long string of randomly generated characters that are associated with a specific user or application. When making requests to an API, the API key is included in the request headers or query parameters to identify the requester and provide access to the API's resources.</p><p>
+API keys can be classified as public or private keys depending on how they are used. Public keys are meant to be shared with the public and are used to access non-sensitive, read-only resources of an API. Private keys, on the other hand, are kept secret and are used to access sensitive resources or perform actions that require authorization.
+</p><p>
+API keys are an important component of API security as they allow the API provider to control access to its resources and monitor usage patterns. They also enable API providers to track usage metrics, enforce rate limits, and manage access permissions for different users or applications.
+</p>
+
+## Stripe API Integration:
+<ol><li>Sign up for a Stripe account: To use the Stripe API, you need to have a Stripe account. You can sign up for a free account on the Stripe website.</li>
+<li>
+Install the Stripe library: To use the Stripe API, you need to install the Stripe library. You can do this by running the following command in your terminal:
+
+```js
+npm i stripe
+```
+
+</li>
+<li>
+Get your API keys: To authenticate your requests to the Stripe API, you need to use your API keys. You can find your API keys in your Stripe dashboard.</li>
+<li>Create a charge: To charge a customer, you need to create a charge. You can do this by making a request to the Stripe API using your API keys.
+
+In this example, we are creating a charge of $20 (2000 cents) with the currency of USD and a payment source of a test Visa card.
+```js
+const stripe = require('stripe')('sk_test_your_secret_key');
+
+stripe.charges.create({
+  amount: 2000,
+  currency: 'usd',
+  source: 'tok_visa',
+  description: 'Charge for test@example.com'
+}, function(err, charge) {
+  // asynchronously called
+});
+```
+</li>
+<li>Handle the response: Once you have made a request to the Stripe API, you will receive a response. You can handle the response to update your database or display a success message to the user.</li>
+</ol>
