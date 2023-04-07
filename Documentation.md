@@ -202,7 +202,7 @@ const session = await stripe.checkout.sessions.create({
 ## Overview of important modules used:
 <ul>
     <li><strong>express</strong>:
-        <p>Express.js is a web application framework for Node.js that provides a simple, yet powerful set of features for creating web applications and APIs. It provides a number of built-in middleware functions to help you quickly create robust applications, including handling HTTP requests and responses, routing, session management, error handling, and more. Express is lightweight and flexible, and allows you to easily configure your application to meet your specific needs. It also has a large and active community that contributes to its development and provides a wealth of third-party plugins and extensions.</p>
+        <p>Express.js is a web application framework for Node.js that provides a simple, yet powerful set of features for creating web applications and APIs. It provides a number of built-in middleware functions to help you quickly create robust applications, including handling HTTP requests and responses, routing, session management, error handling, and more. Express is lightweight and flexible, and allows you to easily configure your application to meet your specific needs. It also has a large and active community that contributes to its development and provides a wealth of third-party plugins and extensions. ![Documentation](https://expressjs.com/)</p>
     </li>
     <li><strong>express-session</strong>:
     <p>express-session is a middleware for Express.js that provides a way to manage user sessions in a web application. Sessions allow web applications to store information about the user across multiple requests.</p</li>
@@ -273,6 +273,35 @@ jwt.verify(token, 'secret-key-here', (err, decoded) => {
   console.log(decoded); // { id: 123, role: 'admin', iat: 1651640906, exp: 1651644506 }
 });
 ```
+
+## Pros and Cons of different types of session management:
+<strong>Session cookies</strong>:
+<p>Pros:</p>
+<ul>
+<li>They are easy to use and implement. Most web frameworks have built-in support for session cookies.</li>
+<li>They can be invalidated by the server. If a user logs out or if their session expires, the server can simply delete the session cookie.</li>
+<li>They can store any kind of data, not just user authentication information.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>They are vulnerable to cross-site request forgery (CSRF) attacks. Since session cookies are automatically sent with every request to the server, an attacker can trick a user into performing an unintended action by making a request on their behalf.</li>
+<li>They can be hijacked if the server is not properly secured. If an attacker gains access to the server's session storage, they can steal any session cookie and impersonate any user.</li>
+</ul>
+<p></p>
+<strong>JSON Web Token</strong>:
+<p>Pros:</p>
+<ul>
+<li>They are not vulnerable to CSRF attacks since they are not automatically sent with every request. Instead, they are stored in the client's browser and sent explicitly when needed.</li>
+<li>They can be easily used in stateless architectures such as microservices and serverless functions.</li>
+<li>They can contain all the information needed for authentication and authorization, reducing the need for server-side storage.
+</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>They cannot be invalidated by the server. Once a JWT is issued, it remains valid until it expires, which can be a security risk if a JWT is stolen or compromised.</li>
+<li>They are typically larger than session cookies, since they need to store all the authentication and authorization information.</li>
+<li>They require additional implementation effort to integrate with a web application, since most frameworks do not have built-in support for JWTs.</li>
+</ul>
 
 ## FAQ: Why use passport.js over normal equal checking of user's input?
 <ol>
@@ -594,4 +623,16 @@ stripe.charges.create({
 ```
 </li>
 <li>Handle the response: Once you have made a request to the Stripe API, you will receive a response. You can handle the response to update your database or display a success message to the user.</li>
+</ol>
+
+## Extra: How to test the web server (and Stripe) APIs using POSTMAN:
+<p>To use Postman for testing an external party API such as Stripe, you will need to first obtain the API credentials from the external party (in this case, Stripe). You can usually find instructions on how to obtain the API credentials in the API documentation provided by the external party.</p><p>
+Once you have obtained the API credentials, you can use Postman to make requests to the Stripe API by following these steps:</p>
+<ol>
+<li>Open Postman and create a new request by clicking on the "New" button in the top left corner.</li><li>
+In the "New" dialog, select the HTTP method that you want to use (e.g. GET, POST, etc.) and enter the URL for the API endpoint that you want to test.</li><li>
+In the "Headers" tab, add any necessary headers for the API request. For example, if you are making a request to the Stripe API, you will need to include the "Authorization" header with your API key.</li><li>
+In the "Body" tab, add any necessary request parameters for the API request. The parameters will depend on the specific API endpoint that you are testing.</li><li>
+Click on the "Send" button to send the API request.</li><li>
+Once you have sent the API request, you should receive a response from the API. You can view the response in the "Response" tab in Postman. You can also use Postman to test different API endpoints and methods by creating new requests and modifying the headers and parameters as needed.</li>
 </ol>
