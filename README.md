@@ -56,4 +56,4 @@ Note that this project is Creative Commons Attribution-NonCommercial-ShareAlike 
 
 #### Note that pull request from non-member will not be accepted until atleast May due to the "no non-teammates contribution policy"
 
-##### All design styles (CSS and JavaScript structures which are taken from youtube or other websites are credited where credit is due
+##### All design styles (CSS and JavaScript structures which are taken from youtube or other websites are credited where credit is due)

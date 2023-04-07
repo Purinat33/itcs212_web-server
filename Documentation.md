@@ -1,9 +1,50 @@
-@Purinat33
-
+![LOGO](logo.png)
 # ITCS212 Web Server (OnlyGames)
 
+## Authors:
+<ul>
+<li>Purinat Pattanakeaw</li>
+<li>Sittphon Lerdtomolsakul</li>
+<li>Kittiphum Mueangthongkham</li>
+<li>Thanapat Ritiluechai</li>
+<li>Pattaradnai Kaeodumkoeng</li>
+</ul>
+
 ## Description:
-<p>This web server is part of the ITCS212 Web Programming course syllabus, built in the MVC format</p>
+<p>This web server is part of the ITCS212 Web Programming course syllabus.</p>
+
+# Content:
+* [Description:](#description)
+* [Introduction:](#introduction)
+* [Typicial web service structure:](#typicial-web-service-structure)
+* [HTTP protocol:](#http-protocol)
+* [HTTP methods:](#http-methods)
+* [HTTP Status Code:](#http-status-code)
+* [POSTMAN](#postman)
+* [Database Overview:](#database-overview)
+* [Flow Overview:](#flow-overview)
+* [General Overview:](#general-overview)
+* [General running steps:](#general-running-steps)
+* [MVC](#mvc)
+* [An example of each MVC(RC) module and snippet:](#an-example-of-each-mvcrc-module-and-snippet)
+* [Overview of important modules used:](#overview-of-important-modules-used)
+* [What is a cookie?](#what-is-a-cookie)
+* [JSON Web Token (JWT), Our preferred choice of cookie:](#json-web-token-jwt-our-preferred-choice-of-cookie)
+* [Pros and Cons of different types of session management:](#pros-and-cons-of-different-types-of-session-management)
+* [FAQ: Why use passport.js over normal equal checking of user's input?](#faq-why-use-passportjs-over-normal-equal-checking-of-users-input)
+* [Our goal is deploying the frontend and the backend separately on a different server/port:](#our-goal-is-deploying-the-frontend-and-the-backend-separately-on-a-different-serverport)
+* [The frontend contains 2 folders: view and public](#the-frontend-contains-2-folders-view-and-public)
+* [Static files:](#static-files)
+* [EJS Files:](#ejs-files)
+* [Routes and controller:](#routes-and-controller)
+* [Payment API with Stripe:](#payment-api-with-stripe)
+* [What is a payment gateway:](#what-is-a-payment-gateway)
+* [How a 3rd party service (Stripe) connect, manage, and separate this web service from millions of other web services around the world:](#how-a-3rd-party-service-stripe-connect-manage-and-separate-this-web-service-from-millions-of-other-web-services-around-the-world)
+* [To use an API in general:](#to-use-an-api-in-general)
+* [API keys:](#api-keys)
+* [Stripe API Integration:](#stripe-api-integration)
+* [Extra: How to test the web server (and Stripe) APIs using POSTMAN:](#extra-how-to-test-the-web-server-and-stripe-apis-using-postman)
+* [Appendix](#appendix)
 
 # General Detail:
 
@@ -125,7 +166,7 @@ Though cart does possess a reference to users and product. This is due to the fa
             <li>Users routes (/store): Used for displaying products, along with a user's cart containing their current order</li>
             <li>Authentication route (/auth): Pages used for authentication functionality such as login and registration</li>
         </ul>
-    <li>Generate the landing page (/) based on the current `cookie` state. This cookie will be crucial to our session managements and protection against unauthorized access, as it will redirect any unauthorized user from accessing admin routes or user's specific route (user's cart). The server checks for the cookie and fetch and render the cart page based on the user's information.</li>
+    <li>Generate the landing page (/) based on the current <code>cookie</code> state. This cookie will be crucial to our session managements and protection against unauthorized access, as it will redirect any unauthorized user from accessing admin routes or user's specific route (user's cart). The server checks for the cookie and fetch and render the cart page based on the user's information.</li>
 </ol>
 
 ## MVC
@@ -222,10 +263,10 @@ const session = await stripe.checkout.sessions.create({
     <li><strong>flash</strong>:
     <p>connect-flash is a module used in Node.js and Express.js applications for displaying flash messages to the user. Flash messages are used to give feedback to the user about the status of an operation, such as whether an action was successful or not.</p></li>
     <li><strong>body-parser</strong>:
-        <p>body-parser is a middleware module for handling HTTP POST request bodies. It is used to extract the body of an incoming request and make it available in `req.body` property</p>
+        <p>body-parser is a middleware module for handling HTTP POST request bodies. It is used to extract the body of an incoming request and make it available in <code>req.body</code> property</p>
     </li>
     <li><strong>cookie-parser</strong>:
-    <p>cookie-parser is a middleware for Express that parses cookies attached to the client request object. It allows your application to set, get and clear cookies with ease. Once you require and initialize the middleware, it automatically parses the cookies and attaches them to the request object as `request.cookies` property.</p></li>
+    <p>cookie-parser is a middleware for Express that parses cookies attached to the client request object. It allows your application to set, get and clear cookies with ease. Once you require and initialize the middleware, it automatically parses the cookies and attaches them to the request object as <code>req.cookies</code> property.</p></li>
     <li><strong>jsonwebtoken</strong>:
     <p>jsonwebtoken is a Node.js library used for generating and verifying JSON Web Tokens (JWTs). JWTs are a type of token used for authentication and authorization in web applications.</p>
     <p>The library provides methods for signing and verifying JWTs, which can be used to securely transmit information between the client and server. When a user logs in to a web application, for example, a JWT can be generated that contains information about the user, such as their username or email address. This token can then be sent to the client and stored in a cookie or local storage.</p><p>
@@ -444,7 +485,7 @@ The backend contains many folder, mainly Model, Controller, Routes and Config wi
     </li>
     <li>
         <strong>index.js</strong>
-        <p>The file starts by importing several required modules using the require function: express, session, method-override, path, morgan, dotenv, bcrypt, ejs, flash, body-parser, and cookie-parser. The express module is used to create and configure the HTTP server, while the other modules are used for tasks like logging, session management, security, and handling HTTP requests.</p>
+        <p>The file starts by importing several required modules using the require function: <code>express, session, method-override, path, morgan, dotenv, bcrypt, ejs, flash, body-parser,</code> and <code>cookie-parser</code>. The express module is used to create and configure the HTTP server, while the other modules are used for tasks like logging, session management, security, and handling HTTP requests.</p>
     <p>
     The file then defines a database connection using the db object exported from the database.js module, and exports the db object to allow other files to join and query the database.
     </p><p>
@@ -458,37 +499,37 @@ The backend contains many folder, mainly Model, Controller, Routes and Config wi
     <li>
     List of middlewares in index.js
     <p>
-    In the given index.js file, app.use() is used to add middleware functions to the Express application app. Here's a brief explanation of each app.use() function in the file:</p>
+    In the given index.js file, app.use() is used to add middleware functions to the Express application app. Here's a brief explanation of each <code>app.use()</code> function in the file:</p>
     <p>
-    `app.use(flash())`: This adds the connect-flash middleware to the application, which allows for displaying flash messages on successful or failed operations.</p>
+    <code>app.use(flash())</code>: This adds the connect-flash middleware to the application, which allows for displaying flash messages on successful or failed operations.</p>
     <p>
-    `app.use(bodyParser.urlencoded({ extended: false }))`: This adds the body-parser middleware to the application, which parses incoming request bodies in a middleware and makes it available under the req.body property.</p>
+    <code>app.use(bodyParser.urlencoded({ extended: false }))</code>: This adds the body-parser middleware to the application, which parses incoming request bodies in a middleware and makes it available under the req.body property.</p>
     <p>
-    `app.use(methodOverride(req => req.body._method))`: This adds the method-override middleware to the application, which allows for using HTTP verbs such as PUT or DELETE in places where the client doesn't support it (like in HTML forms).</p>
+    <code>app.use(methodOverride(req => req.body._method))</code>: This adds the method-override middleware to the application, which allows for using HTTP verbs such as PUT or DELETE in places where the client doesn't support it (like in HTML forms).</p>
     <p>
-    `app.use(cookieParser())`: This adds the cookie-parser middleware to the application, which parses cookies attached to the client request object.</p>
+    <code>app.use(cookieParser())</code>: This adds the cookie-parser middleware to the application, which parses cookies attached to the client request object.</p>
     <p>
-    `app.use(session({ ... }))`: This adds the express-session middleware to the application, which enables server-side session management. The middleware creates a new session object for each client, and stores the session data on the server.</p>
+    <code>app.use(session({ ... }))</code>: This adds the express-session middleware to the application, which enables server-side session management. The middleware creates a new session object for each client, and stores the session data on the server.</p>
     <p>
-    `app.use(passport.initialize())`: This adds the passport middleware to the application, which is an authentication middleware that provides various strategies for authenticating a user.
+    <code>app.use(passport.initialize())</code>: This adds the passport middleware to the application, which is an authentication middleware that provides various strategies for authenticating a user.
     </p><p>
-    `app.use(passport.session({ ... }))`: This adds the passport session middleware to the application, which allows passport to serialize and deserialize user instances to and from the session.
+    <code>app.use(passport.session({ ... }))</code>: This adds the passport session middleware to the application, which allows passport to serialize and deserialize user instances to and from the session.
     </p><p>
-    `app.use(express.urlencoded({extended:false}))`: This adds the urlencoded middleware to the application, which parses incoming requests with urlencoded payloads.
+    <code>app.use(express.urlencoded({extended:false}))</code>: This adds the urlencoded middleware to the application, which parses incoming requests with urlencoded payloads.
     </p>
     <p>
-    `app.use(express.json())`: This adds the json middleware to the application, which parses incoming requests with json payloads.
+    <code>app.use(express.json())</code>: This adds the json middleware to the application, which parses incoming requests with json payloads.
     </p><p>
-    `app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')))`: This serves static files, like images, CSS, JavaScript, etc., from the specified directory. This middleware serves files in the directory to the client, based on the URL path provided.
+    <code>app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')))</code>: This serves static files, like images, CSS, JavaScript, etc., from the specified directory. This middleware serves files in the directory to the client, based on the URL path provided.
     </p><p>
-    `app.use(morgan('dev'))`: This adds the morgan middleware to the application, which logs incoming requests to the console in a developer-friendly format.
+    <code>app.use(morgan('dev'))</code>: This adds the morgan middleware to the application, which logs incoming requests to the console in a developer-friendly format.
     </p><p>
-    `app.use((err, req, res, next) => { ... })`: This adds an error handling middleware to the application, which catches and handles errors thrown by the application.
+    <code>app.use((err, req, res, next) => { ... })</code>: This adds an error handling middleware to the application, which catches and handles errors thrown by the application.
     </p><p>
-    `app.use((req, res, next) => { ... })`: This adds middleware to the application to set the content type of the response to text/html if the request URL ends with .html.
+    <code>app.use((req, res, next) => { ... })</code>: This adds middleware to the application to set the content type of the response to text/html if the request URL ends with .html.
     </p>
     <p>
-    In summary, the `app.use()` function is used to add middleware to the Express application, which can perform various operations such as parsing request bodies, handling errors, and serving static files, among others.
+    In summary, the <code>app.use()</code> function is used to add middleware to the Express application, which can perform various operations such as parsing request bodies, handling errors, and serving static files, among others.
     </p>
     </li>
     </ul>
@@ -531,7 +572,7 @@ const addToCart = async (req,res,next) =>{
 routes.post('/cart/:id', checkJWT, addToCart);
 ```
 
-<p>Also note the presense of another middleware function `checkJWT` added before addToCart function. This is another middleware used to check authorization before continuing to execution of addToCart function</p>
+<p>Also note the presense of another middleware function <code>checkJWT</code> added before addToCart function. This is another middleware used to check authorization before continuing to execution of addToCart function</p>
 
 `token.js` controllers
 ```js
@@ -587,7 +628,7 @@ The client receives the response and processes it according to its own needs.
 
 Most notable is known as REST API:
 <p><strong>REST</strong> (Representational State Transfer) API is a type of web service that uses HTTP methods to communicate with clients. It is a popular architectural style for building web APIs and is widely used by many popular web services.</p><p>
-REST APIs are built around resources, which are objects or pieces of data that can be accessed and manipulated through a set of HTTP methods. These methods include `GET`, `POST`, `PUT`, and `DELETE`.
+REST APIs are built around resources, which are objects or pieces of data that can be accessed and manipulated through a set of HTTP methods. These methods include <code>GET, POST, PUT</code>, and <code>DELETE</code>.
 </p><p>
 When a client sends a request to a REST API, it includes a URL that identifies the resource it wants to access or manipulate, along with the HTTP method it wants to use. The API then sends a response back to the client, usually in the form of JSON or XML data.
 </p><p>
@@ -658,3 +699,60 @@ In the "Body" tab, add any necessary request parameters for the API request. The
 Click on the "Send" button to send the API request.</li><li>
 Once you have sent the API request, you should receive a response from the API. You can view the response in the "Response" tab in Postman. You can also use Postman to test different API endpoints and methods by creating new requests and modifying the headers and parameters as needed.</li>
 </ol>
+
+# Appendix:
+<ul>
+
+  <li><strong>API:</strong> application programming interface</li>
+   <li><strong>Asynchronous:</strong> A programming model where tasks can be executed independently and concurrently, allowing other tasks to continue while waiting for long-running tasks to complete.</li>
+   <li><strong>Async/Await:</strong> A way of writing asynchronous code in a synchronous style, using the <code>async</code> and <code>await</code> keywords to manage Promises.</li>
+  <li><strong>bcrypt:</strong> a module used for password hashing</li>
+    <li><strong>Authentication token:</strong> A type of token used to verify a user's identity and provide access to resources or services. Examples include JSON Web Tokens (JWT) and OAuth tokens.</li>
+  <li><strong>bodyparser:</strong> a middleware module used for parsing the body of incoming HTTP requests</li>
+    <li><strong>Callback:</strong> A function that is passed as an argument to another function and is executed when that function completes.</li>
+
+  <li><strong>Client:</strong> a device or program that requests resources or services from a server</li>
+  <li><strong>Client-server architecture:</strong> A model in which a client makes requests to a server, which processes them and sends back a response.</li>
+  <li><strong>Component-based architecture:</strong> A model in which a system is built from pre-defined software components that can be combined and reused to create different applications.</li>
+  <li><strong>Cookie:</strong> A small piece of data stored by a website on a user's computer to keep track of information such as user preferences, login status, and browsing history. Cookies can be accessed and modified by both the client and server sides, and can be set to expire after a certain amount of time or be deleted by the user.</li>
+  <li><strong>cookieparser:</strong> a module used for parsing cookies attached to incoming HTTP requests</li>
+  <li><strong>Cross-Site Request Forgery (CSRF or XSRF)</strong>: an attack that tricks a user into unintentionally performing an action on a website by exploiting the user's authenticated session on a different website.</li>
+  <li><strong>dotenv:</strong> a module used for loading environment variables</li>
+  <li><strong>DELETE:</strong> HTTP request method used for deleting a resource on a server</li>
+  <li><strong>EJS:</strong> Embedded JavaScript, a template engine used for generating HTML markup with JavaScript</li>
+  <li><strong>Event:</strong> In programming, an event is a signal or notification that an action has occurred or a condition has changed, such as a user clicking a button or a server receiving a request.</li>
+  <li><strong>Event-driven architecture:</strong> A model in which a system responds to events, such as user input or system notifications, rather than following a strict sequence of steps.</li>
+  <li><strong>Express:</strong> a Node.js web application framework</li>
+  <li><strong>GET:</strong> HTTP request method used for retrieving resources from a server</li>
+  <li><strong>HTTP:</strong> Hypertext Transfer Protocol</li>
+  <li><strong>HTTPS:</strong> Hypertext Transfer Protocol Secure, a secure version of HTTP that uses encryption to protect sensitive data</li>
+  <li><strong>HTTP Status Code:</strong> a code returned by a server in response to a client's request that indicates the status of the request</li>
+  <li><strong>JSON:</strong> JavaScript Object Notation, a lightweight data interchange format</li>
+  <li><strong>JSON.stringify:</strong> a method used to convert a JavaScript object or value to a JSON string</li>
+  <li><strong>JSON.parse:</strong> a method used to parse a JSON string and convert it into a JavaScript object or value</li>
+  <li><strong>JWT:</strong> JSON Web Token</li>
+  <li><strong>Layered architecture:</strong> A model in which a system is organized into multiple layers or tiers, each of which performs a specific function and communicates with adjacent layers.</li>
+  <li><strong>Microservices architecture:</strong> A model in which a large application is broken down into smaller, independent services that can be developed, deployed, and scaled separately.</li>
+  <li><strong>Middleware:</strong> A software layer that sits between a client and a server or between different components of a system, providing additional functionality such as logging, authentication, and caching.</li>
+  <li><strong>MySQL:</strong> a popular relational database management system</li>
+   <li><strong>next():</strong> a function used in middleware to pass control to the next middleware function in the chain.</li>
+   <li><strong>Node.js</strong>: open-source, cross-platform JavaScript runtime environment that allows developers to build server-side applications using JavaScript</li>
+  <li><strong>Passport:</strong> a Node.js library for authentication</li>
+  <li><strong>POST:</strong> HTTP method used for creating resources</li>
+  <li><strong>Postman</strong>: A popular API development environment that allows developers to design, test, and document APIs.</li>
+    <li><strong>Promise:</strong> A JavaScript object representing a value that may not be available yet, but will be resolved or rejected at some point in the future.</li>
+
+  <li><strong>PUT:</strong> HTTP method used for updating resources</li>
+  <li><strong>req:</strong> short for request, used in Node.js to represent a client request</li>
+  <li><strong>res:</strong> short for response, used in Node.js to represent a server response</li>
+  <li><strong>REST API:</strong> Representational State Transfer API</li>
+  <li><strong>Server:</strong> a device or program that provides resources or services to clients</li>
+  <li><strong>Session</strong>: a way to store user data on the server-side between requests</li>
+  <li><strong>Software architecture:</strong> The overall design and structure of a software system, including its components, interactions, and relationships.</li>
+  <li><strong>Stripe</strong>: a popular payment gateway for online businesses</li>
+    <li><strong>System architecture:</strong> The design and structure of a larger system or platform, including software and hardware components, their interactions, and their relationships.</li>
+      <li><strong>Synchronous:</strong> A programming model where tasks are executed one after the other, in a predetermined sequence.</li>
+<li><strong>Token:</strong> In computing, a token is a sequence of characters or symbols that represent something else, such as an access code or an identifier. </li>
+
+
+</ul>
