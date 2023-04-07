@@ -353,13 +353,34 @@ jwt.verify(token, 'secret-key-here', (err, decoded) => {
 </li>
 </ul>
 
+## Static files:
+<p>
+Static assets are files that are served to the client as-is, without any processing or modification by the server. These files typically include things like images, stylesheets, JavaScript files, and other resources that are used by web applications. They are called "static" because they do not change dynamically based on user input or other factors.</p><p>
+Static assets can be served directly by the web server or through a content delivery network (CDN) for faster delivery to users around the world. They are typically cached by the client's web browser so that subsequent requests for the same file can be served from the cache instead of being re-downloaded from the server.</p>
+
 ## EJS Files:
 <p>EJS (Embedded JavaScript) is a templating language that allows developers to generate HTML dynamically with JavaScript. EJS is used in Node.js applications to generate dynamic web pages that can include variables, conditionals, and loops.</p>
 <p>
 In EJS, developers can write HTML code and embed JavaScript code within it using tags such as <% %> and <%= %>. The <% %> tags are used to execute JavaScript code, while the <%= %> tags are used to display the value of a JavaScript expression within the HTML output.</p>
 <p>
 EJS templates can also include partials, which are reusable code snippets that can be included in multiple templates. EJS partials are defined using the <%- include('partial-name') %> syntax.
-</p><p>
+</p>
+
+```html
+    <div class="container">
+        <h1>Error</h1>
+        <p>
+            <%= message %>
+        </p>
+        <button onclick="goHome()">Back</button>
+        <script>
+            const goHome = () =>{
+                window.location.href = '/'
+            }
+        </script>
+    </div>
+```
+<p>
 When a Node.js application receives a request, the server processes the request and generates an HTML response using an EJS template. The server replaces EJS tags with their corresponding values and generates the final HTML output. This output is then sent back to the client's web browser as the response to the original request.</p>
 <p>
 Overall, EJS is a powerful tool for generating dynamic web pages in Node.js applications. It allows developers to create reusable templates that can be customized with dynamic data, making it easier to build complex web applications.
