@@ -202,7 +202,7 @@ const session = await stripe.checkout.sessions.create({
 ## Overview of important modules used:
 <ul>
     <li><strong>express</strong>:
-        <p>Express.js is a web application framework for Node.js that provides a simple, yet powerful set of features for creating web applications and APIs. It provides a number of built-in middleware functions to help you quickly create robust applications, including handling HTTP requests and responses, routing, session management, error handling, and more. Express is lightweight and flexible, and allows you to easily configure your application to meet your specific needs. It also has a large and active community that contributes to its development and provides a wealth of third-party plugins and extensions. ![Documentation](https://expressjs.com/)</p>
+        <p>Express.js is a web application framework for Node.js that provides a simple, yet powerful set of features for creating web applications and APIs. It provides a number of built-in middleware functions to help you quickly create robust applications, including handling HTTP requests and responses, routing, session management, error handling, and more. Express is lightweight and flexible, and allows you to easily configure your application to meet your specific needs. It also has a large and active community that contributes to its development and provides a wealth of third-party plugins and extensions. </p>![Documentation](https://expressjs.com/)
     </li>
     <li><strong>express-session</strong>:
     <p>express-session is a middleware for Express.js that provides a way to manage user sessions in a web application. Sessions allow web applications to store information about the user across multiple requests.</p</li>
