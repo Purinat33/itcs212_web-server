@@ -12,7 +12,11 @@ const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const {checkUser} = require('./controllers/token')
+const cors = require('cors')
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
+
+//Allow the frontend to connect to the backend
+app.use(cors({origin: 'http://localhost:3000'}));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

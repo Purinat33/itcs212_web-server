@@ -140,22 +140,44 @@ app.get('/error', (req, res) => {
 });
 
 app.get('/admin/dashboard', (req,res,next)=>{
-    fetch('http://localhost:80/admin/users')
-    .then(response => response.json())
-    .then(data => {
-    const users = data;
-    console.log(users); // add this line
-    fetch('http://localhost:80/admin/product')
-      .then(response => response.json())
-      .then(data => {
+
+    let token;
+  if (req.cookies && req.cookies.token) { // check for token in cookies
+    token = req.cookies.token;
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    if (err) {
+      return res.status(401).json({ message: 'Invalid token' }); // handle unauthorized access
+    }
+
+    if (!decodedToken.isAdmin) {
+      return res.status(403).json({ message: 'Access denied. User is not an admin' }); // handle forbidden access
+    }
+
+        fetch('http://localhost:80/admin/users')
+        .then(response => response.json())
+        .then(data => {
+        const users = data;
+        console.log(users); // add this line
+        fetch('http://localhost:80/admin/product')
+        .then(response => response.json())
+        .then(data => {
         const product = data;
         console.log(product); // add this line
         // Pass the users and product data to the user.ejs file for rendering
         res.render('user', { users, product });
-      })
-      .catch(error => console.error(error));
-  })
-  .catch(error => console.error(error));
+        })
+        .catch(error => console.error(error));
+        })
+        .catch(error => console.error(error));
+    })
 })
 
 
