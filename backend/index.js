@@ -14,6 +14,13 @@ const cookieParser = require('cookie-parser')
 const {checkUser} = require('./controllers/token')
 //PREPROCESSING BEGIN (DB CONNECTION, CREATE AN ADMIN ETC.)
 
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 const {db} = require('./model/database');
 module.exports = {db}; //Exporting db pool to allow other files to join and query DB
 
@@ -74,7 +81,7 @@ const checkOut = require('./routes/checkout')
 //If we are using DEV variable then we use port 3000
 //else we use port 8080
 //The variable is declared inside .env file, which are not on VCS
-const port = process.env.DEV === 'true' ? 3000:8080; //All the value inside .env are strings
+const port =80; //All the value inside .env are strings
 
 //Required for req.flash()
 app.use(flash());
@@ -135,27 +142,17 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((err, req, res, next) => {
+app.use('/error',(err, req, res, next) => {
   console.error(err);
   const errorMessage = err.message || 'Internal Server Error';
   res.status(err.status || 500);
-  res.render('error', { message : errorMessage });
+  res.json({ message : errorMessage });
 });
 
-app.get('/', checkUser, (req,res)=>{
-    //We are going to change some texts based on being login or not
-    res.status(200).render('index', {user: req.user});
-});
-
-//About page. Because .html is not cool enough
-app.get('/about', (req,res)=>{
-    res.status(200).sendFile(path.resolve(__dirname,'..', 'frontend', 'public', 'about.html'));
-})
-
-//404 Error not found page
-app.all('*', (req,res)=>{
-    res.status(404).sendFile(path.join(__dirname,'..', 'frontend', 'public' ,'404.html'));
-});
+// app.get('/', checkUser, (req,res)=>{
+//     //We are going to change some texts based on being login or not
+//     res.status(200).json({user: req.user});
+// });
 
 app.listen(port, ()=>{
     console.log(`Server is listening on port ${port}...`);

@@ -38,7 +38,7 @@ const search = async (req,res) =>{
     });
 
 
-    return res.status(200).render('search', { product: products });
+    return res.status(200).json({ product: products });
     
 }
 
@@ -79,7 +79,7 @@ const getGame = async (req, res) => {
     });
 
 
-    return res.status(200).render('catalogue', { product: products });
+    return res.status(200).json({ product: products });
   } else {
     const id = req.params.id;
     // Fetch the product details from the database
@@ -101,7 +101,7 @@ const getGame = async (req, res) => {
 
   // If the product with the given ID doesn't exist, return a 404 error
   if (rows.length === 0) {
-    return res.status(404).render('error', { message: 'Product not found' });
+    return res.status(404).json({ message: 'Product not found' });
   }
 
   // Extract the product details from the query result
@@ -133,7 +133,7 @@ const getGame = async (req, res) => {
   };
 
   // Render the product page EJS template, passing the product data to it
-  res.status(200).render('product', { product });
+  res.status(200).json({ product });
   }
 };
 
@@ -148,10 +148,10 @@ const putGame = async (req,res)=>{
             .query("SELECT * FROM product WHERE id = ?", [req.params.id]);
             if (rows && rows.length) {
                 const product = rows[0];
-                res.status(200).render("editGame", { product }); // Pass the user object directly to the EJS template
+                res.status(200).json({ product }); // Pass the user object directly to the EJS template
             } else {
             // Product not found, render an error page or redirect
-            res.status(404).render('error', {message: "Product not found"});
+            res.status(404).json({message: "Product not found"});
             }
         }else if(req.method === 'PUT'){
             const id = req.params.id;
@@ -162,15 +162,15 @@ const putGame = async (req,res)=>{
                 `UPDATE product SET name=?, description=?, singleplayer=?, multiplayer=?, open_world=?, sandbox=?, simulator=?, team_based=?, fps=?, horror=?, puzzle=?, other=?, publisher=?, price=? WHERE id=?`,
                 [name, description, !!singleplayer, !!multiplayer, !!open_world, !!sandbox, !!simulator, !!team_based, !!fps, !!horror, !!puzzle, !!other, publisher, price, id]
             );
-            res.status(200).render('success',{message: 'Product successfully updated', token: req.cookies.token});
+            res.status(200).json({message: 'Product successfully updated', token: req.cookies.token});
             } catch (error) {
                 console.log(error);
-                return res.status(500).render('error', { message: error });
+                return res.status(500).json({ message: error });
             } 
         }
     }catch(err){
         console.log(err);           
-        return res.status(500).render('error', {message: err});
+        return res.status(500).json({message: err});
     }
 }
 
@@ -220,7 +220,7 @@ const upload = multer({ dest: '../frontend/public/upload', limits:{files:5} });
 const postGame = async (req, res) => {
   // Check if exactly 5 files have been uploaded
   if (req.files && req.files.length !== 5) {
-    return res.status(400).render('error', { message: 'Please upload exactly 5 images' });
+    return res.status(400).json({ message: 'Please upload exactly 5 images' });
   }
 
   const { name, description, singleplayer, multiplayer, open_world, sandbox, simulator, team_based, fps, horror, puzzle, other, publisher, price } = req.body;
@@ -298,7 +298,7 @@ const postGame = async (req, res) => {
       });
     });
 
-    res.status(201).render('success', {message: 'Product created successfully', token: req.cookies.token})
+    res.status(201).json({message: 'Product created successfully', token: req.cookies.token})
   } catch (err) {
     console.error(err);
     try {
@@ -319,7 +319,7 @@ const postGame = async (req, res) => {
       return res.status(500).render('error', { message: 'You can only upload up to 5 files at once.' });
     }
     console.log('Error caught!');
-    return res.status(500).render('error', { message: 'An unexpected error occurred'});
+    return res.status(500).json({ message: 'An unexpected error occurred'});
   }
 }
 

@@ -1,7 +1,6 @@
 const express = require('express');
 const {
-    login,
-    register,
+    authenticate,
     createUser
 } = require('./../controllers/auth')
 const session = require('express-session')
@@ -17,22 +16,22 @@ routes.use(session({
     saveUninitialized: false
 }))
 
-routes.get('/login', login);
+// routes.get('/login', login);
 //Getting the register page
-routes.get('/register', register);
+// routes.get('/register', register);
 
 //login POST (logging in)
-routes.post('/login', passport.authenticate('local', {
-  session: false,
-  failureRedirect: '/auth/login',
-  failureFlash: true
-}), (req, res) => {
-  const token = jwt.sign({ id: req.user.id, isAdmin: req.user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '2h'});
-  res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'lax', maxAge: 7200000});
-  res.status(200).render('success',{ message: 'Authentication successful', token: token });
-});
+// routes.post('/login', passport.authenticate('local', {
+//   session: false,
+//   failureRedirect: '/auth/login',
+//   failureFlash: true
+// }), (req, res) => {
+//   const token = jwt.sign({ id: req.user.id, isAdmin: req.user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '2h'});
+//   res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'lax', maxAge: 7200000});
+//   res.status(200).json({ message: 'Authentication successful', token: token });
+// });
 
-//Register post (creating user)
+routes.post('/login', authenticate);
 routes.post('/register', createUser);
 
 module.exports = routes;

@@ -27,7 +27,7 @@ const getCart = async (req, res, next) => {
     return acc + (item.price * item.quantity);
   }, 0);
 
-  res.status(200).render('cart', { cartItems: items[0] , totalSum, user: req.user});
+  res.status(200).json({ cartItems: items[0] , totalSum, user: req.user});
 };
 
 const putCart = async (req,res,next)=>{
@@ -52,12 +52,12 @@ const putCart = async (req,res,next)=>{
         } catch (error) {
             console.log(error);
             await db.promise().query('ROLLBACK');
-            res.status(500).render('error', {message: "Internal server error"});
+            res.status(500).json({message: "Internal server error"});
         }
     } catch (error) {
         console.log(error);
         await db.promise().query('ROLLBACK');
-        res.status(500).render('error', {message: "Internal server error"});
+        res.status(500).json({message: "Internal server error"});
 
     }
 }
@@ -69,7 +69,7 @@ const deleteCart = async (req,res,next) =>{
   const pid = req.params.id;
 
   if (!pid) {
-    res.status(400).render('error', {message: "Invalid product ID"});
+    res.status(400).json({message: "Invalid product ID"});
     return;
   }
 
@@ -83,11 +83,11 @@ const deleteCart = async (req,res,next) =>{
     }catch(err){
       console.log(err);
       await db.promise().query('ROLLBACK');
-      res.status(500).render('error', {message: "Internal server error"});
+      res.status(500).json({message: "Internal server error"});
     }
   } catch (error) {
     await db.promise().query('ROLLBACK');
-    res.status(500).render('error', {message: "Internal server error"});
+    res.status(500).json({message: "Internal server error"});
   }
 };
 
@@ -102,7 +102,7 @@ const addToCart = async (req,res,next) =>{
         try {
             await db.promise().query('INSERT INTO cart (uid, pid, quantity) VALUES (?, ?, ?)', [userID, req.params.id, quantity]);            
             await db.promise().query('COMMIT');
-            res.status(200).render('success', {message: "Product added", token: req.cookies.token});
+            res.status(200).json({message: "Product added", token: req.cookies.token});
         } catch (error) {
             console.log(error);
             await db.promise().query('ROLLBACK');
