@@ -33,30 +33,37 @@
 
             </script>
 
-            <div class="register">
-                <!-- will change to logout once logged in -->
-                <a href="auth/login" target="_self">Login</a>
-            </div>
+            <% if (user && user.token) { %>
+                <div class="register">
+                    <!-- will change to logout once logged in -->
+                    <a href="#" target="_self">Logout</a>
+                </div>
+                <% } else { %>
+                    <div class="register">
+                        <!-- will change to logout once logged in -->
+                        <a href="auth/login" target="_self">Login</a>
+                    </div>
+            <% } %>
+
         </nav>
         <section class="h-text">
-            <% if (user && user.role==='admin' ) { %>
-                <span>
-                    Enjoy
-                </span>
+            <% if (token) { const decoded=jwt.decode(token); if (decoded && decoded.isAdmin) { %>
+                <span>Enjoy</span>
                 <h1>Explore Gaming</h1>
                 <br>
                 <a href="/admin/dashboard">Dashboard</a>
-                <% } else if (user && user.role==='user' ) { %>
+                <% } else { %>
                     <span>Enjoy</span>
                     <h1>Explore Gaming</h1>
                     <br>
                     <a href="/store/cart">My Cart</a>
-                    <% } else { %>
+                    <% }} else { %>
                         <span>Enjoy</span>
                         <h1>Explore Gaming</h1>
                         <br>
                         <a href="/auth/register">Become a Member</a>
                         <% } %>
+
         </section>
 
         <p><a href="https://wallpaperaccess.com/game-mashup" target="_blank" class="credit">Background Image Source</a>

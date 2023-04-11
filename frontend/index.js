@@ -6,8 +6,8 @@ const ejs = require('ejs')
 const path = require('path')
 const axios = require('axios')
 const morgan = require('morgan')
-
-
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
@@ -15,10 +15,29 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(express.urlencoded({extended:false}))
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
+app.use((req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = {role: decoded.isAdmin};
+    // req.user = decoded;
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
 
 app.get('/', (req,res)=>{
-    res.status(200).render('index', {user: req.user});
+    // console.log(req.cookies);
+    res.status(200).render('index', {user: req.cookies, token:req.cookies.token, jwt:jwt});
 })
 
   //About page. Because .html is not cool enough
@@ -45,6 +64,7 @@ route.post('/register', async (req, res) => {
   if (response.ok) {
     const data = await response.json();
     // handle successful registration
+    console.log(data);
     res.status(200).redirect('/');
   } else {
     const errorData = await response.json();

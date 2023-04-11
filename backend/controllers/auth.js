@@ -21,6 +21,7 @@ const authenticate = (req, res, next) => {
         return res.status(401).json({ status: 'error', message: 'An error occurred during login.' });
       }
       const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '2h' });
+      res.set('Authorization', `Bearer ${token}`);
       return res.json({ status: 'success', message: 'Authentication successful', token });
     });
   })(req, res, next);
