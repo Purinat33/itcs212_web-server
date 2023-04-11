@@ -108,14 +108,14 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
 //Assets folder to store images/data/assets
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
+// app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
 
 //logging
 app.use(morgan('dev'))
 
 //Set the view folder to where EJS will run at runtime
-app.set('views', path.join(__dirname,'..','frontend','view'))
-app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname,'..','frontend','view'))
+// app.set('view engine', 'ejs');
 
 //Routing
 //Game routings
