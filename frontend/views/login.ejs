@@ -45,10 +45,10 @@
             </div>
             <input type="submit" value="Login">
                 <% if (typeof messages !=='undefined' && messages.length> 0) { %>
-                <div class="alert alert-danger">
-                    <%= messages[0] %>
-                </div>
-                <% } %>
+                    <div class="alert alert-danger">
+                        <%= messages[0].message %>
+                    </div>
+                    <% } %>
         </div>
         </form>
     </div>
