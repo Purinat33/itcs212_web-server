@@ -120,26 +120,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <% product.forEach(function(product) { %>
+                            
+                                <% for (var i=0;i<product.length; i++) { %>
                                     <tr>
                                         <td>
-                                            <%= product.name %>
+                                            <%= product[i].name %>
                                         </td>
                                         <td>
-                                            <%= product.publisher %>
+                                            <%= product[i].publisher %>
                                         </td>
                                         <td>
-                                            <%= product.price %>
+                                            <%= product[i].price %>
                                         </td>
-                                        <td><a href="<%= '/admin/dashboard/game/edit/' + product.id %>"
+                                        <td><a href="<%= '/admin/dashboard/game/edit/' + product[i].id %>"
                                                 class="btn">Edit</a></td>
-                                        <td><form action="<%= '/admin/dashboard/game/delete/' + product.id %>" method="post" onsubmit="return confirm('Delete this product?')">
+                                        <td><form action="<%= '/admin/dashboard/game/delete/' + product[i].id %>" method="post" onsubmit="return confirm('Delete this product?')">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="btn delbtn"><span>Delete</span></button>
                                             </form>
                                         </td>
                                     </tr>
-                                 <% }); %>
+                                 <% } %>
 
                         </tbody>
                         
@@ -165,26 +166,29 @@
                         </thead>
                         <tbody>
                             <!--Looping through each user in the database and displaying them-->
-                            <% users.forEach(function(users) { %>
+                            
+
+                            <% for(var j=0;j<users.length;j++) { %>
                                 <tr>
                                     <td>
-                                        <%= users.username %>
+                                        <%= users[j].username %>
                                     </td>
                                     <td>
-                                        <%= users.isAdmin ? 'Admin' : 'User' %>
+                                        <%= users[j].isAdmin ? 'Admin' : 'User' %>
                                     </td>
-                                    <td><a href="<%= (users.username === 'admin') ? 'javascript:void(0)' : '/admin/dashboard/edit/' + users.id %>"
-                                            class="<%= (users.username ==='admin' ) ? 'btnnull' : 'btn' %>" class="btn">Edit</a></td>
+                                    <td><a href="<%= (users.username === 'admin') ? 'javascript:void(0)' : '/admin/dashboard/edit/' + users[j].id %>"
+                                            class="<%= (users[j].username ==='admin' ) ? 'btnnull' : 'btn' %>" class="btn">Edit</a></td>
                                     <% if (users.username==='admin' ) { %>
                                         <td><button class="btnnull delbtn" disabled>Delete</button></td>
                                     <% } else { %>
-                                        <td><form action="/admin/dashboard/delete/<%= users.id %>" method="post" onsubmit="return confirm(`Delete this user?`)">
+                                        <td><form action="/admin/dashboard/delete/<%= users[j].id %>" method="post" onsubmit="return confirm(`Delete this user?`)">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="btn delbtn">Delete</button>
                                         </form></td>
                                     <% } %>
                                 </tr>
-                                <% }); %>
+                                <% } %>
+                                
 
                         </tbody>
                     </table>

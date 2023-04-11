@@ -2,26 +2,39 @@
 const {db} = require('../index');
 const bcrypt = require('bcrypt');
 const path = require('path')
-const fs = require('fs')
+const fs = require('fs');
 
-const dashboard = async (req,res,next) => {
+const getAllUsers = async () => {
+  const query = 'SELECT * FROM users';
+  const [rows,fields] = await db.promise().query(query);
+  return rows;
+};
+
+const getAllProducts = async () => {
   const game = 'SELECT * FROM product';
-  let product;
-  db.query(game, (error, results) => {
-    if (error) throw error;
-    product = results;
+  // console.log(game);
+  const [rows,fields] = await db.promise().query(game);
+  console.log(rows);
+  return rows;
+};
+
+
+const dashboard = async (req, res, next) => {
+  try {
+    const game = 'SELECT * FROM product';
+    const product = await db.query(game);
 
     const query = 'SELECT * FROM users';
-    let users;
-    db.query(query, (error, results) => {
-      if (error) throw error;
-      users = results;
-      
-      // Render admin dashboard page with user data and product data
-      res.status(200).render('user.ejs', { users: users, product: product });
-    });
-  });
-}
+    const users = await db.query(query);
+
+    // Send JSON response with user data and product data
+    console.log(users, product);
+    res.status(200).json({ users, product });
+  } catch (error) {
+    console.error(error.message);
+    next(error);
+  }
+};
 
 
 //User section
@@ -146,4 +159,4 @@ const getAddGame = (req,res,next) =>{
   res.status(200).sendFile(path.join(__dirname, '..', '..','frontend', 'public', 'admin', 'addgame.html'));
 }
 
-module.exports = {dashboard, createUser, editUser, deleteUser, getAddUser, getAddGame}
+module.exports = {getAllUsers,getAllProducts,dashboard, createUser, editUser, deleteUser, getAddUser, getAddGame}

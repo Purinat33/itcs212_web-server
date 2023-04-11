@@ -134,13 +134,12 @@ app.use('/admin', admin);
 //payment routing
 app.use('/pay', checkOut)
 
-//Make the HTML served by the server instead of static HTML
-app.use((req, res, next) => {
-  if (req.path.endsWith('.html')) {
-    res.setHeader('Content-Type', 'text/html');
-  }
-  next();
-});
+app.get('/', (req,res)=>{
+  res.send(`{
+    "status":"running",
+    "port":"80"
+  }`)
+})
 
 app.use('/error',(err, req, res, next) => {
   console.error(err);

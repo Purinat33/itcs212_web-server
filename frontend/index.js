@@ -18,6 +18,19 @@ app.use(express.urlencoded({extended:false}))
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
+const parseJSONResponse = async (response) => {
+  try {
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.indexOf('application/json') !== -1) {
+      const json = await response.json();
+      return json;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  return null;
+};
+
 app.use((req, res, next) => {
   const token = req.cookies.token;
 
@@ -34,6 +47,13 @@ app.use((req, res, next) => {
     return next(error);
   }
 });
+
+function getCookie(req,name) {
+  const cookie = req.cookies[name];
+  return cookie ? cookie : null;
+}
+
+
 
 app.get('/', (req,res)=>{
     // console.log(req.cookies);
@@ -119,12 +139,33 @@ app.get('/error', (req, res) => {
     .catch(err => console.error(err));
 });
 
+app.get('/admin/dashboard', (req,res,next)=>{
+    fetch('http://localhost:80/admin/users')
+    .then(response => response.json())
+    .then(data => {
+    const users = data;
+    console.log(users); // add this line
+    fetch('http://localhost:80/admin/product')
+      .then(response => response.json())
+      .then(data => {
+        const product = data;
+        console.log(product); // add this line
+        // Pass the users and product data to the user.ejs file for rendering
+        res.render('user', { users, product });
+      })
+      .catch(error => console.error(error));
+  })
+  .catch(error => console.error(error));
+})
+
+
+
 
 //404 Error not found page
 app.all('*', (req,res)=>{
     res.status(404).sendFile(path.join(__dirname, 'public' ,'404.html'));
 });
 
-app.listen(4000, ()=>{
-    console.log('Frontend is listening on port 4000');
+app.listen(3000, ()=>{
+    console.log('Frontend is listening on port 3000');
 })
