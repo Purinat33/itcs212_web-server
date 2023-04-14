@@ -7,7 +7,6 @@ const path = require('path'); //For file pathing
 const morgan = require('morgan'); //For logging
 require('dotenv').config(); //Used to call variables such as DEV, DB credential, PORT no
 const bcrypt = require('bcrypt'); //For hashing/salting that offers more protection than normal SHA256
-const ejs = require('ejs')
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')

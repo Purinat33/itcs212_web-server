@@ -106,12 +106,12 @@ const addToCart = async (req,res,next) =>{
         } catch (error) {
             console.log(error);
             await db.promise().query('ROLLBACK');
-            res.status(500).render('error', {message: "Internal server error"})
+            res.status(500).json({message: "Internal server error"})
         }
     } catch (err) {
         console.log(err);
         await db.promise().query('ROLLBACK');
-        res.status(500).render('error', {message: "Internal server error"})
+        res.status(500).json({message: "Internal server error"})
     }
 }
 
