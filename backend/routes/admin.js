@@ -28,7 +28,7 @@ route.use(express.json())
 //For generic admin page
 // route.get('/dashboard', checkJWT, checkAdmin, dashboard);
 // Backend routing
-route.get('/users', async (req, res, next) => {
+route.get('/users',checkJWT, checkAdmin, async (req, res, next) => {
   try {
     const users = await getAllUsers();
     return res.status(200).json(users);
@@ -38,7 +38,7 @@ route.get('/users', async (req, res, next) => {
   }
 });
 
-route.get('/product', async (req, res, next) => {
+route.get('/product', checkJWT, checkAdmin, async (req, res, next) => {
   try {
     const product = await getAllProducts();
     console.log(product);

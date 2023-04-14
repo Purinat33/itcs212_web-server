@@ -8,6 +8,7 @@ const axios = require('axios')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const checkToken = require('./controller/cookie')
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
@@ -31,22 +32,24 @@ const parseJSONResponse = async (response) => {
   return null;
 };
 
-app.use((req, res, next) => {
-  const token = req.cookies.token;
+// app.use((req, res, next) => {
+//   const token = req.cookies.token;
 
-  if (!token) {
-    return next();
-  }
+//   if (!token) {
+//     return next();
+//   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = {role: decoded.isAdmin};
-    // req.user = decoded;
-    return next();
-  } catch (error) {
-    return next(error);
-  }
-});
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = {role: decoded.isAdmin};
+//     // req.user = decoded;
+//     return next();
+//   } catch (error) {
+//     return next(error);
+//   }
+// });
+
+app.use(checkToken);
 
 function getCookie(req,name) {
   const cookie = req.cookies[name];
@@ -139,7 +142,7 @@ app.get('/error', (req, res) => {
     .catch(err => console.error(err));
 });
 
-app.get('/admin/dashboard', (req,res,next)=>{
+app.get('/admin/dashboard', checkToken, (req,res,next)=>{
 
     let token;
   if (req.cookies && req.cookies.token) { // check for token in cookies
