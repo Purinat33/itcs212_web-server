@@ -201,16 +201,16 @@ app.get('/admin/adduser', checkToken, (req,res)=>{
   }
 
   if (!token) {
-    return res.status(401).json({ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
     if (err) {
-      return res.status(401).json({ message: 'Invalid token' }); // handle unauthorized access
+      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
     }
 
     if (!decodedToken.isAdmin) {
-      return res.status(403).json({ message: 'Access denied. User is not an admin' }); // handle forbidden access
+      return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); // handle forbidden access
     }
 
     //Code here
