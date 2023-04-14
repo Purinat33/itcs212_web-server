@@ -97,7 +97,7 @@
             <div class="cards">
             </div>
             <div class="title">
-                <h2><a href="/admin/addgame" class="btn" id="addGame">Add Game</a></h2>
+                <h2><a href="http://localhost:3000/admin/addgame" class="btn" id="addGame">Add Game</a></h2>
 
                 <!-- TODO: -->
                 <!-- Search function (Just the name is enough) -->
@@ -149,7 +149,7 @@
 
             </div>
             <div class="title">
-                <h2><a href="/admin/adduser" class="btn">Add User</a></h2>
+                <h2><a href="http://localhost:3000/admin/adduser" class="btn">Add User</a></h2>
                 <div class="search">
                     <input type="text" placeholder="Search.." id="search-item2" onkeyup="searchUsers()">
 
@@ -176,9 +176,9 @@
                                     <td>
                                         <%= users[j].isAdmin ? 'Admin' : 'User' %>
                                     </td>
-                                    <td><a href="<%= (users.username === 'admin') ? 'javascript:void(0)' : '/admin/dashboard/edit/' + users[j].id %>"
+                                    <td><a href="<%= (users[j].username === 'admin') ? 'javascript:void(0)' : '/admin/dashboard/edit/' + users[j].id %>"
                                             class="<%= (users[j].username ==='admin' ) ? 'btnnull' : 'btn' %>" class="btn">Edit</a></td>
-                                    <% if (users.username==='admin' ) { %>
+                                    <% if (users[j].username==='admin' ) { %>
                                         <td><button class="btnnull delbtn" disabled>Delete</button></td>
                                     <% } else { %>
                                         <td><form action="/admin/dashboard/delete/<%= users[j].id %>" method="post" onsubmit="return confirm(`Delete this user?`)">

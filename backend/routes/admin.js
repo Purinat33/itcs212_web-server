@@ -5,7 +5,7 @@ const fs = require('fs');
 const {
     getAllProducts,
     getAllUsers,
-    dashboard, createUser, editUser, deleteUser, getAddUser, getAddGame
+    dashboard, createUser, editUser, deleteUser
 } = require('./../controllers/admin');
 
 const {
@@ -51,7 +51,7 @@ route.get('/product',checkJWT, checkAdmin, async (req, res, next) => {
 
 //USER MANAGEMENT
 //For add user page
-route.get('/adduser', checkJWT, checkAdmin, getAddUser)
+// route.get('/adduser', checkJWT, checkAdmin, getAddUser)
 
 //For edit user detail page
 route.get('/dashboard/edit/:users', checkJWT, checkAdmin, editUser); //Getting the user detail page
@@ -62,7 +62,7 @@ route.delete('/dashboard/delete/:id', checkJWT, checkAdmin, deleteUser); //The n
 
 //PRODUCT MANAGEMENT
 //For add product
-route.get('/addgame', checkJWT, checkAdmin, getAddGame);
+// route.get('/addgame', checkJWT, checkAdmin, getAddGame);
 
 route.post('/addgame', checkJWT, checkAdmin, upload.array('photograph', 5), postGame);
 

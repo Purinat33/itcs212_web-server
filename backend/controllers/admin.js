@@ -38,6 +38,7 @@ const dashboard = async (req, res, next) => {
 
 //User section
 const createUser = (req,res,next)=>{
+    
     //Post to user DB
     const saltRounds = 10;
     const username = req.body.username.trim();
@@ -60,7 +61,7 @@ const createUser = (req,res,next)=>{
     bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
       if (err) {
         console.error(err);
-        return res.status(500).send('Server error');
+        return res.status(500).json({message:'Server error'});
       }
 
       // insert new user into the database
@@ -84,10 +85,10 @@ const editUser = async (req, res, next) => {
         .query("SELECT * FROM users WHERE id = ?", [req.params.users]);
       if (rows && rows.length) {
         const user = rows[0];
-        res.status(200).render("edit", { user }); // Pass the user object directly to the EJS template
+        res.status(200).json({message: "User successfullt retrieved" }); // Pass the user object directly to the EJS template
       } else {
         // User not found, render an error page or redirect
-        res.status(404).render('error', {message: "User not found"});
+        res.status(404).json({message: "User not found"});
       }
     } else if (req.method === "PUT") {
       const newPassword = req.body.password;
@@ -102,12 +103,12 @@ const editUser = async (req, res, next) => {
           "UPDATE users SET password = ?, isAdmin = ? WHERE id = ?",
           [hashedPassword, isAdmin, userId]
         );
-      res.status(200).render('success', {message: "User's data successfully updated", token: req.cookies.token});
+      res.status(200).json({message: "User's data successfully updated", token: req.cookies.token});
     }
   } catch (error) {
     // Handle errors here
     console.error(error);
-    res.status(500).send("Internal server error");
+    res.status(500).json({message: "Internal server error"});
   }
 };
 
@@ -124,7 +125,7 @@ const deleteUser = async (req, res, next) => {
     } catch (error) {
       console.log(error);
       await db.promise().query('ROLLBACK');
-      res.status(500).render('error', {message: 'Internal server error'});
+      res.status(500).json({message: 'Internal server error'});
       return;
     }
 
@@ -133,29 +134,29 @@ const deleteUser = async (req, res, next) => {
       console.log(`Deleting user ${userId}`);
       await db.promise().query('DELETE FROM users WHERE id = ?', [userId]);
       await db.promise().query('COMMIT')
-      res.status(200).render('success', {message: "Successfully delete user from the database", token: req.cookies.token});
+      res.status(200).json({message: "Successfully delete user from the database", token: req.cookies.token});
     } catch (error) {
       console.log(error);
       await db.promise().query('ROLLBACK');
-      res.status(500).render('error', {message: 'Internal server error'});
+      res.status(500).json({message: 'Internal server error'});
       return;
     }
 
   }catch(err){
     console.log(err);
     await db.promise().query('ROLLBACK');
-    res.status(500).render('error', {message: 'Internal server error'});
+    res.status(500).json({message: 'Internal server error'});
     return;
   }
 };
 
 
-const getAddUser = (req,res,next)=>{
-  res.status(200).sendFile(path.join(__dirname, '..', '..','frontend', 'public', 'admin', 'adduser.html'));
-}
+// const getAddUser = (req,res,next)=>{
+//   res.status(200).sendFile(path.join(__dirname, '..', '..','frontend', 'public', 'admin', 'adduser.html'));
+// }
 
-const getAddGame = (req,res,next) =>{
-  res.status(200).sendFile(path.join(__dirname, '..', '..','frontend', 'public', 'admin', 'addgame.html'));
-}
+// const getAddGame = (req,res,next) =>{
+//   res.status(200).sendFile(path.join(__dirname, '..', '..','frontend', 'public', 'admin', 'addgame.html'));
+// }
 
-module.exports = {getAllUsers,getAllProducts,dashboard, createUser, editUser, deleteUser, getAddUser, getAddGame}
+module.exports = {getAllUsers,getAllProducts,dashboard, createUser, editUser, deleteUser}

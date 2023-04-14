@@ -201,7 +201,7 @@ app.get('/admin/adduser', checkToken, (req,res)=>{
   }
 
   if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // handle unauthorized access
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
@@ -214,9 +214,33 @@ app.get('/admin/adduser', checkToken, (req,res)=>{
     }
 
     //Code here
+    return res.status(200).sendFile(path.join(__dirname, 'public', 'admin', 'adduser.html'))
 
     })
 });
+
+// app.post('/admin/adduser', checkToken, (req,res)=>{
+//      let token;
+//   if (req.cookies && req.cookies.token) { // check for token in cookies
+//     token = req.cookies.token;
+//   } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+//     token = req.headers.authorization.split(' ')[1];
+//   }
+
+//   if (!token) {
+//     return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+//   }
+
+//   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+//     if (err) {
+//       return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+//     }
+
+
+
+//     });
+// })
+
 
 
 //404 Error not found page

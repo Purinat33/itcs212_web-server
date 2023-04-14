@@ -4,15 +4,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="adduser.css">
     <title>Add User</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="../../icon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../icon/favicon-16x16.png">
-    <link rel="manifest" href="../../icon/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
+    <link rel="manifest" href="/icon/site.webmanifest">
 </head>
 <body>
     <div class="container" id="container">
         <div class="form-container log-in-container">
-            <form id="add-user-form">
+            <form id="add-user-form" action="http://localhost:80/admin/adduser" method="POST">
                 <h1>Add User</h1>
                 <!-- Radio Button -->
                 <div class="radio-group">
@@ -25,34 +25,38 @@
                 <input type="text" placeholder="username" name="username" required/>
                 <input type="password" placeholder="password" name="password" required/>
                 <button type="submit" name="Add" value="Add">Add</button>
+                <span class="back"><a href="/admin/dashboard" target="_self">Return to dashboard</a></span>
+                </form>
                 <br>
-                <span class="back"><a href="http:localhost:3000/admin/dashboard" target="_self">Return to dashboard</a></span>
-            </form>
+               
+            
             <script>
-                const addUserForm = document.getElementById('add-user-form');
+                // const addUserForm = document.getElementById('add-user-form');
 
-                    addUserForm.addEventListener('submit', (event) => {
-                        event.preventDefault();
-                        const username = addUserForm.querySelector('input[name="username"]').value;
-                        const password = addUserForm.querySelector('input[name="password"]').value;
-                        const role = addUserForm.querySelector('input[name="role"]:checked').value;
+                //     addUserForm.addEventListener('submit', (event) => {
+                //         console.log('Form Submitted');
+                //         event.preventDefault();
+                //         const username = addUserForm.querySelector('input[name="username"]').value;
+                //         const password = addUserForm.querySelector('input[name="password"]').value;
+                //         const role = addUserForm.querySelector('input[name="role"]:checked').value;
 
-                        fetch('http:localhost:3000/admin/adduser', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ username, password, role })
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                // handle response
-                                console.log(data);
-                            })
-                            .catch(error => {
-                                console.error(error);
-                            });
-                    });
+                //         fetch('http://localhost:80/admin/adduser', {
+                //             method: 'POST',
+                //             headers: {
+                //                 'Content-Type': 'application/json',
+                //             },
+                //             credentials: "include",
+                //             body: JSON.stringify({ username, password, isAdmin })
+                //         })
+                //             .then(response => response.json())
+                //             .then(data => {
+                //                 // handle response
+                //                 console.log(data);
+                //             })
+                //             .catch(error => {
+                //                 console.error(error);
+                //             });
+                //     });
 
             </script>
         </div>
