@@ -88,7 +88,7 @@ route.post('/register', async (req, res) => {
     const data = await response.json();
     // handle successful registration
     console.log(data);
-    res.status(200).redirect('/');
+    res.status(200).redirect('/auth/login');
   } else {
     const errorData = await response.json();
     // handle registration error
@@ -124,7 +124,7 @@ route.post('/login', async (req, res) => {
         maxAge: 7200000
     });
 
-    res.status(200).redirect('/');
+    res.status(200).render('success', {message: "Successfully logged in", token: token});
   } else {
     // If authentication failed, redirect to login page with error message
     res.status(401).render('login', {messages:[message]});
@@ -152,16 +152,16 @@ app.get('/admin/dashboard', checkToken, (req,res,next)=>{
   }
 
   if (!token) {
-    return res.status(401).json({ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+    return res.status(401).render('error', { message: 'Authorization header missing or invalid' }); // handle unauthorized access
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
     if (err) {
-      return res.status(401).json({ message: 'Invalid token' }); // handle unauthorized access
+      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
     }
 
     if (!decodedToken.isAdmin) {
-      return res.status(403).json({ message: 'Access denied. User is not an admin' }); // handle forbidden access
+      return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); // handle forbidden access
     }
 
         fetch('http://localhost:80/admin/users', {
