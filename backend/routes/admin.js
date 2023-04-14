@@ -38,7 +38,7 @@ route.get('/users',checkJWT, checkAdmin, async (req, res, next) => {
   }
 });
 
-route.get('/product', checkJWT, checkAdmin, async (req, res, next) => {
+route.get('/product',checkJWT, checkAdmin, async (req, res, next) => {
   try {
     const product = await getAllProducts();
     console.log(product);

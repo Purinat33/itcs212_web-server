@@ -36,7 +36,6 @@ const dashboard = async (req, res, next) => {
   }
 };
 
-
 //User section
 const createUser = (req,res,next)=>{
     //Post to user DB
@@ -54,7 +53,7 @@ const createUser = (req,res,next)=>{
 
     if (results.length > 0 || username.toLowerCase() === 'admin') {
       console.log('Username already exists or is invalid');
-      return res.status(409).render('error', {message: 'Username already exists or is invalid'});
+      return res.status(409).json({message: 'Username already exists or is invalid'});
     }
 
     // hash the password with bcrypt
@@ -71,7 +70,7 @@ const createUser = (req,res,next)=>{
           return res.status(500).send('Server error');
         }
 
-        res.status(201).render('success', {message: "User created successfully", token: req.cookies.token});
+        res.status(201).json({message: "User created successfully", token: req.cookies.token});
       });
     });
   });

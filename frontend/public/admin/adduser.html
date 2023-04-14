@@ -12,7 +12,7 @@
 <body>
     <div class="container" id="container">
         <div class="form-container log-in-container">
-            <form action="/admin/adduser" method="post">
+            <form id="add-user-form">
                 <h1>Add User</h1>
                 <!-- Radio Button -->
                 <div class="radio-group">
@@ -26,8 +26,35 @@
                 <input type="password" placeholder="password" name="password" required/>
                 <button type="submit" name="Add" value="Add">Add</button>
                 <br>
-                <span class="back"><a href="/admin/dashboard" target="_self">Return to dashboard</a></span>
+                <span class="back"><a href="http:localhost:3000/admin/dashboard" target="_self">Return to dashboard</a></span>
             </form>
+            <script>
+                const addUserForm = document.getElementById('add-user-form');
+
+                    addUserForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+                        const username = addUserForm.querySelector('input[name="username"]').value;
+                        const password = addUserForm.querySelector('input[name="password"]').value;
+                        const role = addUserForm.querySelector('input[name="role"]:checked').value;
+
+                        fetch('http:localhost:3000/admin/adduser', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ username, password, role })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                // handle response
+                                console.log(data);
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+                    });
+
+            </script>
         </div>
     </div>
 </body>
