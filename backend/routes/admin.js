@@ -17,6 +17,7 @@ const {
 const multer = require(`multer`); //Used to insert files (especially images)
 
 const {db} = require('../index');
+const upload = multer();
 
 
 //TODO: Add cookie/JWT checker middleware to each routes
@@ -78,7 +79,7 @@ route.delete('/dashboard/delete/:id', checkJWT, checkAdmin, deleteUser); //The n
 //For add product
 // route.get('/addgame', checkJWT, checkAdmin, getAddGame);
 
-route.post('/addgame', checkJWT, checkAdmin, postGame);
+route.post('/addgame', checkJWT, checkAdmin, upload.none(), postGame);
 
 
 

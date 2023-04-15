@@ -184,10 +184,15 @@ const deleteGame = async (req, res) => {
   }
 };
 
-
 const postGame = async (req, res) => {
   const { name, description, singleplayer, multiplayer, open_world, sandbox, simulator, team_based, fps, horror, puzzle, other, publisher, price } = req.body;
   const img = {};
+
+  console.log(req.body);
+  // Check if the name field is not empty or null
+  if (!name) {
+    return res.status(400).json({ message: 'Name is required' });
+  }
 
   try {
     const [result] = await db.promise().query('INSERT INTO product SET ?', {
@@ -205,7 +210,7 @@ const postGame = async (req, res) => {
       other: !!other,
       publisher,
       price,
-      img: JSON.stringify(img),
+      img: JSON.stringify({})
     });
 
     // Update the img column in the database with the newly created img object
@@ -214,16 +219,11 @@ const postGame = async (req, res) => {
     res.status(201).json({message: 'Product created successfully', token: req.cookies.token})
   } catch (err) {
     console.error(err);
-    if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-      // handle unexpected file error
-      return res.status(400).json({ message: 'Only up to 5 files can be uploaded with the field name "photograph"' });
-    } else if (err.code === 'LIMIT_FILE_COUNT') {
-      return res.status(500).json({ message: 'You can only upload up to 5 files at once.' });
-    }
     console.log('Error caught!');
     return res.status(500).json({ message: 'An unexpected error occurred'});
   }
 }
+
 
 
 module.exports = {
