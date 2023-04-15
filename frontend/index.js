@@ -370,7 +370,7 @@ app.get('/store/cart', checkToken, async (req, res) => {
       const data = await response.json();
       const { cartItems, totalSum, user } = data;
       
-      res.render('cart', { cartItems, totalSum, user });
+      res.render('cart', { cartItems, totalSum, user, token });
       
     } catch (error) {
       console.error(error);
@@ -378,6 +378,54 @@ app.get('/store/cart', checkToken, async (req, res) => {
     }
   });
 });
+
+const getSuccess = (req,res,next)=>{
+    res.status(200).render('successpay',{message: "Your process has been successfully ordered", token: req.cookies.token});
+}
+
+const getCancelled = (req,res,next) =>{
+    res.status(400).render('cancel', {message: "Your process has been cancelled"});
+}
+
+const wipe = (req,res,next) =>{
+    let token;
+
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return res.status(401).render('error', { message: 'Authorization header missing or invalid (401)' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
+    if (err) {
+      return res.status(401).render('error', { message: 'Invalid token' });
+    }
+
+    const userID = decodedToken.id;
+
+    try {
+      const response = await fetch(`http://localhost:80/pay?uid=${userID}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      next();
+      
+    } catch (error) {
+      console.error(error);
+      res.status(500).render('error', { message: 'Internal server error' });
+    }
+  });
+}
+
+app.get('/pay/success', checkToken, wipe, getSuccess)
+app.get('/pay/cancel', getCancelled)
 
 
 //404 Error not found page

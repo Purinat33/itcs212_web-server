@@ -137,7 +137,7 @@
                                         <%= cartItems[i].price %>
                                     </td>
                                     <td>
-                                        <form action="/store/cart/update/<%= cartItems[i].id %>" method="post">
+                                        <form action="http://localhost:80/store/cart/update/<%= cartItems[i].id %>" method="post">
                                             <input type="hidden" name="_method" value="PUT">
                                             <input type="number" name="quantity" id="quantity" name="quantity" min="0" max="100">
                                             <button type="submit" class="btn delbtn">Update</button>
@@ -147,7 +147,7 @@
                                         <%= cartItems[i].price * cartItems[i].quantity %>
                                     </td>
                                     <td>
-                                        <form action="/store/cart/delete/<%= cartItems[i].id %>" method="post">
+                                        <form action="http://localhost:80/store/cart/delete/<%= cartItems[i].id %>" method="post">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" value="Delete" class="btn delbtn">Delete</button>
                                         </form>
@@ -163,15 +163,18 @@
                                         <script src="https://js.stripe.com/v3/"></script>
                                         
                                         <% if (cartItems.length > 0) { %>
-                                        <button id="checkout-button" type="submit" class="btn delbtn">Checkout!</button>
+                                            <button id="checkout-button" type="submit" class="btn delbtn">Checkout!</button>
                                         <% } %>
                                         
                                         <script>
                                             const stripe = Stripe('pk_test_51MLOaLDJ32LJLrCEQP1zdiifAINn5ndg31ir1OwOADNm61uDnZLChw0CRtZuuWgxeMhVKiNZlQugFAAl1Tp6OrvV00j2VH0FIF');
                                             const checkoutButton = document.getElementById('checkout-button');
                                             checkoutButton.addEventListener('click', async (event) => {
-                                                const response = await fetch('/pay/create-checkout-session/<%= user.id %>', {
-                                                    method: 'POST'
+                                                const response = await fetch('http://localhost:80/pay/create-checkout-session/<%= user.id %>', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Authorization': 'Bearer <%= token %>'
+                                                    }
                                                 });
                                                 const session = await response.json();
                                                 const result = await stripe.redirectToCheckout({

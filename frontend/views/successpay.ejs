@@ -107,7 +107,7 @@
         <p>
             <%= message %>
         </p>
-        <a href="/apxvnapdngs/KEYS.zip" download><button id="continue-button">Continue</button></a>
+        <a href="/"><button id="continue-button">Continue</button></a>
     </div>
 
     <script>
@@ -115,10 +115,10 @@
         const isAdmin = JSON.parse(atob(token.split('.')[1])).isAdmin;
 
         const continueButton = document.getElementById('continue-button');
-        continueButton.addEventListener('click', () => {
-            const redirectUrl = isAdmin ? '/admin/dashboard' : '/store/cart';
-            window.location.href = redirectUrl;
-        });
+        // continueButton.addEventListener('click', () => {
+        //     // const redirectUrl = isAdmin ? '/admin/dashboard' : '/store/cart';
+        //     // window.location.href = redirectUrl;
+        // });
     </script>
 </body>
 

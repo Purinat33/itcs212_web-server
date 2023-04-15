@@ -37,29 +37,33 @@ const createCheckoutSession = async (req, res) => {
     payment_method_types: ['card'],
     line_items: lineItems,
     mode: 'payment',
-    success_url: `${process.env.SERVER_URL}/pay/success`,
-    cancel_url: `${process.env.SERVER_URL}/pay/cancel`,
+    success_url: `http://localhost:3000/pay/success`,
+    cancel_url: `http://localhost:3000/pay/cancel`,
   });
 
   res.json({ id: session.id });
 };
 
 const getSuccess = (req,res,next)=>{
-    res.status(200).render('successpay', {message: "Your process has been successfully ordered", token: req.cookies.token});
+    res.status(200).json({message: "Your process has been successfully ordered", token: req.cookies.token});
 }
 
 const getCancelled = (req,res,next) =>{
-    res.status(400).render('cancel', {message: "Your process has been cancelled"});
+    res.status(400).json({message: "Your process has been cancelled"});
 }
 
-const wipeCart = async (req,res,next)=>{
+const wipeCart = async (req, res, next) => {
+    const {uid} = req.query;
+    console.log(uid); // Check if uid is being passed correctly
+
 
     await db.promise().query(`
         DELETE FROM cart WHERE uid = ?
-    `, [req.user.id])
+    `, [uid]);
 
-    next()
+    next();
 }
+
 
 //Doing webhook
 /*
