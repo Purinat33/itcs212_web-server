@@ -134,7 +134,7 @@
                                         </td>
                                         <td><a href="<%= '/admin/dashboard/game/edit/' + product[i].id %>"
                                                 class="btn">Edit</a></td>
-                                        <td><form action="<%= '/admin/dashboard/game/delete/' + product[i].id %>" method="post" onsubmit="return confirm('Delete this product?')">
+                                        <td><form action="<%= 'http://localhost:80/admin/dashboard/game/delete/' + product[i].id %>" method="post" onsubmit="return confirm('Delete this product?')">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="btn delbtn"><span>Delete</span></button>
                                             </form>

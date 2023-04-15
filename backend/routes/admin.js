@@ -64,6 +64,21 @@ route.get('/users/:id', checkJWT, checkAdmin, async (req, res) => {
   }
 });
 
+route.get('/product/:id', checkJWT, checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await db.promise().query('SELECT * FROM product WHERE id = ?', [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    const product = rows[0];
+    return res.status(200).json(product);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 //USER MANAGEMENT
 //For add user page
 // route.get('/adduser', checkJWT, checkAdmin, getAddUser)

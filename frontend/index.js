@@ -306,6 +306,17 @@ app.get('/store/browse/:id', async (req,res)=>{
     res.render('product', {product: data})
 })
 
+app.get('/admin/dashboard/game/edit/:id', checkToken, async (req,res)=>{
+    const response = await fetch(`http://localhost:80/admin/product/${req.params.id}`,{
+        headers:{
+            'Content-Type': `application/json`,
+            'Authorization': `Bearer ${req.cookies.token}`
+        },
+        credentials: 'include'
+    })
+    const data = await response.json();
+    res.render('editGame', {product: data});
+})
 
 //404 Error not found page
 app.all('*', (req,res)=>{

@@ -17,7 +17,7 @@
     <div class="container">
         <div class="title">Edit Details for <%= product.name %></div>
         <div class="content">
-            <form action="/admin/dashboard/game/edit/<%= product.id %>" method="POST">
+            <form action="http://localhost:80/admin/dashboard/game/edit/<%= product.id %>" method="POST">
                 <input type="hidden" name="_method" value="PUT">
                 <div class="user-details">
                     <div class="input-box">
