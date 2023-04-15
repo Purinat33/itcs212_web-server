@@ -318,6 +318,16 @@ app.get('/admin/dashboard/game/edit/:id', checkToken, async (req,res)=>{
     res.render('editGame', {product: data});
 })
 
+app.get('/store/search', async (req,res)=>{
+    const response = await fetch('http://localhost:80/store/search',{
+        headers:{
+            "Content-type": `application/json`
+        }
+    })
+    const data = await response.json();
+    res.status(200).render('search', {product: data.product});
+})
+
 //404 Error not found page
 app.all('*', (req,res)=>{
     res.status(404).sendFile(path.join(__dirname, 'public' ,'404.html'));
