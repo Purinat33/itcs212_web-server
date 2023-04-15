@@ -8,7 +8,7 @@ const {checkJWT} = require('./../controllers/token')
 require('dotenv').config();
 
 const getCart = async (req, res, next) => {
-  const uid = req.user.id;
+  const {uid} = req.query;
   const items = await db.promise().query(`
     SELECT
       product.id,

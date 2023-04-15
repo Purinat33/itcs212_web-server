@@ -328,6 +328,58 @@ app.get('/store/search', async (req,res)=>{
     res.status(200).render('search', {product: data.product});
 })
 
+//From backend cart routes
+
+//For user cart (We will use authentication middleware later)
+// routes.get('/cart', checkJWT, getCart); //Retrieve cart via decoded user id
+// routes.post('/cart/:id', checkJWT, addToCart); //Add item with specific id to cart
+// routes.put('/cart/update/:id', checkJWT, putCart); //Change quantity of specific item in the cart
+// routes.delete('/cart/delete/:id', checkJWT, deleteCart); //Delete product with ID from the cart
+
+app.get('/store/cart', checkToken, async (req, res) => {
+  let token;
+
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return res.status(401).render('error', { message: 'Authorization header missing or invalid (401)' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
+    if (err) {
+      return res.status(401).render('error', { message: 'Invalid token' });
+    }
+
+    const userID = decodedToken.id;
+
+    try {
+      const response = await fetch(`http://localhost:80/store/cart?uid=${userID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Error retrieving cart');
+      }
+
+      const data = await response.json();
+      const { cartItems, totalSum, user } = data;
+      
+      res.render('cart', { cartItems, totalSum, user });
+      
+    } catch (error) {
+      console.error(error);
+      res.status(500).render('error', { message: 'Internal server error' });
+    }
+  });
+});
+
+
 //404 Error not found page
 app.all('*', (req,res)=>{
     res.status(404).sendFile(path.join(__dirname, 'public' ,'404.html'));
