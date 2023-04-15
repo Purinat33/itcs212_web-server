@@ -181,7 +181,7 @@
                                     <% if (users[j].username==='admin' ) { %>
                                         <td><button class="btnnull delbtn" disabled>Delete</button></td>
                                     <% } else { %>
-                                        <td><form action="/admin/dashboard/delete/<%= users[j].id %>" method="post" onsubmit="return confirm(`Delete this user?`)">
+                                        <td><form action="http://localhost:80/admin/dashboard/delete/<%= users[j].id %>" method="post" onsubmit="return confirm(`Delete this user?`)">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="btn delbtn">Delete</button>
                                         </form></td>

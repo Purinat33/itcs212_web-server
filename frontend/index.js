@@ -181,7 +181,7 @@ app.get('/admin/dashboard', checkToken, (req,res,next)=>{
         .then(response => response.json())
         .then(data => {
         const product = data;
-        console.log(product); // add this line
+        // console.log(product); // add this line
         // Pass the users and product data to the user.ejs file for rendering
         res.render('user', { users, product });
         })
@@ -239,8 +239,6 @@ app.get('/admin/dashboard/edit/:id', checkToken, async (req, res) => {
     res.status(500).render('error', { message: 'Internal server error' });
   }
 });
-
-
 
 
 // app.post('/admin/adduser', checkToken, (req,res)=>{
