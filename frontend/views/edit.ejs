@@ -15,7 +15,7 @@
 <body>
     <div class="container" id="container">
         <div class="form-container log-in-container">
-            <form action="/admin/dashboard/edit/<%= user.id %>" method="post">
+            <form action="http://localhost:80/admin/dashboard/edit/<%= user.id %>" method="post">
                 <input type="hidden" name="_method" value="PUT"> 
                 <h2>Edit for <%= user.username %>
                 </h2>

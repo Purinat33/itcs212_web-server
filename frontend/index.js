@@ -219,6 +219,30 @@ app.get('/admin/adduser', checkToken, (req,res)=>{
     })
 });
 
+app.get('/admin/dashboard/edit/:id', checkToken, async (req, res) => {
+  try {
+    const response = await fetch(`http://localhost:80/admin/users/${req.params.id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${req.cookies.token}`,
+      },
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      return res.status(response.status).render('error', { message: errorData.message });
+    }
+    const user = await response.json();
+    res.status(200).render('edit', { user });
+  } catch (err) {
+    console.log('Error getting edit page');
+    res.status(500).render('error', { message: 'Internal server error' });
+  }
+});
+
+
+
+
 // app.post('/admin/adduser', checkToken, (req,res)=>{
 //      let token;
 //   if (req.cookies && req.cookies.token) { // check for token in cookies

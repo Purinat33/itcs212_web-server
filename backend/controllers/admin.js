@@ -79,20 +79,8 @@ const createUser = (req,res,next)=>{
 
 const editUser = async (req, res, next) => {
   try {
-    if (req.method === "GET") {
-      const [rows] = await db
-        .promise()
-        .query("SELECT * FROM users WHERE id = ?", [req.params.users]);
-      if (rows && rows.length) {
-        const user = rows[0];
-        res.status(200).json({message: "User successfullt retrieved" }); // Pass the user object directly to the EJS template
-      } else {
-        // User not found, render an error page or redirect
-        res.status(404).json({message: "User not found"});
-      }
-    } else if (req.method === "PUT") {
       const newPassword = req.body.password;
-      const userId = req.params.users;
+      const userId = req.params.id; // change to req.params.id
       const saltRounds = 10;
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(newPassword, salt);
@@ -103,14 +91,21 @@ const editUser = async (req, res, next) => {
           "UPDATE users SET password = ?, isAdmin = ? WHERE id = ?",
           [hashedPassword, isAdmin, userId]
         );
-      res.status(200).json({message: "User's data successfully updated", token: req.cookies.token});
-    }
+      const [rows] = await db.promise().query('SELECT * FROM users WHERE id = ?', [userId]);
+      if (rows && rows.length) {
+        const user = rows[0];
+        return res.status(200).json({ message: "User's data successfully updated", user });
+      } else {
+        return res.status(404).json({ message: "User not found" });
+      }
   } catch (error) {
     // Handle errors here
     console.error(error);
     res.status(500).json({message: "Internal server error"});
   }
 };
+
+
 
 //In Node.js, if a DELETE query is executed successfully without any error, the result parameter of the callback function in connection.query() method will contain a affectedRows property that indicates the number of rows deleted. If affectedRows is greater than zero, it means the DELETE query was executed successfully and the specified rows were deleted from the database.
 const deleteUser = async (req, res, next) => {
