@@ -57,7 +57,6 @@ function getCookie(req,name) {
 }
 
 
-
 app.get('/', (req,res)=>{
     // console.log(req.cookies);
     res.status(200).render('index', {user: req.cookies, token:req.cookies.token, jwt:jwt});
@@ -172,7 +171,7 @@ app.get('/admin/dashboard', checkToken, (req,res,next)=>{
         .then(response => response.json())
         .then(data => {
         const users = data;
-        console.log(users); // add this line
+        // console.log(users); // add this line
         fetch('http://localhost:80/admin/product',{
             headers: {
                 "Authorization" : `Bearer ${token}`
