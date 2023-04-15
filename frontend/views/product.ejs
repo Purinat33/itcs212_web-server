@@ -30,40 +30,26 @@
             <div class="product-imgs">
                 <div class="img-display">
                     <div class="img-showcase">
-                        <% for (let i = 1; i < 4; i++) { %>
-                            <img src="/upload/<%= product.images[i] %>">
-                            <% } %>
+                        <% for (let i=1; i < 4; i++) { %>
+                            <% let imagePath='/upload/' + product.id + '_' + i + '.jpg' ; %>
+                                <img src="<%= imagePath %>">
+                                <% } %>
                     </div>
                 </div>
 
                 <!-- image select -->
                 <div class="img-select">
-                    <div class="img-item">
-                        <a href="#" data-id="1">
-                            <img src="/upload/<%= product.images[1] %>"
-                                alt="shoe image">
-                        </a>
-                    </div>
-                    <div class="img-item">
-                        <a href="#" data-id="2">
-                            <img src="/upload/<%= product.images[2] %>"
-                                alt="shoe image">
-                        </a>
-                    </div>
-                    <div class="img-item">
-                        <a href="#" data-id="3">
-                            <img src="/upload/<%= product.images[3] %>" alt="shoe image">
-                        </a>
-                    </div>
-                    <!-- <div class="img-item">
-                        <a href="#" data-id="4">
-                            <img src="/upload/<%= product.images[3] %>" alt="shoe image">
-                        </a>
-                    </div> -->
-
+                    <% for (let i=1; i < 4; i++) { %>
+                        <% let imagePath='/upload/' + product.id + '_' + i + '.jpg' ; %>
+                            <div class="img-item">
+                                <a href="#" data-id="<%= i %>">
+                                    <img src="<%= imagePath %>" alt="product image">
+                                </a>
+                            </div>
+                            <% } %>
                 </div>
-
-            </div>
+                
+                </div>
 
             <!-- Game Profile -->
             <div class="product-content">
@@ -89,14 +75,16 @@
                         <%= product.description %>
                     </p>
                     <ul>
-                        <li>Genre:
-                            <% product.genres.forEach(function(genre) { %>
-                                <span>
-                                    <%= genre==='open_world' ? 'Open World' : genre==='team_based' ? 'Team Based' :
-                                        genre.charAt(0).toUpperCase() + genre.slice(1) %>
-                                </span>
-                                <% }); %>
-                        </li>
+                        <% if (product.genres) { %>
+                            <li>Genre:
+                                <% product.genres.forEach(function(genre) { %>
+                                    <span>
+                                        <%= genre==='open_world' ? 'Open World' : genre==='team_based' ? 'Team Based' :
+                                            genre.charAt(0).toUpperCase() + genre.slice(1) %>
+                                    </span>
+                                    <% }); %>
+                            </li>
+                            <% } %>
                         <li>Available: <span>In Stock</span></li>
                         <li>Publisher: <span>
                                 <%= product.publisher %>

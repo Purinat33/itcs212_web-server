@@ -12,8 +12,7 @@ const {
     getGame,
     postGame,
     putGame,
-    deleteGame,
-    upload
+    deleteGame
 } = require('./../controllers/games')
 const multer = require(`multer`); //Used to insert files (especially images)
 
@@ -79,7 +78,7 @@ route.delete('/dashboard/delete/:id', checkJWT, checkAdmin, deleteUser); //The n
 //For add product
 // route.get('/addgame', checkJWT, checkAdmin, getAddGame);
 
-route.post('/addgame', checkJWT, checkAdmin, upload.array('photograph', 5), postGame);
+route.post('/addgame', checkJWT, checkAdmin, postGame);
 
 
 

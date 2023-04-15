@@ -262,6 +262,49 @@ app.get('/admin/dashboard/edit/:id', checkToken, async (req, res) => {
 //     });
 // })
 
+app.get('/admin/addgame', checkToken, (req,res)=>{
+     let token;
+  if (req.cookies && req.cookies.token) { // check for token in cookies
+    token = req.cookies.token;
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // handle unauthorized access
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    if (err) {
+      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+    }
+
+    if (!decodedToken.isAdmin) {
+      return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); // handle forbidden access
+    }
+
+    //Code here
+    return res.status(200).sendFile(path.join(__dirname, 'public', 'admin', 'addgame.html'))
+
+    })
+})
+
+app.get('/store/browse', async (req,res)=>{
+    const response = await fetch('http://localhost:80/store/browse');
+    const data = await response.json();
+    res.render('catalogue', {product: data})
+})
+
+app.get('/store/browse/:id', async (req,res)=>{
+    
+    const response = await fetch(`http://localhost:80/store/browse/${req.params.id}`,{
+        headers:{
+            'Content-Type': `application/json`
+        }
+    });
+    const data = await response.json();
+    res.render('product', {product: data})
+})
 
 
 //404 Error not found page
