@@ -13,6 +13,76 @@
 ## Description:
 <p>This web server is part of the ITCS212 Web Programming course syllabus.</p>
 
+## How to use:
+<ol>
+<li>Navigate to backend folder</li>
+<li>At the root of the directory <code>/backend</code> run
+
+```
+npm start
+```
+
+Now the backend is accessible via the URL <a href="http://localhost:80">http://localhost:80</a>
+
+<li>Next, depending on whether you plan to use the frontend UI services or not, you can either:<ul>
+
+* [Use Postman to perform web services directly without any UI.](#appendix-b)
+
+* Run backend with frontend to get the full-stack experience.</ul>
+</li>
+
+<li>To start frontend navigate to <code>/frontend</code> directory</li>
+<li>At the root of the directory, run:
+
+```
+npm start
+```
+This will start the frontend UI server, allowing you to access the full-stack web application at <a href="http://localhost:3000">localhost:3000</a>
+</li>
+</ol>
+
+## How to navigate the website (via UI)
+After starting up both the backend and frontend server (respectively), using <code>npm start</code>, you will see the following webpage upon first opening to <a href="http://localhost:3000">localhost:3000</a>
+
+![Homepage](home.png)
+
+From here you can either choose to stay unauthenticated, in which case you are able to navigate to each of the following links at the top of the page:
+* [Home](http://localhost:3000): The same page you're currently on
+* [Browse](http://localhost:3000/store/browse): Look through the summarized data of each product on one page
+* [Support](http://localhost:3000/about): Information about the website's creators
+* [Search](http://localhost:3000/store/search): Search for specific title, genre, or developers.
+* [Login](http://localhost:3000/auth/login): For authentication.
+* [Register](http://localhost:3000/auth/register): For registration of a new user.
+* [Product Detail](http://localhost:3000/store/browse/5): Clicking on a product from either the catalogue page or the search page will redirect you to a page dedicated to the product.
+
+If you wish to be able to access restricted pages (admin pages) or user's specific page (cart and payment), you must first sign in as an authorized user (Admin) or a specific user (User).
+![login screen](login.png)
+
+After inputting the correct credential you will now be able to access pages based on your authority level: 
+<ul>
+<li>Admin</li>
+<li>User</li>
+</ul>
+
+### Admin pages: 
+For an admin, you will have access to an admin's [dashboard](http://localhost:3000/admin/dashboard) where you can add, edit, or delete products and users of your choice, with search bar to look up user or products. The page is accessible through a button in the [home page](http://localhost:3000)
+![Dashboard](admin.png)
+![Add Product](addgame.png)
+![Add User](adduser.png)
+
+### User's pages:
+For a normal user, they will have access to their own cart page, but not admin pages. The cart page can be accessed through a button in the [home page](http://localhost:3000) after a successful sign in or by clicking on the basket icon in the [catalogue page](http://localhost:3000/store/browse)
+![cart](cart.png)
+
+A user can add an item into their cart by clicking the <code>add to cart</code> button in a product page.
+![add to cart](addcart.png)
+
+Clicking on the <code>Checkout</code> button will redirect the user to a payment service hosted by a 3rd party API.
+![Payment](pay.png)
+![Success](successPay.png)
+
+If a non-authorized user try to access any of the above page, they will get a <code>401</code> unauthorized access error.
+
 # Content:
 * [Description:](#description)
 * [Introduction:](#introduction)
@@ -32,6 +102,7 @@
 * [JSON Web Token (JWT), Our preferred choice of cookie:](#json-web-token-jwt-our-preferred-choice-of-cookie)
 * [Pros and Cons of different types of session management:](#pros-and-cons-of-different-types-of-session-management)
 * [FAQ: Why use passport.js over normal equal checking of user's input?](#faq-why-use-passportjs-over-normal-equal-checking-of-users-input)
+* [Important UPDATE](#update-as-of-april-2023-instead-of-the-backend-responsible-for-rendering-an-ejs-file-it-now-sends-out-a-json-response-in-which-the-frontend-will-receive-via-the-fetch-api-and-perform-the-rendering-instead)
 * [Our goal is deploying the frontend and the backend separately on a different server/port:](#our-goal-is-deploying-the-frontend-and-the-backend-separately-on-a-different-serverport)
 * [The frontend contains 2 folders: view and public](#the-frontend-contains-2-folders-view-and-public)
 * [Static files:](#static-files)
@@ -45,6 +116,7 @@
 * [Stripe API Integration:](#stripe-api-integration)
 * [Extra: How to test the web server (and Stripe) APIs using POSTMAN:](#extra-how-to-test-the-web-server-and-stripe-apis-using-postman)
 * [Appendix](#appendix)
+* [Appendix B: Using POSTMAN for the backend](#appendix-b)
 
 # General Detail:
 
@@ -356,6 +428,72 @@ jwt.verify(token, 'secret-key-here', (err, decoded) => {
 <hr>
 
 # Directory and files overview:
+
+## Update: As of April 2023, instead of the backend responsible for rendering an EJS file, it now sends out a JSON response in which the frontend will receive via the <code>fetch()</code> API and perform the rendering instead.
+
+An example of <code>/store/browse</code> receiving JSON and rendering it on the frontend:
+
+Backend Controller
+```js
+const getGame = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    // No id supplied, we go with full catalogue
+    const [rows] = await db.promise().query(`
+      SELECT id, name, price, description, publisher,
+        IF(singleplayer, 'Singleplayer', NULL) AS singleplayer,
+        IF(multiplayer, 'Multiplayer', NULL) AS multiplayer,
+        IF(open_world, 'Open World', NULL) AS open_world,
+        IF(sandbox, 'Sandbox', NULL) AS sandbox,
+        IF(simulator, 'Simulator', NULL) AS simulator,
+        IF(team_based, 'Team-based', NULL) AS team_based,
+        IF(fps, 'FPS', NULL) AS fps,
+        IF(horror, 'Horror', NULL) AS horror,
+        IF(puzzle, 'Puzzle', NULL) AS puzzle,
+        IF(other, 'Other', NULL) AS other
+      FROM product
+    `);
+
+    const products = rows.map(row => {
+        const { id, name, price, description, publisher, ...genres } = row;
+        const filteredGenres = Object.entries(genres)
+            .filter(([key, value]) => value !== null)
+            .map(([key]) => key);
+        return {
+            id,
+            name,
+            price,
+            description,
+            publisher,
+            genres: filteredGenres
+        };
+    });
+
+    return res.status(200).json(products);
+  }else{
+    //...
+  }
+```
+
+
+Backend route
+```js
+routes.get('/browse', getGame);
+```
+
+Frontend
+```js
+app.get('/store/browse', async (req,res)=>{
+    const response = await fetch('http://localhost:80/store/browse');
+    const data = await response.json();
+    res.render('catalogue', {product: data})
+})
+```
+
+As seen, the <code>fetch()</code> API on the frontend fetch json response from [the same route](http://localhost:80/store/browse).
+
+<hr>
 
 ### Our goal is deploying the frontend and the backend separately on a different server/port:
 
@@ -723,6 +861,7 @@ Once you have sent the API request, you should receive a response from the API. 
   <li><strong>Event:</strong> In programming, an event is a signal or notification that an action has occurred or a condition has changed, such as a user clicking a button or a server receiving a request.</li>
   <li><strong>Event-driven architecture:</strong> A model in which a system responds to events, such as user input or system notifications, rather than following a strict sequence of steps.</li>
   <li><strong>Express:</strong> a Node.js web application framework</li>
+  <li><strong>fetch():</strong> A built-in web API for making network requests in JavaScript, allowing fetching resources from a server or other sources. It returns a promise that resolves to the Response object representing the response to the request.</li>
   <li><strong>GET:</strong> HTTP request method used for retrieving resources from a server</li>
   <li><strong>HTTP:</strong> Hypertext Transfer Protocol</li>
   <li><strong>HTTPS:</strong> Hypertext Transfer Protocol Secure, a secure version of HTTP that uses encryption to protect sensitive data</li>
@@ -753,6 +892,76 @@ Once you have sent the API request, you should receive a response from the API. 
     <li><strong>System architecture:</strong> The design and structure of a larger system or platform, including software and hardware components, their interactions, and their relationships.</li>
       <li><strong>Synchronous:</strong> A programming model where tasks are executed one after the other, in a predetermined sequence.</li>
 <li><strong>Token:</strong> In computing, a token is a sequence of characters or symbols that represent something else, such as an access code or an identifier. </li>
+
+
+</ul>
+
+
+
+# Appendix B:
+<ol>
+<li>Navigate to localhost:80 on the URL tab of postman request and set the method to <code>GET</code></li>
+
+![GetHome](getHome.png)
+
+<li>To further access authorized contents, you can get the token by navigating to <code>localhost:80/auth/login</code>, set the method to <code>POST</code> and fill the body as shown:</li>
+
+![GetToken](howtologin.png)
+
+<li>Copy the generated <code>token</code>, paste it in the <strong>Auth</strong> header under Bearer Token.</li>
+
+![Token](token.png)
+
+<li>Now you can access pages that would otherwise return a <code>401 Access Denied</code> status code</li>
+
+![Unauthorized](unauthorized.png)
+</ol>
+
+## Some of web services requiring authentication:
+<ul>
+<li><strong>Product and User</strong>: These two components are then fetched by the frontend and rendered as a single dashboard page.</li>
+
+![product](users.png)
+
+<li><strong>Add user</strong>: An admin can add a user directly from POSTMAN by specifying the username, password, and role in the body.</li>
+
+![AddUser](adduser1.png)
+
+<li><strong>Edit user</strong>: Edit detail based on the user's ID.</li>
+
+![u17](u17.png)
+![put](putUser.png)
+
+<li><strong>Delete user</strong>: Delete user based on the user's ID.</li>
+
+![d17](d17.png)
+
+<hr>
+
+<li><strong>Add Game</strong>: An admin can add a product directly from POSTMAN by specifying the name, description, price, publisher and other data in the body.</li>
+
+![productb4](latestProduct.png)
+![addgame](addgamed.png)
+![productafter](productaft.png)
+
+<li><strong>Edit Game</strong>: Edit detail via ID</li>
+
+![putgame](putgame.png)
+![productafter](after2.png)
+
+<li><strong>Delete Game</strong>: Delete item via ID</li>
+
+![deleteg](deletegame.png)
+![yeet](yeet.png)
+![deleteyes](deleteYES.png)
+
+## Extra: Request body for game manipulation
+
+![body](body.png)
+
+Don't forget to set type to <code>x-www-form-urlencoded</code>
+
+
 
 
 </ul>
