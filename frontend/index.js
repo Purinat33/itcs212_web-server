@@ -476,6 +476,51 @@ app.post('/store/cart/update/:id', checkToken, async (req,res)=>{
     })
 })
 
+app.post('/store/cart/delete/:id', checkToken, async (req,res)=>{
+
+  let token;
+  if (req.cookies && req.cookies.token) { // check for token in cookies
+    token = req.cookies.token;
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  if (!token) {
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // handle unauthorized access
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    if (err) {
+      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+    }
+    
+    const userID = decodedToken.id;
+
+    //Code here
+    
+    fetch(`http://localhost:80/store/cart/delete/${req.params.id}`,{
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(response=>{
+    if(response.ok){
+      //Render
+      res.status(200).render('success', {message: 'Successfully delete from cart.', token: token});
+    }
+    else{
+      res.status(404).render('error', {message :"No product to delete error"})
+    }
+  })
+  .catch(err=>{
+    res.status(500).render('error', {message : "internal server error"})
+  })
+
+    })
+})
+
 
 const getSuccess = (req,res,next)=>{
     res.status(200).render('successpay',{message: "Your process has been successfully ordered", token: req.cookies.token});

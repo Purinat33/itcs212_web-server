@@ -80,7 +80,7 @@ const deleteCart = async (req,res,next) =>{
     try{
       await db.promise().query('DELETE cart FROM cart INNER JOIN product ON cart.pid = product.id WHERE cart.pid = ?', [pid]);
       await db.promise().query('COMMIT');
-      res.status(200).redirect('/store/cart');
+      res.status(200).json({message: "Deleted successfully"});
     }catch(err){
       console.log(err);
       await db.promise().query('ROLLBACK');

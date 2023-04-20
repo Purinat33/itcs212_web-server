@@ -146,8 +146,7 @@
                                         <%= cartItems[i].price * cartItems[i].quantity %>
                                     </td>
                                     <td>
-                                        <form action="http://localhost:80/store/cart/delete/<%= cartItems[i].id %>" method="post">
-                                            <input type="hidden" name="_method" value="DELETE">
+                                        <form action="http://localhost:3000/store/cart/delete/<%= cartItems[i].id %>" method="post">
                                             <button type="submit" value="Delete" class="btn delbtn">Delete</button>
                                         </form>
                                     </td>
