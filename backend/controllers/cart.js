@@ -94,13 +94,14 @@ const deleteCart = async (req,res,next) =>{
 
 const addToCart = async (req,res,next) =>{
     const {quantity} = req.body;
-    const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
-    const userID = decoded.id;
+    // const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+    // const userID = decoded.id;
+    const {uid} = req.query;
 
     try {
         await db.promise().query('START TRANSACTION');
         try {
-            await db.promise().query('INSERT INTO cart (uid, pid, quantity) VALUES (?, ?, ?)', [userID, req.params.id, quantity]);            
+            await db.promise().query('INSERT INTO cart (uid, pid, quantity) VALUES (?, ?, ?)', [uid, req.params.id, quantity]);            
             await db.promise().query('COMMIT');
             res.status(200).json({message: "Product added", token: req.cookies.token});
         } catch (error) {
