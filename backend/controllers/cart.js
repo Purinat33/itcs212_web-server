@@ -33,21 +33,22 @@ const getCart = async (req, res, next) => {
 const putCart = async (req,res,next)=>{
     const pid = req.params.id;
     const newQ = req.body.quantity;
-    const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
-    const userID = decoded.id;
+    // const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+    const {uid} = req.query;
 
     try {
         await db.promise().query('START TRANSACTION');
         try {
             if(newQ <= 0){
-                await db.promise().query('DELETE FROM CART WHERE uid = ? AND pid = ?', [userID, pid]);
+                await db.promise().query('DELETE FROM CART WHERE uid = ? AND pid = ?', [uid, pid]);
                 await db.promise().query('COMMIT');    
-                res.status(200).redirect('/store/cart'); 
+                return res.status(200).json({message: "Deleted"}); 
             }   
             else{
-                await db.promise().query('UPDATE cart SET quantity = ? WHERE uid = ? AND pid = ?', [newQ, userID, pid]);
+                await db.promise().query('UPDATE cart SET quantity = ? WHERE uid = ? AND pid = ?', [newQ, uid, pid]);
                 await db.promise().query('COMMIT');    
-                res.status(200).redirect('/store/cart');  
+                return res.status(200).json({message: "Updated"}); 
+ 
             }   
         } catch (error) {
             console.log(error);

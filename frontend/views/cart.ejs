@@ -137,8 +137,7 @@
                                         <%= cartItems[i].price %>
                                     </td>
                                     <td>
-                                        <form action="http://localhost:80/store/cart/update/<%= cartItems[i].id %>" method="post">
-                                            <input type="hidden" name="_method" value="PUT">
+                                        <form action="http://localhost:3000/store/cart/update/<%= cartItems[i].id %>" method="post">
                                             <input type="number" name="quantity" id="quantity" name="quantity" min="0" max="100">
                                             <button type="submit" class="btn delbtn">Update</button>
                                         </form>
