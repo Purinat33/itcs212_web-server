@@ -1,26 +1,23 @@
-const express = require('express');
-const {
-    authenticate,
-    createUser
-} = require('./../controllers/auth')
-const session = require('express-session')
-const cookieParser = require('cookie-parser')
-const passport = require('./../controllers/passport');
-const jwt = require('jsonwebtoken')
-const routes = express.Router();
+// Importing the necessary modules
+const express = require('express'); // Importing Express module
+const { authenticate, createUser } = require('./../controllers/auth'); // Importing the authenticate and createUser controllers from the auth module
+const session = require('express-session'); // Importing the express-session module
+const cookieParser = require('cookie-parser'); // Importing the cookie-parser module
+const passport = require('./../controllers/passport'); // Importing the passport module
+const jwt = require('jsonwebtoken'); // Importing the jsonwebtoken module
 
-routes.use(cookieParser());
-routes.use(session({
-    secret: process.env.JWT_SECRET,
-    resave: false,
-    saveUninitialized: false
+const routes = express.Router(); // Creating a new instance of an Express Router
+
+routes.use(cookieParser()); // Adding cookie-parser middleware
+routes.use(session({ // Adding session middleware
+    secret: process.env.JWT_SECRET, // Secret key used to sign the session ID cookie
+    resave: false, // Don't save the session if unmodified
+    saveUninitialized: false // Don't create session until something stored
 }))
 
+// These routes are commented out, probably because they are not being used
 // routes.get('/login', login);
-//Getting the register page
 // routes.get('/register', register);
-
-//login POST (logging in)
 // routes.post('/login', passport.authenticate('local', {
 //   session: false,
 //   failureRedirect: '/auth/login',
@@ -31,7 +28,7 @@ routes.use(session({
 //   res.status(200).json({ message: 'Authentication successful', token: token });
 // });
 
-routes.post('/login', authenticate);
-routes.post('/register', createUser);
+routes.post('/login', authenticate); // Adding a POST route for user authentication
+routes.post('/register', createUser); // Adding a POST route for user registration
 
-module.exports = routes;
+module.exports = routes; // Exporting the routes object

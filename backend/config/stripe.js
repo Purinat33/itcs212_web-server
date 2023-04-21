@@ -1,10 +1,15 @@
+// Load environment variables from a .env file
 require('dotenv').config();
+// Load the Stripe library with the private key from the .env file
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+// Load the database connection from another file
 const {db} = require('./../index');
 
-//https://youtu.be/1r-F3FIONl8
+// Define a function that creates a checkout session for a user's cart
 const createCheckoutSession = async (req, res) => {
+  // Get the user ID from the request parameters
   const uid = req.params.uid;
+  // Get the items in the user's cart from the database
   const items = await db.promise().query(`
     SELECT
       product.id,
@@ -19,6 +24,7 @@ const createCheckoutSession = async (req, res) => {
       cart.uid = ?
   `, [uid]);
 
+  // Map the items in the cart to Stripe line items
   const lineItems = items[0].map(item => {
     return {
       price_data: {
@@ -33,6 +39,7 @@ const createCheckoutSession = async (req, res) => {
     };
   });
 
+  // Create a checkout session with Stripe
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: lineItems,
@@ -41,28 +48,36 @@ const createCheckoutSession = async (req, res) => {
     cancel_url: `http://localhost:3000/pay/cancel`,
   });
 
+  // Return the session ID to the client
   res.json({ id: session.id });
 };
 
+// Define a function that sends a success message to the client
 const getSuccess = (req,res,next)=>{
     res.status(200).json({message: "Your process has been successfully ordered", token: req.cookies.token});
 }
 
+// Define a function that sends a cancellation message to the client
 const getCancelled = (req,res,next) =>{
     res.status(400).json({message: "Your process has been cancelled"});
 }
 
+// Define a function that removes all items from a user's cart
 const wipeCart = async (req, res, next) => {
+    // Get the user ID from the query parameters
     const {uid} = req.query;
+    // Log the user ID for debugging purposes
     console.log(uid); // Check if uid is being passed correctly
 
-
+    // Remove all items from the user's cart in the database
     await db.promise().query(`
         DELETE FROM cart WHERE uid = ?
     `, [uid]);
 
+    // Move on to the next middleware function in the chain
     next();
 }
+
 
 
 //Doing webhook
