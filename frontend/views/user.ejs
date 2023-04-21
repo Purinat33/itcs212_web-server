@@ -98,7 +98,6 @@
             </div>
             <div class="title">
                 <h2><a href="http://localhost:3000/admin/addgame" class="btn" id="addGame">Add Game</a></h2>
-
                 <!-- TODO: -->
                 <!-- Search function (Just the name is enough) -->
                 <div class="search">
@@ -134,8 +133,7 @@
                                         </td>
                                         <td><a href="<%= '/admin/dashboard/game/edit/' + product[i].id %>"
                                                 class="btn">Edit</a></td>
-                                        <td><form action="<%= 'http://localhost:80/admin/dashboard/game/delete/' + product[i].id %>" method="post" onsubmit="return confirm('Delete this product?')">
-                                                <input type="hidden" name="_method" value="DELETE">
+                                        <td><form action="<%= 'http://localhost:3000/admin/dashboard/game/delete/' + product[i].id %>" method="post" onsubmit="return confirm('Delete this product?')">
                                                 <button type="submit" class="btn delbtn"><span>Delete</span></button>
                                             </form>
                                         </td>
@@ -181,8 +179,7 @@
                                     <% if (users[j].username==='admin' ) { %>
                                         <td><button class="btnnull delbtn" disabled>Delete</button></td>
                                     <% } else { %>
-                                        <td><form action="http://localhost:80/admin/dashboard/delete/<%= users[j].id %>" method="post" onsubmit="return confirm(`Delete this user?`)">
-                                            <input type="hidden" name="_method" value="DELETE">
+                                        <td><form action="http://localhost:3000/admin/dashboard/delete/<%= users[j].id %>" method="post" onsubmit="return confirm(`Delete this user?`)">
                                             <button type="submit" class="btn delbtn">Delete</button>
                                         </form></td>
                                     <% } %>

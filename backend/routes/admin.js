@@ -111,7 +111,8 @@ route.delete('/dashboard/delete/:id', checkJWT, checkAdmin, deleteUser); //DELET
 //For add product
 // route.get('/addgame', checkJWT, checkAdmin, getAddGame); //GET request for '/addgame' URL pattern, which invokes getAddGame function after middleware checks.
 
-route.post('/addgame', checkJWT, checkAdmin, upload.none(), postGame); //POST request for '/addgame' URL pattern, which invokes postGame function after middleware checks.
+route.post('/addgame', checkJWT, checkAdmin, postGame); //POST request for '/addgame' URL pattern, which invokes postGame function after middleware checks.
+// route.post('/addgame', checkJWT, checkAdmin, upload.none(), postGame); //POST request for '/addgame' URL pattern, which invokes postGame function after middleware checks.
 
 //Edit game
 // route.get('/dashboard/game/edit/:id', checkJWT, checkAdmin, putGame); //GET request for '/dashboard/game/edit/:id' URL pattern, which invokes putGame function after middleware checks.
