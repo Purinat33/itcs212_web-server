@@ -1,3 +1,9 @@
+/*
+This is a JavaScript code that defines a custom element called `banner-custom` which extends the built-in `HTMLElement` class. When this custom element is inserted into the DOM, the `connectedCallback()` method is called, which sets the `innerHTML` property of the custom element to a string of HTML code. This HTML code creates a banner with a navigation menu and a login button. The banner has a gradient background and uses the `Poppins` font family. 
+
+The navigation menu has four links, which are styled to have white text with a black border and transparent background when hovered over. The login button is styled to have a red background with white text and a rounded border, and a white border with a transparent background when hovered over.
+ */
+
 class Banner extends HTMLElement{
     constructor(){
         super();

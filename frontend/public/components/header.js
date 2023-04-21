@@ -5,6 +5,20 @@ https://www.freecodecamp.org/news/reusable-html-components-how-to-reuse-a-header
 
 */
 
+/*
+This code defines a custom HTML element `head-banner` using the `Header` class, which extends the `HTMLElement` class in JavaScript. When an instance of the `head-banner` element is inserted into the DOM, its `connectedCallback()` method is called automatically.
+
+The `connectedCallback()` method sets the `innerHTML` property of the `head-banner` element to a string of HTML code. This code defines a `nav` element with a logo, menu links, and a register button for users to login. It also includes CSS code to style the `nav` element and its child elements.
+
+The CSS code defines various styles such as font, color, padding, margin, and background color for different elements like body, nav, logo, menu links, register button, etc. It also uses media queries to make the design responsive and adjusts the layout for different screen sizes.
+
+The code also includes a `@font-face` rule to import the Poppins font and use it as the font family for the entire header.
+
+The JavaScript code inside the `nav` element is left empty, but it is intended to be used to detect whether a user is logged in and adjust the register button accordingly.
+
+Finally, the `customElements.define()` method is used to register the `Header` class as the `head-banner` custom element, which can be used in HTML code.
+*/
+
 class Header extends HTMLElement{
     constructor(){
         super();
