@@ -65,6 +65,171 @@ The cookie-parser module is used to parse cookies.
 The parseJSONResponse() function is defined to parse JSON responses.
 */
 
+//Callback function
+/*
+A callback function is a function that is passed as an argument to another function and is executed after the completion of that function. The primary purpose of a callback function is to enable asynchronous programming, where functions can run in the background without blocking other parts of the program.
+
+Here's an example of a callback function:
+
+```
+function greet(name, callback) {
+  console.log('Hello ' + name);
+  callback();
+}
+
+function sayGoodbye() {
+  console.log('Goodbye!');
+}
+
+greet('John', sayGoodbye);
+```
+
+In this example, we have two functions: `greet` and `sayGoodbye`. The `greet` function takes two arguments: a name and a callback function. It logs a message to the console and then calls the callback function.
+
+The `sayGoodbye` function simply logs a message to the console.
+
+When we call the `greet` function with the name 'John' and the `sayGoodbye` function as the callback, the `greet` function logs 'Hello John' to the console and then calls the `sayGoodbye` function. The `sayGoodbye` function then logs 'Goodbye!' to the console.
+
+This example demonstrates how a callback function can be used to execute code after a specific task is completed. In this case, the `sayGoodbye` function is executed after the `greet` function has completed its task of logging a message to the console. 
+
+In addition, callback functions are commonly used in asynchronous programming such as in JavaScript, where they can be used to handle responses from API calls, events, and other asynchronous operations. By passing a callback function as an argument to an asynchronous function, the callback can be executed when the asynchronous operation is completed.
+*/
+
+//Arrow function
+/*
+Arrow Function:
+An arrow function is a concise way of writing a function in JavaScript. Arrow functions were introduced in ES6, and they offer a few advantages over traditional functions:
+
+Shorter syntax: Arrow functions use a shorter syntax than traditional functions, which can make your code more readable and easier to write.
+
+Implicit return: Arrow functions automatically return the value of the expression that follows the arrow (=>) symbol. This means you can omit the return keyword and the curly braces if your function only contains one expression.
+
+No binding of 'this': Arrow functions do not bind their own 'this' value, which can make it easier to work with the 'this' keyword in JavaScript.
+
+Here is an example of an arrow function:
+
+```
+const add = (a, b) => a + b;
+console.log(add(2, 3)); // Output: 5
+```
+In this example, we define an arrow function called 'add' that takes two parameters, 'a' and 'b'. The function then returns the sum of 'a' and 'b'. We call the function and pass in the values 2 and 3, and the output is 5.
+*/
+
+//Arrow function + callback function
+/*
+```
+app.get('/about', (req,res)=>{
+    res.status(200).sendFile(path.resolve(__dirname, 'public', 'about.html'));
+})
+```
+
+This code is an example of using a callback function and an arrow function in a web application built with Node.js and Express. 
+
+The `app.get()` method sets up a route for the HTTP GET request method. In this case, the route is `/about`, which means that this code will handle GET requests for the `/about` route. 
+
+The second argument passed to the `app.get()` method is an arrow function, which takes two arguments: `req` and `res`. The `req` argument represents the HTTP request sent by the client, and the `res` argument represents the HTTP response that the server will send back to the client.
+
+Inside the arrow function, `res.status(200)` sets the HTTP response status code to `200`, which means that the request was successful. `sendFile()` is a method provided by the Express framework that sends a file as the response. In this case, `path.resolve(__dirname, 'public', 'about.html')` is the file path that will be sent. 
+
+Overall, this code sets up a route for the `/about` URL and sends the `about.html` file when a GET request is made to that route. The arrow function serves as the callback function that handles the request and response.
+*/
+
+//---------------------------------------------------------------------------------------//
+//IMPORTANT! : OVERVIEW OF WHAT FETCH() API IS (HEAVILY USED)
+/*
+`fetch()` is a JavaScript method that is used to send network requests to a server and receive responses from it. It is a part of the Web API specification and it is used to fetch resources and data from a network. The `fetch()` method returns a Promise object that resolves to the response of the request made. 
+
+`fetch()` takes at least one parameter, which is the URL of the resource that you want to fetch. It can also take additional parameters, which are optional and can be used to configure the request. Here are some of the parameters that `fetch()` can take:
+
+- `method`: This parameter is used to specify the HTTP method to be used for the request, such as GET, POST, PUT, DELETE, etc. The default method is GET if not specified.
+- `headers`: This parameter is used to set the headers of the request. Headers are used to provide additional information about the request, such as the content type, authorization token, etc. The headers are defined as an object, where the keys are the header names and the values are the header values.
+- `body`: This parameter is used to set the body of the request. The body contains the data that is being sent to the server. The body can be set to a string, a JSON object, or a FormData object.
+- `credentials`: This parameter is used to indicate whether or not cookies, authorization headers, or TLS client certificates should be included with the request. It can be set to "omit" (default), "same-origin", or "include".
+
+Here is an example of a simple case of communication between a frontend and a backend using `fetch()`:
+
+Suppose we have a frontend application running on `http://localhost:3000`, and a backend API running on `http://localhost:80`. We want to send a GET request to the backend API to retrieve some data. We can use the following code in the frontend:
+
+```
+fetch('http://localhost:80/api/data', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + token
+  },
+  credentials: 'include'
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error))
+```
+
+In this example, we are using `fetch()` to send a GET request to `http://localhost:80/api/data`. We are specifying that we want to include cookies and authorization headers with the request, and that we are sending the request in JSON format. We are also attaching a token to the Authorization header. 
+
+After sending the request, we are using the `then()` method to convert the response to JSON format, and then logging the data to the console. If there is an error, we are using the `catch()` method to log the error to the console. 
+
+In summary, `fetch()` is a powerful method that can be used to communicate with a server and retrieve data. It takes a URL as a required parameter, and can take additional parameters to configure the request, such as method, headers, body, and credentials. When used properly, `fetch()` can greatly simplify the process of sending and receiving data over a network.
+*/
+//---------------------------------------------------------------------------------------//
+
+//EJS file (The files in view folder we used with res.status(200).render(...)):
+/*
+EJS (Embedded JavaScript) is a templating language used to generate HTML markup dynamically. It is a popular view engine for Node.js that enables developers to write templates with embedded JavaScript code, making it easy to generate dynamic content. EJS allows developers to create reusable templates and fill them with data, which is passed from the server-side to the client-side.
+
+In the context of web development, a view refers to the part of an application that is responsible for rendering the user interface. Views are typically constructed from templates, which define the structure of the page, and data, which is used to populate the page with content. View engines are responsible for rendering views by combining templates and data into HTML markup that can be sent to the client-side for rendering in a web browser.
+
+The render() function is a method used to generate HTML markup from EJS templates. The render() function accepts two arguments, the name of the EJS template to be rendered and an object containing data to be passed to the template. The data object can contain any number of properties, each of which is used to pass a specific value to the template. The render() function returns the generated HTML markup, which can be sent to the client-side for rendering.
+
+Here is an example of how to use EJS to render a template:
+
+First, you need to install EJS using npm:
+
+```
+npm install ejs
+```
+
+Then, you can create a simple EJS template in a file called `hello.ejs`:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello <%= name %>!</h1>
+  </body>
+</html>
+```
+
+In this example, `<%= name %>` is an EJS tag that will be replaced with the value of the `name` property in the data object.
+
+Next, you can use the render() function to generate HTML markup from the `hello.ejs` template:
+
+```javascript
+const express = require('express');
+const app = express();
+const ejs = require('ejs');
+
+app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
+  const data = {
+    name: 'World'
+  };
+  res.render('hello', data);
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
+```
+
+In this example, we set the view engine to EJS using `app.set('view engine', 'ejs')`. We then define a route for the root path and use the render() function to generate HTML markup from the `hello.ejs` template. The `data` object is passed to the template, and the value of the `name` property is set to `'World'`. The generated HTML markup is sent to the client-side for rendering.
+
+EJS also provides a number of other tags, including conditionals, loops, and includes. These tags make it easy to generate complex HTML markup from simple templates. EJS is a powerful and flexible view engine that can be used to generate dynamic content for a wide range of web applications.
+*/
+
 //Importing required dependencies
 const express = require('express'); //Import the Express framework
 const route = express.Router(); //Create a new router object
@@ -162,6 +327,23 @@ route.get('/register', (req, res) => {
 
 
 //Define a POST route for user registration
+/**
+This code is likely part of a Node.js application that handles user registration for a web application. Here is what this code is doing:
+
+1. The code extracts the username and password from the request body received from the client. The `trim()` function is used to remove any extra whitespace from the username.
+
+2. The code sends a registration request to the backend API using the `fetch()` method. The API endpoint that the request is being sent to is `http://localhost:80/auth/register`. The `method` parameter is set to `POST`, which means that the request is submitting data to the server.
+
+3. The request header includes the `Content-Type` key-value pair with the value set to `application/json`. This indicates that the request body is in JSON format.
+
+4. The `body` parameter includes the `username` and `password` as key-value pairs in JSON format. This means that the username and password will be sent in the request body as JSON data.
+
+5. The `await` keyword is used to wait for the API response. If the response is `ok`, meaning that the server returned a successful response with a status code in the 200 range, the code parses the response JSON data using the `response.json()` method. The parsed data is then logged to the console using `console.log()`, and the client is redirected to the login page with a 200 status code.
+
+6. If the API returns an error response, the code extracts the error message from the response JSON data using `response.json()`. The error message is then passed to the `render()` method to render an error page with the message. The response status code is set to 404, indicating that the requested resource was not found.
+
+Overall, this code is sending a user registration request to the backend API, handling the response from the API, and responding to the client with appropriate status codes and messages.
+*/
 route.post('/register', async (req, res) => {
   const username = req.body.username.trim(); //Get username from request body and remove whitespace
   const password = req.body.password; //Get password from request body
@@ -193,6 +375,27 @@ route.get('/login', (req,res)=>{
 })
 
 // Handle login form submission
+/*
+This code is likely part of a Node.js application that handles user authentication for a web application. Here is what this code is doing:
+
+1. The code extracts the `username` and `password` from the request body received from the client using object destructuring.
+
+2. The code sends a login request to the backend API using the `fetch()` method. The API endpoint that the request is being sent to is `http://localhost:80/auth/login`. The `method` parameter is set to `POST`, which means that the request is submitting data to the server.
+
+3. The request header includes the `Content-Type` key-value pair with the value set to `application/json`. This indicates that the request body is in JSON format.
+
+4. The `body` parameter includes the `username` and `password` as key-value pairs in JSON format. This means that the username and password will be sent in the request body as JSON data.
+
+5. The `await` keyword is used to wait for the API response. The response is expected to be in JSON format.
+
+6. The response from the API is parsed using object destructuring to extract `status`, `message`, and `token`. If the `status` is `success`, then the code sets the token in a cookie and redirects the client to a success page with a 200 status code. If the `status` is not `success`, then the code redirects the client to the login page with an error message and a 401 status code.
+
+7. If the authentication is successful, the code sets the token in a cookie using the `res.cookie()` method. The cookie is set as `secure`, which means that it can only be sent over HTTPS. The `sameSite` parameter is set to `lax`, which means that the cookie can be sent with cross-site requests that are initiated by a top-level navigation (such as clicking on a link), but not with requests that are initiated by a third-party website. The `maxAge` parameter sets the cookie expiry time to 7200000 milliseconds, which is 2 hours.
+
+8. If the authentication is unsuccessful, the code renders the login page with an error message. The `messages` parameter is an array containing the error message received from the API, and it is passed to the `render()` method to display the error message on the login page.
+
+Overall, this code is sending a user authentication request to the backend API, handling the response from the API, setting a token in a cookie if authentication is successful, and responding to the client with appropriate status codes and messages.
+*/
 route.post('/login', async (req, res) => {
   const { username, password } = req.body; //Destructure username and password from request body
 
@@ -236,9 +439,26 @@ app.get('/error', (req, res) => {
 });
 
 //Handle GET requests for the /admin/dashboard route with a middleware function for checking the token
+/*
+This code is responsible for handling a GET request to retrieve user and product data for display on an admin dashboard. Here's a breakdown of what it does:
+
+1. It first checks if the JWT token is present in either the request cookies or headers. If it's not present, it renders an error view with a message indicating that the authorization header is missing or invalid.
+
+2. If the token is present, it uses the `jwt.verify()` method to verify the token's authenticity with the secret key stored in the environment variables. If the token is invalid, it renders an error view with a message indicating that the token is invalid.
+
+3. If the token is valid, it checks if the decoded token indicates that the user is an admin. If not, it renders an error view with a message indicating that the user is not authorized to access the admin dashboard.
+
+4. If the user is an admin and the token is valid, it makes two API requests to retrieve user and product data. It sends the token as an authorization header for both requests to authenticate the admin user.
+
+5. It converts the response data from both requests to JSON format using the `response.json()` method.
+
+6. It then passes the retrieved user and product data to the `user.ejs` view for rendering using the `res.render()` method.
+
+7. If there's any error during the API request or data retrieval process, it logs the error to the console using `console.error()`.
+*/
 app.get('/admin/dashboard', checkToken, (req,res,next)=>{
 
-    let token;
+  let token;
 
   if (req.cookies && req.cookies.token) { //Check if token is present in cookies
     token = req.cookies.token;
@@ -340,6 +560,18 @@ app.get('/admin/dashboard/edit/:id', checkToken, async (req, res) => { //create 
     }
 });
 
+/*
+This code block is a server-side controller function that handles a PUT request to edit a user's details in the admin dashboard. 
+
+The function first creates a `data` object that holds the updated password and role information received from the request body.
+
+Then, it sends a PUT request to the server at the specified route (`/admin/dashboard/edit/:id`) with the `data` object as the request body. The request also includes an authorization header with a JWT token for authentication.
+
+If the response from the server is `ok`, the function renders a `success` view with a message indicating that the user's details were successfully edited and a token. If there is an error, the function renders an `error` view with a message indicating an internal server error.
+
+Overall, this function provides a way for authorized users to edit user details in the admin dashboard.
+*/
+
 app.post('/admin/dashboard/edit/:id', checkToken, (req,res)=>{ //Route to handle editing of user details. checkToken is middleware that verifies a user's token
 
   let token;
@@ -415,6 +647,10 @@ app.post('/admin/dashboard/delete/:id', checkToken, (req,res)=>{ //HTTP POST req
       }
 
       //Code here
+      /*
+      This code attempts to send a DELETE request to a specified URL to delete a user. It includes the authorization token in the request header and sets the Content-Type header to `application/json`. The `credentials` option is set to `include`, which allows cookies and authentication headers to be sent in cross-origin requests.
+      If the response status code is ok (i.e., 200-299), the code renders a success message and sends a 200 response status code. Otherwise, it renders an error message and sends a 500 response status code. Any errors that occur during the fetch request are caught and handled by rendering an error message and sending a 500 response status code.
+      */
       try { //Try to execute the following code
         fetch(`http://localhost:80/admin/dashboard/delete/${req.params.id}`,{ //Make a fetch request to the specified URL
           method: "DELETE", //Set the method to DELETE
@@ -467,6 +703,10 @@ app.post('/admin/adduser', checkToken, (req,res)=>{ //Declaring a POST route at 
     }
 
     //Code here
+    /*
+    This is a JavaScript code snippet that makes a POST request to an endpoint `/admin/adduser` with fetch API. The request body is taken from the `req.body` object, which is stringified as a JSON object. The request headers include the `Content-Type` header set to `application/json` and the `Authorization` header with a token value. The `credentials` option is set to `include` to include cookies and credentials in the request. 
+    If the response status code is 200, a success page is rendered with a success message and token. Otherwise, an error message is rendered with a 500 status code. If there's an error while making the request, an error message is rendered with a 500 status code.
+    */
     const data = {username: req.body.username, password: req.body.password, role: req.body.role} // Creating an object to hold the user data from request body
     try {
       fetch('http://localhost:80/admin/adduser',{ // Making a POST request to the endpoint with fetch API
@@ -566,6 +806,13 @@ app.post('/admin/addgame', checkToken, (req,res)=>{ //handles POST request to '/
       }; //assigning the request data to data variable
 
       console.log(data); //logs the data to console
+      /*
+      This is a code snippet that is handling a POST request to add a new game to the server. The data for the new game is obtained from the `req.body` object and assigned to a `data` variable. 
+
+      Then, a `fetch` request is sent to the server at the `/admin/addgame` route using the `POST` method. The request includes the `Content-Type` and `Authorization` headers, and the `credentials` option is set to `'include'`. The `body` of the request is set to the `data` variable stringified to JSON.
+
+      The response is then checked to ensure that the status is ok, and the response JSON is parsed. If successful, a success message is rendered with a 200 response status code. If an error occurs, the error is logged to the console.
+      */
 
       fetch('http://localhost:80/admin/addgame', { //send a fetch POST request to server at http://localhost:80/admin/addgame route
         method: 'post',
@@ -616,7 +863,10 @@ app.post('/admin/dashboard/game/edit/:id', checkToken, (req,res)=>{ // Handle PO
       }
 
       //Code here
-
+      /*
+      This code sends a `PUT` request to the server at the specified URL with the given data in JSON format. It sets the headers with the `Content-Type` as `application/json` and the `Authorization` header with the token value. It also sets the credentials to `include`.
+      If the response is successful (`response.ok` is true), it renders a success message with a 200 response status code. Otherwise, it renders an error message with a 500 response status code. If there is an error while making the request, it also renders an error message with a 500 response status code.
+      */
       try {
         fetch(`http://localhost:80/admin/dashboard/game/edit/${req.params.id}`,{
           method: "PUT",
@@ -668,6 +918,10 @@ app.post('/admin/dashboard/game/delete/:id', checkToken, (req,res)=>{ //a POST r
       }
 
       //Code here
+      /*
+      This code sends an HTTP DELETE request to the server at the specified route (`http://localhost:80/admin/dashboard/game/delete/${req.params.id}`). It includes the token in the Authorization header and indicates that credentials should be included in the request (i.e., cookies and authorization headers). 
+      If the response status code is OK (i.e., 200), it renders a success message with a 200 response status code and the token value. Otherwise, it handles the error and sends a 500 response status code.
+      */
       
       try {
         fetch(`http://localhost:80/admin/dashboard/game/delete/${req.params.id}`,{
@@ -1033,3 +1287,80 @@ app.all('*', (req,res)=>{ //Handles all requests made to the server
 app.listen(3000, ()=>{ //Starts the server on port 3000 and listens for incoming requests
     console.log('Frontend is listening on port 3000'); //Logs a message to the console indicating that the frontend is listening on port 3000
 })
+
+/*
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⢆⡱⢫⡟⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⢿⣻⢿⣟⡿⡤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠠⠀⢂⡘⢦⡳⣏⣾⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣞⣿⣳⣁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠐⠈⣌⢣⡑⢦⣙⢮⣳⢻⡾⣿⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣾⢷⣿⢯⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣌⡳⢈⡒⡌⡖⣭⢺⡭⣞⡥⣏⣿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣟⡾⣏⡂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡈⢑⡣⢜⡜⡱⣌⢧⡽⣲⣽⢻⣾⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⣿⣽⣻⡽⣷⡂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠁⠂⠐⢈⠐⡡⠊⢎⡳⣟⠾⣝⡾⣛⣾⢳⢯⡻⡝⣯⢟⡿⣻⢿⣟⡿⣟⣿⢻⠿⡿⣿⢿⡿⣿⣿⢿⣾⣿⣿⣷⡿⣽⣳⠭⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠐⣸⢮⣷⡱⣭⣞⡵⣏⢿⡱⣏⠷⣎⣟⢮⢳⡙⡴⢋⡴⢩⠞⡼⡙⢮⠘⣉⠣⡙⠤⢋⡹⢱⠫⣟⢿⣽⣿⣟⣿⣯⣟⡷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠂⢭⣻⣽⣿⡷⣯⢻⣜⣣⢟⣼⡻⣝⣮⣛⢦⡙⡖⢣⠜⣡⠚⡔⣩⠂⢇⢢⠱⡱⢌⡒⠤⡃⠵⣈⠞⣽⣾⣿⣿⣽⣯⠷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠠⣈⣶⣽⣾⡿⣽⢏⡷⣎⢷⣫⠾⣽⣹⢶⡹⣎⡵⣍⢳⢪⢅⡫⠴⣡⢋⡜⢢⢣⡑⢎⡸⢐⡉⢖⡡⢚⡜⣯⣿⣿⣯⣟⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⡸⣟⣿⡿⣽⣻⢎⣷⡹⣎⣷⣛⣧⢯⣗⡻⣜⡞⣬⢇⡳⢊⡕⢣⢆⢣⠜⣡⠆⡍⢦⠡⠣⠜⢢⡑⢣⢜⣱⢯⣿⢿⡽⠌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣁⢷⣻⣯⢿⣯⢷⣛⠶⣝⣳⢾⣹⢮⢷⡺⣝⢧⡻⣔⢫⡔⢫⠜⡡⢎⢎⡜⢢⡙⡜⠤⢋⡅⣋⠦⡙⢆⢮⡹⣟⣾⣿⡻⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠰⢬⢏⣷⡿⣟⣮⢳⣭⢻⣭⣟⣯⣿⣯⣿⣷⣯⣿⣳⣮⣳⣜⢣⢎⡱⢎⡖⣸⢡⠚⣄⠫⠔⡘⡔⢢⠍⢎⢲⡹⣽⢾⡷⣟⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡉⢆⢫⣞⢿⡝⣮⢳⢮⣟⣼⢻⣞⡷⢯⡳⣏⢿⡻⣟⡿⣷⢯⣟⣎⠖⣭⢞⡵⣎⡵⣂⠧⣙⠰⣉⠦⡙⡌⢶⣹⢯⣟⣿⡱⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡐⢬⢷⡞⣯⡝⣮⢏⣷⣚⣮⢷⣻⣾⣿⣷⣿⣞⣷⣯⣟⣿⣻⡾⣝⠎⡜⢯⡾⣿⣽⢿⣻⣮⢷⡜⣦⣑⢚⢦⣻⣯⡿⣞⠥⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⡄⢫⠞⡑⢊⠱⠉⠞⣲⣛⠾⣏⡿⣹⢾⡹⢣⢏⠾⣽⣻⢾⣽⣻⢭⡚⣌⢣⢛⣷⣯⣿⣧⡝⣎⡝⠶⡭⡞⢦⣻⣯⢿⡉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠰⣎⡷⣞⣧⡚⠀⠀⠀⠀⡘⠴⣩⠿⣜⣳⡱⢎⡵⣋⢮⡟⣷⢯⣟⣾⢣⠷⡱⢌⠦⡙⣎⠿⣹⠻⡟⣷⢾⡱⢣⠝⡲⢯⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢌⣻⣽⣻⡽⣶⡹⠄⠀⢌⠰⣌⡳⣝⣯⢳⡧⣝⣏⢶⡹⣎⡿⣽⣻⢾⣝⡯⢏⡵⢊⠖⡱⢌⡚⢥⠓⡜⢤⠣⡙⢥⢋⡵⣻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⢳⣳⢯⣟⡾⣝⢦⠈⣂⠳⡜⣽⢺⡼⣳⡽⣞⣼⣳⢿⣹⣟⡷⢯⣛⣮⡝⣮⠰⣉⢎⡱⠌⡜⢢⡙⡜⢢⡑⡩⢆⢣⢺⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠡⢏⡿⣾⣽⢫⣮⡑⠤⡛⣼⢣⡯⣗⡯⢷⣛⡾⣽⣞⣷⣻⣾⢿⡿⣷⢿⣞⣳⣵⢪⠴⡩⢜⠡⡒⠌⡥⢒⡱⢊⢆⠯⣼⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠭⢳⢧⣛⡧⣷⣙⢦⡙⣦⢏⡷⣹⢞⡯⣯⣽⢳⣞⡷⣯⣟⣯⠿⣝⠻⡜⡭⠻⣍⠚⡵⣊⠵⣡⢋⡔⢣⠜⣡⠞⡰⢭⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠾⣱⠿⣼⡹⢮⡱⣎⠿⣜⢧⢯⣳⠷⣭⣟⡾⡽⢧⣻⣜⠳⣌⠳⡩⠔⢣⠌⡓⢬⢃⡞⢤⠣⡜⢣⡙⣤⢛⡥⢫⠐⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠠⢉⢧⡳⣭⢻⡜⣯⢞⣵⣻⣳⢯⡾⣽⢯⣷⣞⣷⣬⣳⡹⣌⠣⡜⢱⢊⠖⡸⢂⡳⢌⢣⠜⡰⣋⠖⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡘⢦⡻⣜⢧⣻⡜⣯⢞⡵⣯⣿⣿⣿⣿⣿⣾⣽⣾⣽⣿⣽⣷⣎⡕⡪⢜⡡⢓⡜⡌⢦⡙⡔⠡⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢉⠲⣝⢮⡳⢧⡻⣜⢯⡽⣳⡽⣞⣯⣟⡻⣙⢛⠻⣻⢿⡿⣟⢯⡛⡕⢪⠔⡣⢜⡘⠆⠱⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢪⠔⡹⢮⡝⣧⢻⡜⣧⢻⡵⣛⣾⢳⣯⢷⣹⢮⡗⣧⢛⡼⢌⠦⡑⢮⡑⢎⡱⢊⠔⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⢞⡡⣛⡼⣣⢟⡼⣣⠿⣜⠿⣼⣻⣞⣯⢷⣻⣼⢣⢏⡲⣉⠖⡩⢆⡙⢦⠱⡉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢭⡚⣵⢣⡟⣵⢯⣞⡵⣻⢭⡟⡶⣓⠮⡜⢭⡒⣍⠣⢎⠴⡡⢎⡕⢪⡑⢎⡱⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢣⢟⡼⣣⢿⡹⡾⣼⣹⢧⡟⣾⣱⢏⡷⣙⢦⡱⢌⠳⣌⠲⡑⢎⡜⡥⡙⢦⡑⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠭⣞⡵⣛⡮⣗⢿⣱⢯⠾⣝⡾⣭⣟⡾⣵⢮⣱⢋⠶⣈⢧⣙⠲⣜⡡⢝⢢⡹⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡹⢎⡷⣫⢷⣹⡞⣧⢟⣻⡽⣽⣳⢯⡿⣽⣞⡷⣯⢻⡭⢶⢩⠓⢦⡙⢬⠲⣑⢻⣷⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢄⠱⣏⡞⣷⢫⣶⢻⡼⣫⣗⢯⡷⣯⠿⣽⠳⢯⡝⣎⢳⡙⢎⡲⡙⢦⡙⢦⡙⠤⠈⣿⣿⣿⣷⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠄⠛⠼⡙⢞⠻⡜⡳⢏⠷⣞⣻⡼⢧⡻⣜⢫⠖⣜⡸⢆⡝⣪⢕⡹⢦⡙⢦⡙⠆⠀⢾⣿⣿⣿⣿⣿⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠌⣀⡾⡀⢄⡀⠀⠀⠀⠈⣈⠀⣈⣟⣧⢻⣌⢳⡚⡴⢣⢏⡼⣡⢎⡵⢪⡱⢣⡝⠠⠀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣭⡳⣖⡤⣄⣠⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠄⡌⠀⠀⠌⢢⣝⣣⠷⣌⢯⡻⣝⢯⣟⢧⡛⣵⣻⣼⡳⣎⢷⣹⢣⠟⣜⡲⡱⢎⡜⣣⢽⡓⠄⠀⠀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣱⣳⣎⡷⣯⣛⡷⣚⡴⣠⢄⣀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⡔⢤⢃⡜⢤⣉⠒⡀⠀⢈⠜⢤⡿⣜⣯⠽⣎⡳⡭⢞⢮⡳⣙⢾⣳⢯⡿⣽⡺⣵⢫⡟⢦⢳⡙⢮⣜⡷⡋⠔⠀⠀⠀⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣞⣿⣽⣯⣟⡷⣽⡖⣯⢾⣹⣞⣵⣲⢦⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⣄⢢⢵⣸⡼⣧⣻⣜⠧⢦⣉⠀⠀⠰⣈⠲⣟⡹⣎⠿⣼⡹⣝⣫⠶⣍⠧⣻⡽⣯⣟⣷⣻⡵⣻⡜⣯⢇⣿⣳⢏⠇⠡⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣷⣿⣿⣿⣳⣿⡾⣽⣻⣾⣽⣳⢯⣟⡶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⢀⢡⡘⣌⡟⣼⣿⣿⣿⣿⣼⡟⡄⢀⠀⠀⡁⠀⢡⣏⡘⣏⠛⣤⢹⡌⣧⢋⡙⣌⢡⣿⣡⢻⡜⣇⣿⢡⢻⣸⢻⡜⢡⠈⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣿⣿⣿⣿⣿⣿⣿⣏⡟⣧⣼⢹⡟⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠄⢢⡱⣜⣮⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡱⣃⠀⢀⠐⠈⢠⣯⠵⣯⡻⣵⢫⡞⣵⢫⠷⣌⢻⡶⣯⢿⣽⣻⣞⣯⢿⡽⡏⢎⠁⠂⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣷⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⡄⢢⠱⣤⢫⣷⣽⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣛⡄⠀⠀⡌⢀⠰⣏⢿⡱⣟⡼⢧⡻⣜⢯⡳⣌⢳⡿⣽⣻⡾⣷⣻⢾⢏⠓⡁⠂⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⠠⡐⡌⢤⠳⣜⣣⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡷⡌⠀⠐⢨⠀⡜⣿⣺⢽⣺⡝⣧⣻⠼⣧⣛⠤⣫⣟⣷⢿⡽⡷⢏⠋⠄⠃⢀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢠⡘⣤⠳⡼⣜⣷⣻⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⢀⠣⡘⢸⣷⢯⣛⡶⣏⠷⣭⢟⡶⢭⣚⣱⢿⣞⢯⠹⡑⠊⠌⠐⠀⠀⠀⠀⠀⠀⠠⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢀⣶⡽⣞⣿⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⢄⠓⡌⢳⣿⢯⣝⠾⣭⣻⢧⣻⡼⢧⡳⠘⡏⠜⢂⠡⠐⠡⠈⠀⠀⠀⠀⠀⠀⠐⣤⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠐⣌⢘⡰⠉⢞⡛⠎⠛⠱⠋⠉⠑⠙⠋⠓⠡⢎⠘⣀⠂⡁⠂⠠⠀⠀⠀⠀⠀⢄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡅⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢡⣂⡶⣤⣳⣼⣟⣶⣳⡾⣴⣦⣤⣤⣖⡴⣎⢧⡛⣤⣒⡄⡁⠀⠀⠀⠀⠀⡈⡔⣋⢟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣛⢏⡻⠹⣿⠁⠁⠹⠿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣴⣦⣼⣷⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢐⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣷⡔⠀⠀⠀⠀⢁⣰⣎⣴⣈⣦⡑⣬⢡⡉⢌⠈⣁⠫⣙⠹⣋⠟⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢻⠟⡝⠀⠀⠀⠀⠀⠿⡿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣷⣾⣾⣾⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⡳⣼⡱⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣧⣾⡔⠈⠀⠄⠀⢀⡸⣄⣄⣊⣄⢂⡡⢉⠜⣩⠋⠟⡛⠟⡿⠿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢞⣵⣳⢏⡷⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⡿⢆⠁⠀⠀⠀⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣼⣷⣮⣷⣼⣳⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣫⢾⣽⣻⢼⡱⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣦⣓⡆⢀⠦⣄⠀⡀⢰⡠⡑⣨⠉⡝⢩⠛⣛⠻⡛⠿⠿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⢿⣳⣟⣮⢳⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⡛⢿⣿⣿⣿⣿⣿⣿⣿⡗⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢇⠠⢈⠀⢂⠰⣿⣷⣿⣷⣿⣿⣷⣿⣶⣷⣽⣮⣵⣜⣶⡴⣮⣝⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⡽⣾⡹⢾⣿⣿⣿⣿⣿⣿⡿⢣⣛⠜⡠⢉⠿⣿⣿⣿⣿⣿⡦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡽⣌⠆⡐⢀⡈⠄⠂⠭⡙⢋⠟⡛⢟⠻⢟⠿⢿⠿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⡽⣧⢻⡹⣿⣿⣿⡿⣟⠣⣍⠣⢜⢢⡑⢦⣜⡽⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢆⣠⢀⢀⡈⢤⣷⣯⣿⣮⣷⣮⣷⣬⣮⣤⣳⣌⣦⣱⣊⡵⣩⢟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⢾⣻⣽⢣⡳⡹⢿⡿⣵⢊⡱⢠⡍⢦⣣⣟⡿⣾⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣙⠦⣹⣯⣀⡘⡿⢻⠿⡻⢿⠿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⡽⣾⢯⣗⣯⢯⡝⣆⠳⣜⢧⡟⣷⣻⣾⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣯⡗⣯⣜⣿⣴⣧⣮⣵⣎⡶⣤⣃⣆⢦⡱⣨⢱⡩⢍⣋⢟⡹⣟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢯⣿⣽⣻⢾⣝⡾⣽⢎⡷⣈⠎⡝⣎⢟⣿⣿⣿⣿⣿⣿⣿⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⡙⣿⢸⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣾⣿⣷⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣞⡷⢯⣟⡾⣽⣳⡟⡶⣥⢚⡘⣤⢋⠾⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣧⣙⡯⢜⣳⣌⡖⣌⢦⣡⢋⡜⡩⢍⢫⡙⣋⠟⡛⢟⡻⢟⠿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢷⣯⣟⣳⢎⡳⢧⣏⠿⣽⢖⡯⣞⡶⣍⢏⣿⣿⣿⣿⣿⣿⣿⣿⣧⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠧⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣿⣼⣷⣽⣶⣳⣮⣷⣾⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣾⣽⣻⢮⡱⢫⡜⣹⢎⡽⢺⡵⢻⡜⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢤⡛⣷⢸⡏⣍⢫⠝⣋⠟⡹⢛⠻⡛⢿⠻⠿⢿⠿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⢯⣿⡽⣧⣻⡕⣮⡱⢎⡔⢣⢚⡕⢺⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣝⡷⢺⣿⣾⣿⣿⣾⣽⣷⣯⣷⣽⣦⣽⣜⣦⣳⣌⡶⣰⣎⡼⣧⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢯⣿⣽⢯⡷⡙⢦⢻⡜⣬⡓⣎⡜⣣⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀
+⠀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⡼⣯⢹⡟⢿⠻⡟⠿⡿⢿⢿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣽⢫⣟⡯⣟⢾⡹⣏⠳⣉⠢⡙⡟⣶⡹⢆⡿⣱⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀
+⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡼⣧⢻⣽⣶⣷⣮⣷⣼⣎⣦⣵⣢⢦⡱⣌⣣⢍⡹⣩⠛⣝⣫⢟⡿⣻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣫⢞⡵⣋⠶⡱⣍⠳⢄⠢⢱⡙⢦⡙⢮⡜⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣖⠀⠀⠀⠀⠀⠀
+⠀⠰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣹⢧⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣾⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⡼⣝⢮⡱⢎⡵⣊⡕⣣⢎⡳⣌⢇⠾⣱⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀
+⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⢺⣧⢿⣳⣜⣦⣕⢮⣡⢏⣭⢫⡝⣋⠟⡛⡟⡻⠿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣹⢚⡶⣽⣺⢵⣫⢶⡝⣮⢻⡵⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢆⠀⠀⠀⠀
+⠀⠀⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢯⡷⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣷⣿⣴⣫⣼⣍⣟⣿⣻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢿⣷⡿⣯⢷⣏⢿⣼⣳⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⠀⠀⠀
+⠀⠀⠼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢺⣗⣿⣭⣋⣟⣹⢋⡟⡹⢛⡛⣟⠻⡟⢿⠿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣽⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀
+⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡽⣾⣽⣿⣿⣿⣿⣿⣾⣿⣷⣿⣼⣷⣿⣮⣷⣵⣦⣧⣝⣮⣝⣯⣻⣽⣻⣟⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀
+⠀⠀⡸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣞⡷⣯⢟⡛⣟⠻⣟⠿⡿⢿⢿⡿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⠀
+⠀⠀⢼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣺⣽⣻⣿⣿⣾⣿⣾⣿⣽⣾⣶⣳⣭⣾⣴⣣⡽⣌⣯⣹⣙⣏⡻⣝⢯⣛⣿⣻⣟⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀
+⠀⠀⢺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣵⣳⣿⢿⢻⠟⡿⢿⠿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄
+⠀⢀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣞⡷⣿⣧⣿⣾⣵⣯⣾⣼⣳⣮⣷⣭⢯⣹⣍⣻⣙⡟⣛⡟⣛⢻⡛⡟⢿⡻⣟⠿⣿⢿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡷
+⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢺⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏
+⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⢻⣞⣿⣦⣳⣴⣦⣵⣬⣖⣭⣞⣭⣏⡿⣹⣛⣟⣻⠻⣟⢻⠟⡿⣻⠿⣟⡿⣟⡿⣿⢿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀(;´༎ຶٹ༎ຶ`)
+*/
+//Never Going To Give You Up//
