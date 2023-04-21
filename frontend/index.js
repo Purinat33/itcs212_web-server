@@ -340,19 +340,20 @@ app.get('/admin/dashboard/edit/:id', checkToken, async (req, res) => { //create 
     }
 });
 
-app.post('/admin/dashboard/edit/:id', checkToken, (req,res)=>{
+app.post('/admin/dashboard/edit/:id', checkToken, (req,res)=>{ //Route to handle editing of user details. checkToken is middleware that verifies a user's token
+
   let token;
   if (req.cookies && req.cookies.token) { // check for token in cookies
-    token = req.cookies.token;
+    token = req.cookies.token; //Assign the token to a variable
   } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(' ')[1]; //Assign the token to a variable
   }
 
   if (!token) {
     return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { //Verify the token using the JWT_SECRET env variable
     if (err) {
       return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
     }
@@ -361,20 +362,20 @@ app.post('/admin/dashboard/edit/:id', checkToken, (req,res)=>{
         return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); //render an error message and send a 403 response status code
       }
 
-      //Code here
-      const data = {password: req.body.password, role: req.body.role}
+      //Code here to handle editing of user details
+      const data = {password: req.body.password, role: req.body.role} //Create a data object to hold user details
       try {
         fetch(`http://localhost:80/admin/dashboard/edit/${req.params.id}`,{
-          method: "PUT",
+          method: "PUT", //Make a PUT request to the server
           headers:{
             'Content-Type' : 'application/json',
-            'Authorization' : `Bearer ${token}`
+            'Authorization' : `Bearer ${token}` //Set the authorization header
           },
           credentials: 'include',
-          body: JSON.stringify(data)
+          body: JSON.stringify(data) //Send the data object as JSON in the request body
         }).then(response=>{
-          if(response.ok){
-            res.status(200).render('success', {message: "Successfully edit user", token: token});
+          if(response.ok){ //If response is okay
+            res.status(200).render('success', {message: "Successfully edit user", token: token}); //render a success message and send a 200 response status code
           }
           else{
             return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
@@ -391,148 +392,155 @@ app.post('/admin/dashboard/edit/:id', checkToken, (req,res)=>{
     });
 })
 
-app.post('/admin/dashboard/delete/:id', checkToken, (req,res)=>{
-  let token;
+app.post('/admin/dashboard/delete/:id', checkToken, (req,res)=>{ //HTTP POST request made to '/admin/dashboard/delete/:id' route with checkToken middleware function
+  let token; //Declare a variable named token
+
   if (req.cookies && req.cookies.token) { // check for token in cookies
-    token = req.cookies.token;
+    token = req.cookies.token; //If token is found in cookies, assign it to token variable
   } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(' ')[1]; //If token is found in headers, assign it to token variable
   }
 
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+  if (!token) { //If token is not found
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); //Render an error message and send a 401 response status code
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-    if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { //Verify the token using the JWT_SECRET
+    if (err) { //If there is an error in verification
+      return res.status(401).render('error',{ message: 'Invalid token' }); //Render an error message and send a 401 response status code
     }
 
-    if (!decodedToken.isAdmin) { //if decoded token isAdmin field is not true
-        return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); //render an error message and send a 403 response status code
+    if (!decodedToken.isAdmin) { //If decodedToken's isAdmin field is not true
+        return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); //Render an error message and send a 403 response status code
       }
 
       //Code here
-      try {
-        fetch(`http://localhost:80/admin/dashboard/delete/${req.params.id}`,{
-          method: "DELETE",
+      try { //Try to execute the following code
+        fetch(`http://localhost:80/admin/dashboard/delete/${req.params.id}`,{ //Make a fetch request to the specified URL
+          method: "DELETE", //Set the method to DELETE
           headers:{
-            'Content-Type' : 'application/json',
-            'Authorization' : `Bearer ${token}`
+            'Content-Type' : 'application/json', //Set the Content-Type header to application/json
+            'Authorization' : `Bearer ${token}` //Set the Authorization header to the token
           },
-          credentials: 'include'
-        }).then(response=>{
-          if(response.ok){
-            res.status(200).render('success', {message: "Successfully delete user", token: token});
+          credentials: 'include' //Include credentials
+        }).then(response=>{ //When response is received
+          if(response.ok){ //If the response status is ok
+            res.status(200).render('success', {message: "Successfully delete user", token: token}); //Render a success message with a 200 response status code
           }
           else{
-            return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+            return res.status(500).render('error',{ message: 'Internal server erorr' }); //Render an error message and send a 500 response status code
           }
-        }).catch(error =>{
-          return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+        }).catch(error =>{ //If there is an error
+          return res.status(500).render('error',{ message: 'Internal server erorr' }); //Render an error message and send a 500 response status code
         })
 
 
-      } catch (error) {
-        return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+      } catch (error) { //If there is an error
+        return res.status(500).render('error',{ message: 'Internal server erorr' }); //Render an error message and send a 500 response status code
       }
 
     });
 })
 
-app.post('/admin/adduser', checkToken, (req,res)=>{
-     let token;
-  if (req.cookies && req.cookies.token) { // check for token in cookies
+
+app.post('/admin/adduser', checkToken, (req,res)=>{ //Declaring a POST route at endpoint '/admin/adduser', with checkToken middleware and callback function taking request and response objects
+
+  let token; // Declaring a variable token to store token value
+
+  if (req.cookies && req.cookies.token) { // Checking if token is available in the cookies
     token = req.cookies.token;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // Checking if token is available in the headers
     token = req.headers.authorization.split(' ')[1];
   }
 
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+  if (!token) { // If token is not available, then handle unauthorized access with 401 status code and render error page with a message
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-    if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { // Verify the token and decoding it
+    if (err) { // If error, handle unauthorized access with 401 status code and render error page with a message
+      return res.status(401).render('error',{ message: 'Invalid token' });
     }
 
-    if (!decodedToken.isAdmin) { //if decoded token isAdmin field is not true
-        return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); //render an error message and send a 403 response status code
-      }
-
-      //Code here
-      const data = {username: req.body.username, password: req.body.password, role: req.body.role}
-      try {
-        fetch('http://localhost:80/admin/adduser',{
-          method: "POST",
-          headers:{
-            'Content-Type' : 'application/json',
-            'Authorization' : `Bearer ${token}`
-          },
-          credentials: 'include',
-          body: JSON.stringify(req.body)
-        }).then(response=>{
-          if(response.ok){
-            res.status(200).render('success', {message: "Successfully added a new user", token: token});
-          }
-          else{
-            return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
-          }
-        }).catch(error =>{
-          return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
-        })
-
-
-      } catch (error) {
-        return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
-      }
-
-    });
-})
-
-app.get('/admin/addgame', checkToken, (req,res)=>{
-     let token;
-  if (req.cookies && req.cookies.token) { // check for token in cookies
-    token = req.cookies.token;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
-    token = req.headers.authorization.split(' ')[1];
-  }
-
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // handle unauthorized access
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-    if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
-    }
-
-    if (!decodedToken.isAdmin) {
-      return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); // handle forbidden access
+    if (!decodedToken.isAdmin) { // Checking if the user is an admin or not, based on the decodedToken object
+      return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); // Render an error message and send a 403 response status code
     }
 
     //Code here
-    return res.status(200).sendFile(path.join(__dirname, 'public', 'admin', 'addgame.html'))
+    const data = {username: req.body.username, password: req.body.password, role: req.body.role} // Creating an object to hold the user data from request body
+    try {
+      fetch('http://localhost:80/admin/adduser',{ // Making a POST request to the endpoint with fetch API
+        method: "POST", // Request method is POST
+        headers:{
+          'Content-Type' : 'application/json', // Request header content type is JSON
+          'Authorization' : `Bearer ${token}` // Authorization header value with token
+        },
+        credentials: 'include', // Request credentials is set to include
+        body: JSON.stringify(req.body) // Request body as a JSON stringified version of the req.body object
+      }).then(response=>{
+        if(response.ok){ // If the response status code is 200, render success page with message and token
+          res.status(200).render('success', {message: "Successfully added a new user", token: token});
+        }
+        else{ // If the response status code is not 200, handle the error with 500 status code and render error page with a message
+          return res.status(500).render('error',{ message: 'Internal server error' });
+        }
+      }).catch(error =>{ // If there's an error while making the request, handle the error with 500 status code and render error page with a message
+        return res.status(500).render('error',{ message: 'Internal server error' });
+      })
+
+
+    } catch (error) { // If there's an error, handle the error with 500 status code and render error page with a message
+      return res.status(500).render('error',{ message: 'Internal server error' });
+    }
+
+  });
+})
+
+app.get('/admin/addgame', checkToken, (req,res)=>{ //define a route with endpoint /admin/addgame which accepts GET requests, and a middleware checkToken, and a callback function with request and response objects as parameters
+    
+  let token; //declare a variable to store token
+
+  if (req.cookies && req.cookies.token) { //check if token exists in the cookies
+    token = req.cookies.token; //if token exists, assign it to the token variable
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { //if token is not found in the cookies, check the authorization header for token
+    token = req.headers.authorization.split(' ')[1]; //if token is found in the authorization header, split the header string and assign the token to the token variable
+  }
+
+  if (!token) { //if token is still undefined after checking both cookies and headers
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); //return a 401 status error with a message of Authorization header missing or invalid
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { //verify the token with jwt.verify
+    if (err) {
+      return res.status(401).render('error',{ message: 'Invalid token' }); //if token is invalid, return a 401 status error with a message of Invalid token
+    }
+
+    if (!decodedToken.isAdmin) { //if decoded token is not admin
+      return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); //return a 403 status error with a message of Access denied. User is not an admin
+    }
+
+    //Code here - this is where the code to handle the route will be placed
+
+    return res.status(200).sendFile(path.join(__dirname, 'public', 'admin', 'addgame.html')) //send the addgame.html file located in public/admin folder when there is a successful response
 
     })
 })
 
-app.post('/admin/addgame', checkToken, (req,res)=>{
+app.post('/admin/addgame', checkToken, (req,res)=>{ //handles POST request to '/admin/addgame' route and requires checkToken middleware
    let token;
   if (req.cookies && req.cookies.token) { // check for token in cookies
-    token = req.cookies.token;
+    token = req.cookies.token; //if token is present, assign it to the token variable
   } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(' ')[1]; //if token is present, assign it to the token variable
   }
 
   if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); //if token is not present, render an error message and send a 401 response status code
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { //verifies the token using the JWT_SECRET and decodedToken contains the decoded token
     if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+      return res.status(401).render('error',{ message: 'Invalid token' }); //if token is invalid, render an error message and send a 401 response status code
     }
 
     if (!decodedToken.isAdmin) { //if decoded token isAdmin field is not true
@@ -555,11 +563,11 @@ app.post('/admin/addgame', checkToken, (req,res)=>{
         other: req.body.other,
         publisher: req.body.publisher,
         price: req.body.price
-      };
+      }; //assigning the request data to data variable
 
-      console.log(data);
+      console.log(data); //logs the data to console
 
-      fetch('http://localhost:80/admin/addgame', {
+      fetch('http://localhost:80/admin/addgame', { //send a fetch POST request to server at http://localhost:80/admin/addgame route
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -575,83 +583,87 @@ app.post('/admin/addgame', checkToken, (req,res)=>{
           throw new Error('Network response was not ok.');
         })
         .then((data) => {
-          console.log(data);
-          res.status(200).render('success', { message: 'Product successfully added', token });
+          console.log(data); //log the response data to console
+          res.status(200).render('success', { message: 'Product successfully added', token }); //render a success message and send a 200 response status code
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err)); //if an error occurs, log the error to console
       });
 
 })
 
 //Put game
-app.post('/admin/dashboard/game/edit/:id', checkToken, (req,res)=>{
+app.post('/admin/dashboard/game/edit/:id', checkToken, (req,res)=>{ // Handle POST request to edit a game with the given id
+
    let token;
-  if (req.cookies && req.cookies.token) { // check for token in cookies
+
+  if (req.cookies && req.cookies.token) { // Check if token exists in cookies
     token = req.cookies.token;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // Check if token exists in headers
     token = req.headers.authorization.split(' ')[1];
   }
 
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+  if (!token) { // If no token is present
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // Render an error message and send a 401 response status code
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { // Verify the token using JWT and the secret key
     if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+      return res.status(401).render('error',{ message: 'Invalid token' }); // Render an error message and send a 401 response status code if the token is invalid
     }
 
-    if (!decodedToken.isAdmin) { //if decoded token isAdmin field is not true
-        return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); //render an error message and send a 403 response status code
+    if (!decodedToken.isAdmin) { // Check if the decoded token isAdmin field is false
+        return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); // Render an error message and send a 403 response status code
       }
 
       //Code here
-      
+
       try {
         fetch(`http://localhost:80/admin/dashboard/game/edit/${req.params.id}`,{
           method: "PUT",
           headers:{
             'Content-Type' : 'application/json',
-            'Authorization' : `Bearer ${token}`
+            'Authorization' : `Bearer ${token}` // Set the Authorization header with the token value
           },
           credentials: 'include',
-          body: JSON.stringify(req.body)
+          body: JSON.stringify(req.body) // Set the request body with the given data in JSON format
         }).then(response=>{
           if(response.ok){
-            res.status(200).render('success', {message: "Successfully Edit product", token: token});
+            res.status(200).render('success', {message: "Successfully Edit product", token: token}); // Render a success message and send a 200 response status code if the response is ok
           }
           else{
-            return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+            return res.status(500).render('error',{ message: 'Internal server erorr' }); // Render an error message and send a 500 response status code
           }
         }).catch(error =>{
-          return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+          return res.status(500).render('error',{ message: 'Internal server erorr' }); // Render an error message and send a 500 response status code if there is an error
         })
       } catch (error) {
-        return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+        return res.status(500).render('error',{ message: 'Internal server erorr' }); // Render an error message and send a 500 response status code if there is an error
       }
 
     });
 })
 
+
 //DELETE GAME
-app.post('/admin/dashboard/game/delete/:id', checkToken, (req,res)=>{
-   let token;
-  if (req.cookies && req.cookies.token) { // check for token in cookies
-    token = req.cookies.token;
+app.post('/admin/dashboard/game/delete/:id', checkToken, (req,res)=>{ //a POST request route that requires an id parameter and checkToken middleware function
+   let token; //declare a variable token to hold token value
+  
+  if (req.cookies && req.cookies.token) { //check if cookies and token value exist
+    token = req.cookies.token; //assign token value
   } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(' ')[1]; //split the token value from the Authorization header
   }
 
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // handle unauthorized access
+  if (!token) { //if token is not present or undefined
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid' }); // render an error message and send a 401 response status code
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { //verify the token with JWT_SECRET
     if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+      return res.status(401).render('error',{ message: 'Invalid token' }); // render an error message and send a 401 response status code if token is invalid
     }
 
-    if (!decodedToken.isAdmin) { //if decoded token isAdmin field is not true
+    if (!decodedToken.isAdmin) { //check if decoded token isAdmin field is false
         return res.status(403).render('error',{ message: 'Access denied. User is not an admin' }); //render an error message and send a 403 response status code
       }
 
@@ -659,48 +671,60 @@ app.post('/admin/dashboard/game/delete/:id', checkToken, (req,res)=>{
       
       try {
         fetch(`http://localhost:80/admin/dashboard/game/delete/${req.params.id}`,{
-          method: "DELETE",
+          method: "DELETE", //HTTP DELETE request method
           headers:{
-            'Content-Type' : 'application/json',
-            'Authorization' : `Bearer ${token}`
+            'Content-Type' : 'application/json', //specify that the request body is in JSON format
+            'Authorization' : `Bearer ${token}` //set the Authorization header to the token value
           },
-          credentials: 'include'
+          credentials: 'include' //indicate that the request should include credentials such as cookies, authorization headers
         }).then(response=>{
-          if(response.ok){
-            res.status(200).render('success', {message: "Successfully Delete product", token: token});
+          if(response.ok){ //if the response status is OK
+            res.status(200).render('success', {message: "Successfully Delete product", token: token}); // render a success message with a 200 response status code and token value
           }
           else{
-            return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+            return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error and send a 500 response status code
           }
         }).catch(error =>{
-          return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+          return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error and send a 500 response status code
         })
       } catch (error) {
-        return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error
+        return res.status(500).render('error',{ message: 'Internal server erorr' }); // handle error and send a 500 response status code
       }
 
     });
 })
 
 
+
+// Handles GET requests to the '/store/browse' endpoint
 app.get('/store/browse', async (req,res)=>{
+    // Send a GET request to the 'http://localhost:80/store/browse' endpoint
     const response = await fetch('http://localhost:80/store/browse');
+    // Extract the JSON data from the response
     const data = await response.json();
+    // Render the 'catalogue' view, passing in the 'data' as the 'product' variable
     res.render('catalogue', {product: data})
 })
 
+// Handles GET requests to the '/store/browse/:id' endpoint
 app.get('/store/browse/:id', async (req,res)=>{
-    
+    // Send a GET request to the 'http://localhost:80/store/browse/:id' endpoint
+    // (where :id is a parameter in the URL path)
     const response = await fetch(`http://localhost:80/store/browse/${req.params.id}`,{
         headers:{
             'Content-Type': `application/json`
         }
     });
+    // Extract the JSON data from the response
     const data = await response.json();
+    // Render the 'product' view, passing in the 'data' as the 'product' variable
     res.render('product', {product: data})
 })
 
+// Handles GET requests to the '/admin/dashboard/game/edit/:id' endpoint
 app.get('/admin/dashboard/game/edit/:id', checkToken, async (req,res)=>{
+    // Send a GET request to the 'http://localhost:80/admin/product/:id' endpoint
+    // (where :id is a parameter in the URL path)
     const response = await fetch(`http://localhost:80/admin/product/${req.params.id}`,{
         headers:{
             'Content-Type': `application/json`,
@@ -708,19 +732,26 @@ app.get('/admin/dashboard/game/edit/:id', checkToken, async (req,res)=>{
         },
         credentials: 'include'
     })
+    // Extract the JSON data from the response
     const data = await response.json();
+    // Render the 'editGame' view, passing in the 'data' as the 'product' variable
     res.render('editGame', {product: data});
 })
 
+// Handles GET requests to the '/store/search' endpoint
 app.get('/store/search', async (req,res)=>{
+    // Send a GET request to the 'http://localhost:80/store/search' endpoint
     const response = await fetch('http://localhost:80/store/search',{
         headers:{
             "Content-type": `application/json`
         }
     })
+    // Extract the JSON data from the response
     const data = await response.json();
+    // Render the 'search' view, passing in the 'data.product' as the 'product' variable
     res.status(200).render('search', {product: data.product});
 })
+
 
 //From backend cart routes
 
@@ -730,48 +761,61 @@ app.get('/store/search', async (req,res)=>{
 // routes.put('/cart/update/:id', checkJWT, putCart); //Change quantity of specific item in the cart
 // routes.delete('/cart/delete/:id', checkJWT, deleteCart); //Delete product with ID from the cart
 
+// This code handles GET requests for the '/store/cart' endpoint, after checking for a valid JWT token.
 app.get('/store/cart', checkToken, async (req, res) => {
   let token;
 
+  // Check if the token is present in cookies.
   if (req.cookies && req.cookies.token) {
     token = req.cookies.token;
   } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    // If token is not present in cookies, check for it in the 'Authorization' header of the request.
     token = req.headers.authorization.split(' ')[1];
   }
 
+  // If token is still not present, return an error response.
   if (!token) {
     return res.status(401).render('error', { message: 'Authorization header missing or invalid (401)' });
   }
 
+  // Verify the JWT token using the JWT_SECRET specified in the environment variables.
   jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
+    // If the token is invalid or expired, return an error response.
     if (err) {
       return res.status(401).render('error', { message: 'Invalid token' });
     }
 
+    // Extract the user ID from the decoded token.
     const userID = decodedToken.id;
 
     try {
+      // Fetch the user's cart from the store API.
       const response = await fetch(`http://localhost:80/store/cart?uid=${userID}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
 
+      // If the response is not OK, throw an error.
       if (!response.ok) {
         throw new Error('Error retrieving cart');
       }
 
+      // Parse the response data.
       const data = await response.json();
       const { cartItems, totalSum, user } = data;
       
+      // Render the 'cart' view with the cart data and the JWT token.
       res.render('cart', { cartItems, totalSum, user, token });
       
     } catch (error) {
+      // If there is an error, log it and return an error response.
       console.error(error);
       res.status(500).render('error', { message: 'Internal server error' });
     }
   });
 });
+
 
 /*
 
@@ -779,197 +823,213 @@ app.get('/store/cart', checkToken, async (req, res) => {
 
 */
 
-app.post('/store/cart/:id', checkToken, async (req,res)=>{
-  const data = { quantity: req.body.quantity };
+app.post('/store/cart/:id', checkToken, async (req,res)=>{ //post request to add item to cart
+  const data = { quantity: req.body.quantity }; //extracting quantity from request body
   let token;
-  if (req.cookies && req.cookies.token) { // check for token in cookies
+
+  if (req.cookies && req.cookies.token) { // check if token is present in cookies
     token = req.cookies.token;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check if token is present in authorization headers
     token = req.headers.authorization.split(' ')[1];
   }
 
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // handle unauthorized access
+  if (!token) { //if token is not present
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // return unauthorized access error
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-    if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { //verify the token
+    if (err) { //if token is invalid
+      return res.status(401).render('error',{ message: 'Invalid token' }); // return unauthorized access error
     }
-    const userID = decodedToken.id;
+    const userID = decodedToken.id; //get user ID from decoded token
 
-    //Code here
-    
+    //Code here (what does this code block do? It's not clear from the provided code.)
+
+    //Send POST request to add item to cart
     fetch(`http://localhost:80/store/cart/${req.params.id}?uid=${userID}`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}` //set authorization header
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data) //set request body
   })
   .then(response=>{
-    if(response.ok){
-      //Render
-      res.status(200).render('success', {message: 'Successfully added to cart.', token: token});
+    if(response.ok){ //if request is successful
+      res.status(200).render('success', {message: 'Successfully added to cart.', token: token}); //return success message with token
     }
-    else{
-      res.status(404).render('error', {message :"No product error"})
+    else{ //if request is not successful
+      res.status(404).render('error', {message :"No product error"}) //return error message
     }
   })
   .catch(err=>{
-    res.status(500).render('error', {message : "internal server error"})
+    res.status(500).render('error', {message : "internal server error"}) //return error message if an error occurs while fetching
   })
 
     })
 })
 
-app.post('/store/cart/update/:id', checkToken, async (req,res)=>{
-  const data = { quantity: req.body.quantity };
+
+app.post('/store/cart/update/:id', checkToken, async (req,res)=>{ // Define a route for updating the cart with a given id, that requires authentication and authorization using JWT token
+  const data = { quantity: req.body.quantity }; // Define a variable that holds the quantity of the cart items received from the request body
   let token;
-  if (req.cookies && req.cookies.token) { // check for token in cookies
-    token = req.cookies.token;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+  if (req.cookies && req.cookies.token) { // Check if the token is present in cookies
+    token = req.cookies.token; 
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // Check if the token is present in headers
     token = req.headers.authorization.split(' ')[1];
   }
 
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // handle unauthorized access
+  if (!token) { // If token is not present, return an error message with status code 401
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); 
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
-    if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { // Verify the token using JWT_SECRET
+    if (err) { // If token is not valid, return an error message with status code 401
+      return res.status(401).render('error',{ message: 'Invalid token' }); 
     }
     
-    const userID = decodedToken.id;
+    const userID = decodedToken.id; // Extract the user ID from the decoded token
 
     //Code here
-    
-    fetch(`http://localhost:80/store/cart/update/${req.params.id}?uid=${userID}`,{
+    // The code here should contain the logic to update the cart for a given user ID and product ID
+
+    fetch(`http://localhost:80/store/cart/update/${req.params.id}?uid=${userID}`,{ // Make a PUT request to update the cart with the given product ID and user ID
     method: 'put',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}` // Set the authorization header with the token
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data) // Set the request body with the cart item quantity
   })
   .then(response=>{
-    if(response.ok){
-      //Render
+    if(response.ok){ // If the response status code is OK, render a success message with status code 200 and the token
       res.status(200).render('success', {message: 'Successfully edit the cart.', token: token});
     }
-    else{
+    else{ // If the response status code is not OK, render an error message with status code 404
       res.status(404).render('error', {message :"No product error"})
     }
   })
-  .catch(err=>{
+  .catch(err=>{ // If there is an error in the request, render an error message with status code 500
     res.status(500).render('error', {message : "internal server error"})
   })
 
     })
 })
 
-app.post('/store/cart/delete/:id', checkToken, async (req,res)=>{
+app.post('/store/cart/delete/:id', checkToken, async (req, res) => { // handle POST request for deleting an item from cart with authorization check
 
   let token;
-  if (req.cookies && req.cookies.token) { // check for token in cookies
+
+  if (req.cookies && req.cookies.token) { // check if token exists in cookies
     token = req.cookies.token;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check for token in headers
+  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) { // check if token exists in headers
     token = req.headers.authorization.split(' ')[1];
   }
 
-  if (!token) {
-    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' }); // handle unauthorized access
+  if (!token) { // if no token found in cookies or headers, return unauthorized error
+    return res.status(401).render('error',{ message: 'Authorization header missing or invalid (401)' });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => { // verify the token using the JWT_SECRET
     if (err) {
-      return res.status(401).render('error',{ message: 'Invalid token' }); // handle unauthorized access
+      return res.status(401).render('error',{ message: 'Invalid token' }); // if token is invalid, return unauthorized error
     }
     
-    const userID = decodedToken.id;
+    const userID = decodedToken.id; // get the user ID from the decoded token
 
     //Code here
-    
-    fetch(`http://localhost:80/store/cart/delete/${req.params.id}`,{
-    method: 'delete',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
-  })
-  .then(response=>{
-    if(response.ok){
-      //Render
-      res.status(200).render('success', {message: 'Successfully delete from cart.', token: token});
-    }
-    else{
-      res.status(404).render('error', {message :"No product to delete error"})
-    }
-  })
-  .catch(err=>{
-    res.status(500).render('error', {message : "internal server error"})
-  })
 
+    // fetch request to delete item from cart with the specified id
+    fetch(`http://localhost:80/store/cart/delete/${req.params.id}`,{
+      method: 'delete',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // add authorization header to the request
+      }
     })
+    .then(response => {
+      if(response.ok) { // if response is successful, render success page
+        res.status(200).render('success', {message: 'Successfully delete from cart.', token: token});
+      }
+      else { // if no product found with the specified id, render error page
+        res.status(404).render('error', {message :"No product to delete error"})
+      }
+    })
+    .catch(err => { // if there is any internal server error, render error page
+      res.status(500).render('error', {message : "internal server error"})
+    })
+
+  })
 })
 
 
+//Define a function to handle successful payment requests.
 const getSuccess = (req,res,next)=>{
     res.status(200).render('successpay',{message: "Your process has been successfully ordered", token: req.cookies.token});
 }
 
+//Define a function to handle cancelled payment requests.
 const getCancelled = (req,res,next) =>{
     res.status(400).render('cancel', {message: "Your process has been cancelled"});
 }
 
+//Define a function to delete a user's payment data and verify the user's authorization.
 const wipe = (req,res,next) =>{
     let token;
 
-  if (req.cookies && req.cookies.token) {
-    token = req.cookies.token;
-  } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
-  }
-
-  if (!token) {
-    return res.status(401).render('error', { message: 'Authorization header missing or invalid (401)' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
-    if (err) {
-      return res.status(401).render('error', { message: 'Invalid token' });
+    //If there is a cookie with a token, assign it to the token variable.
+    if (req.cookies && req.cookies.token) {
+        token = req.cookies.token;
+    } 
+    //If the Authorization header exists and starts with 'Bearer', assign the token after 'Bearer' to the token variable.
+    else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
     }
 
-    const userID = decodedToken.id;
+    //If no token is found, return an error message.
+    if (!token) {
+        return res.status(401).render('error', { message: 'Authorization header missing or invalid (401)' });
+    }
 
-    try {
-      const response = await fetch(`http://localhost:80/pay?uid=${userID}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`
+    //Verify the token and decode the user's ID.
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
+        //If the token is invalid, return an error message.
+        if (err) {
+            return res.status(401).render('error', { message: 'Invalid token' });
         }
-      });
 
-      next();
-      
-    } catch (error) {
-      console.error(error);
-      res.status(500).render('error', { message: 'Internal server error' });
-    }
-  });
+        //Get the user's ID from the decoded token.
+        const userID = decodedToken.id;
+
+        try {
+            //Send a DELETE request to the server to delete the user's payment data.
+            const response = await fetch(`http://localhost:80/pay?uid=${userID}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            //Call the next middleware function.
+            next();
+            
+        } catch (error) {
+            console.error(error);
+            //If an error occurs, return an error message.
+            res.status(500).render('error', { message: 'Internal server error' });
+        }
+    });
 }
 
+//Define routes for successful and cancelled payment requests, including middleware functions.
 app.get('/pay/success', checkToken, wipe, getSuccess)
 app.get('/pay/cancel', getCancelled)
 
-
 //404 Error not found page
-app.all('*', (req,res)=>{
-    res.status(404).sendFile(path.join(__dirname, 'public' ,'404.html'));
+app.all('*', (req,res)=>{ //Handles all requests made to the server
+    res.status(404).sendFile(path.join(__dirname, 'public' ,'404.html')); //Sends a 404 status code and serves the 404.html page present in the public directory
 });
 
-app.listen(3000, ()=>{
-    console.log('Frontend is listening on port 3000');
+app.listen(3000, ()=>{ //Starts the server on port 3000 and listens for incoming requests
+    console.log('Frontend is listening on port 3000'); //Logs a message to the console indicating that the frontend is listening on port 3000
 })
