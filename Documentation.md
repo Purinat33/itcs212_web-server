@@ -117,6 +117,7 @@ If a non-authorized user try to access any of the above page, they will get a <c
 * [Extra: How to test the web server (and Stripe) APIs using POSTMAN:](#extra-how-to-test-the-web-server-and-stripe-apis-using-postman)
 * [Appendix](#appendix)
 * [Appendix B: Using POSTMAN for the backend](#appendix-b)
+* [References](#reference)
 
 # General Detail:
 
@@ -961,7 +962,49 @@ Once you have sent the API request, you should receive a response from the API. 
 
 Don't forget to set type to <code>x-www-form-urlencoded</code>
 
+## Carting Methods in POSTMAN
+For using a cart page, there are a few steps involved using query strings
+<p>A query string is a part of a URL (Uniform Resource Locator) that contains data to be passed to a web application. It is usually located after the question mark "?" in the URL and consists of one or more key-value pairs separated by an ampersand "&".
+</p><p>
+The query string is used by web developers to pass data from one page or application to another. For example, a search engine may use a query string to pass the search term entered by the user from the search page to the results page. In this case, the key-value pair might look like this: "?q=search+term".</p>
+<li><strong>Get Cart</strong>: By navigating to <a href="localhost:80/store/cart">localhost:80/store/cart</a>, instead of seeing your own cart page containing the current cart you have, you will only see your user's information.
 
+![noQuery](getcartN.png)
 
+To see your own cart's data, copy the user id and add it to the url as <code>uid</code> query string like this:
+<a href="localhost:80/store/cart?uid=1">localhost:80/store/cart?uid=1</a>. This will display the cart as wanted.
 
+![query](getcart.png)</li>
+
+<li><strong>Add to cart (POST)</strong>: You can specify the id of the product to be added and append the <code>uid</code> query string to successfully add to cart.
+
+![addcart](addcart1.png)
+![newcart](newcart.png)</li>
+
+<li><strong>Update Cart quantity (PUT)</strong>: You can modify the quantity of an item inside the cart (as seen in the quantity field of a product) by specifying the <code>quantity</code> body before sending a PUT request with <code>uid</code> as query string.
+
+![putCart](putCart.png)
+Note: the number is actually 5 and not 7 in the url.
+![newCART](newcart2.png)</li>
+
+<li><strong>Delete from cart</strong>: You can delete an item from cart by specifying the product id in the url.
+
+Before:
+![delte](beforeDel.png)
+After:
+![aft](afterDel.png)</li>
+</ul>
+
+<hr>
+
+# Reference:
+<ul>
+<li>Stripe: <a href="https://stripe.com/docs">Docs</a></li>
+<li>Postman: <a href="https://www.postman.com/api-documentation-tool/">Docs</a></li>
+<li>Passport: <a href="https://www.passportjs.org/docs/">Docs</a></li>
+<li>MySQL Database: <a href="https://dev.mysql.com/doc/">Docs</a></li>
+<li>mysql2: <a href="https://openbase.com/js/mysql2/documentation">Docs</a></li>
+<li>bcrypt: <a href="https://openbase.com/js/bcrypt/documentation">Docs</a></li>
+<li>jsonwebtoken: <a href="https://github.com/auth0/node-jsonwebtoken">Github</a></li>
+<li>morgan: <a href="https://github.com/expressjs/morgan">Github</a></li>
 </ul>
