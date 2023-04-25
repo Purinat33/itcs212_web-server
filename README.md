@@ -6,10 +6,27 @@ To start with contribution, run:
 git clone https://github.com/Purinat33/itcs212_web-server.git
 ```
 
-followed by:
+Go to <code>/backend</code> path in terminal and followed by:
 ```js
 npm install
 ```
+then
+```js
+npm start
+```
+Backend is now accessible at localhost:80
+
+Go to <code>/frontend</code> path in terminal and followed by:
+```js
+npm install
+```
+then
+```js
+npm start
+```
+Frontend is now accessible at localhost:3000
+
+<hr>
 
 or if you want to update the local git repo to match the current state of the project on GitHub, run:
 
